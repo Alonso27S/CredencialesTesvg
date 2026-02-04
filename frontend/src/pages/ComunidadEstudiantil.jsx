@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const API = "http://localhost:5000";
 
-const ComunidadEstudiantil = () => {
+const ComunidadEstudiantil = ({ onGenerarCredencial }) => {
   const [datos, setDatos] = useState([]);
   const fileRef = useRef(null);
   const navigate = useNavigate(); // ✅ Hook bien colocado
@@ -111,25 +111,21 @@ const ComunidadEstudiantil = () => {
 
                 <button
                   onClick={() =>
-                    navigate("/registro", {
-                      state: {
-                        importado: {
-                          nombre: item.nombre,
-                          apellidop: item.apellido_paterno,
-                          apellidom: item.apellido_materno,
-                          curp: item.curp,
-                          rfc: item.rfc,
-                          numeroIdentificador: item.numero_control,
-                          nombreArea: item.carrera,
-                          correo: item.correo,
-                          tipoPersona: "Alumno",
-                        },
-                      },
+                    onGenerarCredencial({
+                      nombre: item.nombre,
+                      apellidop: item.apellido_paterno,
+                      apellidom: item.apellido_materno,
+                      curp: item.curp,
+                      rfc: item.rfc,
+                      numeroIdentificador: item.numero_control,
+                      nombreArea: item.carrera,
+                      correo: item.correo,
+                      tipoPersona: "Alumno",
                     })
                   }
                   className="font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
                 >
-                  Generar Registro <IdCard size={18} />
+                  Generar Credencial <IdCard size={18} />
                 </button>
               </div>
             </div>
