@@ -3,6 +3,7 @@
 // ================================
 
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 // 🎨 Iconos usados en el dashboard (Lucide)
 import {
@@ -44,10 +45,12 @@ import Visitas from "./Visitas";
  * @param {function} onLogout Función para cerrar sesión
  */
 const Dashboard = ({ userData, onLogout }) => {
-
   /* =========================
      ESTADOS DEL COMPONENTE
   ========================= */
+  const location = useLocation();
+
+  const [registroImportado, setRegistroImportado] = useState(null);
 
   // Controla apertura del menú lateral
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,20 +63,33 @@ const Dashboard = ({ userData, onLogout }) => {
 
   // Referencia para detectar clics fuera del menú de usuario
   const userMenuRef = useRef(null);
+  /* =========================
+   ABRIR REGISTRO AUTOMÁTICO
+========================= */
+  useEffect(() => {
+    console.log("📍 Location state:", location.state);
+    console.log("📍 Active antes:", activeModule);
+
+    if (location.state?.abrirRegistro) {
+      console.log("➡️ Cambiando a módulo REGISTRO");
+
+      setActiveModule("registro");
+
+      // Limpia el state para evitar bucle
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   /* =========================
      DATOS DEL USUARIO
   ========================= */
 
   // Se normalizan datos para evitar errores y mejorar visualización
-  const nombre =
-    userData?.nombre?.trim()?.toUpperCase?.() || "USUARIO";
+  const nombre = userData?.nombre?.trim()?.toUpperCase?.() || "USUARIO";
 
-  const apellidop =
-    userData?.apellidop?.trim()?.toUpperCase?.() || "";
+  const apellidop = userData?.apellidop?.trim()?.toUpperCase?.() || "";
 
-  const rol =
-    userData?.rol?.trim()?.toUpperCase?.() || "SIN ROL";
+  const rol = userData?.rol?.trim()?.toUpperCase?.() || "SIN ROL";
 
   // ID del usuario (soporta distintos nombres de propiedad)
   const userId = userData?.id || userData?.userId || null;
@@ -84,10 +100,7 @@ const Dashboard = ({ userData, onLogout }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       // Si el clic NO fue dentro del menú → cerrar
-      if (
-        userMenuRef.current &&
-        !userMenuRef.current.contains(event.target)
-      ) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setUserMenuOpen(false);
       }
     };
@@ -96,21 +109,17 @@ const Dashboard = ({ userData, onLogout }) => {
     document.addEventListener("mousedown", handleClickOutside);
 
     // Limpieza al desmontar el componente
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-
       {/* =========================
           HEADER
       ========================= */}
       <header className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
-
         {/* Logos + título institucional */}
         <div className="grid grid-cols-3 items-center px-4 md:px-8 py-3 w-full">
-
           {/* Logo izquierdo */}
           <div className="flex justify-start">
             <img
@@ -157,7 +166,6 @@ const Dashboard = ({ userData, onLogout }) => {
 
           {/* Información del usuario + botones */}
           <div className="flex items-center space-x-3 md:space-x-6">
-
             {/* Nombre y rol */}
             <div className="hidden sm:flex flex-col text-right text-xs md:text-sm font-semibold">
               {apellidop} {nombre}
@@ -166,8 +174,6 @@ const Dashboard = ({ userData, onLogout }) => {
 
             {/* Iconos */}
             <div className="flex space-x-2 md:space-x-4 items-center">
-
-              
               {/* =========================
                   MENÚ DE USUARIO
               ========================= */}
@@ -182,7 +188,6 @@ const Dashboard = ({ userData, onLogout }) => {
                 {/* Menú desplegable */}
                 {userMenuOpen && (
                   <div className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg border">
-
                     {/* Perfil */}
                     <button
                       className="flex items-center space-x-2 w-full px-4 py-2 hover:bg-gray-100 text-black"
@@ -223,27 +228,40 @@ const Dashboard = ({ userData, onLogout }) => {
           CONTENIDO PRINCIPAL
       ========================= */}
       <div className="flex-1 flex mt-[130px] md:mt-[140px] mb-[80px]">
-
         <main className="flex-1 p-4 md:p-8">
-
           {/* Render dinámico de módulos */}
           {activeModule === "inicio" && <Inicio />}
           {activeModule === "buscar" && (
             <Buscar onBack={() => setActiveModule("inicio")} />
           )}
-          {activeModule === "gestores" &&
-           <AdminGestores onBack={() => setActiveModule("inicio")} />}
-          {activeModule === "comunidad" && <Comunidad />}
-             
+          {activeModule === "gestores" && (
+            <AdminGestores onBack={() => setActiveModule("inicio")} />
+          )}
+          {activeModule === "comunidad" && (
+            <Comunidad
+              onGenerarCredencial={(data) => {
+                console.log("📍 Active antes:", activeModule);
+
+                setRegistroImportado(data);
+                setActiveModule("registro");
+
+                console.log("📍 Active después: registro");
+              }}
+            />
+          )}
+
           {activeModule === "reportes" && (
             <Reportes onBack={() => setActiveModule("inicio")} />
           )}
           {activeModule === "registro" && (
-            <Registro onBack={() => setActiveModule("inicio")} />
+            <Registro
+              importado={registroImportado}
+              onBack={() => setActiveModule("inicio")}
+            />
           )}
+
           {activeModule === "visitas" && <Visitas />}
           {activeModule === "perfil" && <Perfil userId={userId} />}
-
         </main>
 
         {/* =========================
@@ -255,12 +273,15 @@ const Dashboard = ({ userData, onLogout }) => {
           }`}
         >
           <nav className="p-6 space-y-4 text-gray-700">
-
             {[
               { key: "inicio", icon: <Home />, label: "Panel Principal" },
               { key: "buscar", icon: <Search />, label: "Buscar" },
               { key: "gestores", icon: <Users />, label: "Admin. Gestores" },
-              { key: "comunidad", icon: <GraduationCap />, label: "Comunidad Estudiantil" },
+              {
+                key: "comunidad",
+                icon: <GraduationCap />,
+                label: "Comunidad Estudiantil",
+              },
               { key: "registro", icon: <IdCard />, label: "Registro" },
               { key: "reportes", icon: <FileText />, label: "Reportes" },
               { key: "visitas", icon: <Shield />, label: "Visitas" },
@@ -279,7 +300,6 @@ const Dashboard = ({ userData, onLogout }) => {
                 <span>{label}</span>
               </button>
             ))}
-
           </nav>
         </aside>
       </div>
