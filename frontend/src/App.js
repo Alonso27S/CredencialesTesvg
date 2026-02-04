@@ -69,6 +69,9 @@ function App() {
         rfc: usuario.rfc || "",
         curp: usuario.curp || "",
         correo: usuario.correo || "",
+        qr: usuario.qr || "",
+        fechaemision: usuario.fechaemision || "",
+        fechavigencia: usuario.fechavigencia || "", 
         id_rol: usuario.id_rol,
         rol: rol,
       });
