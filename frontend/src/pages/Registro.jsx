@@ -22,7 +22,7 @@ const initialFormState = {
   contraseña: "",
 };
 
-const Registro = ({ onBack }) => {
+const Registro = ({ importado, onBack }) => {
   // Estado principal del formulario
   const [form, setForm] = useState(initialFormState);
 
@@ -83,23 +83,25 @@ const Registro = ({ onBack }) => {
      🔹 PRECARGAR DATOS IMPORTADOS
   ================================ */
   useEffect(() => {
-    if (location.state?.importado) {
-      const i = location.state.importado;
+  if (importado) {
+    console.log("📥 Datos importados en Registro:", importado);
 
-      setForm((prev) => ({
-        ...prev,
-        nombre: i.nombre || "",
-        apellidop: i.apellidop || "",
-        apellidom: i.apellidom || "",
-        curp: i.curp || "",
-        rfc: i.rfc || "",
-        numeroIdentificador: i.numeroIdentificador || "",
-        nombreArea: i.nombreArea || "",
-        correo: i.correo || "",
-        tipoPersona: i.tipoPersona || "Alumno",
-      }));
-    }
-  }, [location.state]);
+    setForm((prev) => ({
+      ...prev,
+      nombre: importado.nombre || "",
+      apellidop: importado.apellidop || "",
+      apellidom: importado.apellidom || "",
+      curp: importado.curp || "",
+      rfc: importado.rfc || "",
+      numeroIdentificador:
+        importado.numeroIdentificador || "",
+      nombreArea: importado.nombreArea || "",
+      correo: importado.correo || "",
+      tipoPersona: importado.tipoPersona || "Alumno",
+    }));
+  }
+}, [importado]);
+
 
   // Estado que guarda errores por campo (ej: validaciones de texto)
   const [errors, setErrors] = useState({});
