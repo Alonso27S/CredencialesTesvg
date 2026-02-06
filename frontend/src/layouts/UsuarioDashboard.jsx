@@ -13,7 +13,7 @@ import CredencialFront from "../pages/CredencialFrontOficial";
 import CredencialBack from "../pages/CredencialBackOficial";
 import html2canvas from "html2canvas/dist/html2canvas.min.js";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://credencialestesvg.com.mx";
 
 const UsuarioDashboard = ({ userData }) => {
   const usuario = userData;

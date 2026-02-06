@@ -29,7 +29,7 @@ const Buscar = ({ onBack }) => {
 
       // Petición GET al endpoint de búsqueda
       const response = await axios.get(
-        "http://localhost:5000/api/buscar",
+        "https://credencialestesvg.com.mx/api/buscar",
         { params }
       );
 

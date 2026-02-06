@@ -15,7 +15,7 @@ const AdminGestores = ({ onBack }) => {
   const [busqueda, setBusqueda] = useState("");
 
   // 🔹 Endpoint del backend
-  const BASE_URL = "http://localhost:5000/api/gestores";
+  const BASE_URL = "https://credencialestesvg.com.mx/api/gestores";
 
   // 🔐 Token de autenticación (JWT)
   const token = localStorage.getItem("token");

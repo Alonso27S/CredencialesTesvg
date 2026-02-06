@@ -34,7 +34,7 @@ const Perfil = ({ userId }) => {
   const obtenerUsuario = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/usuarios/${userId}`
+        `https://credencialestesvg.com.mx/api/usuarios/${userId}`
       );
       setUsuario(res.data);
     } catch (error) {
@@ -75,7 +75,7 @@ const Perfil = ({ userId }) => {
       data.append("foto", foto);
 
       await axios.put(
-        `http://localhost:5000/api/usuarios/${userId}/foto`,
+        `https://credencialestesvg.com.mx/api/usuarios/${userId}/foto`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -95,7 +95,7 @@ const Perfil = ({ userId }) => {
   const guardarDatos = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/usuarios/${userId}`,
+        `https://credencialestesvg.com.mx/api/usuarios/${userId}`,
         formData
       );
       alert("Perfil actualizado");
@@ -125,7 +125,7 @@ const Perfil = ({ userId }) => {
 
         {usuario.foto ? (
           <img
-            src={`http://localhost:5000${usuario.foto}`}
+            src={`https://credencialestesvg.com.mx/${usuario.foto}`}
             alt="Foto de perfil"
             className="w-40 h-40 rounded-full object-cover border"
           />

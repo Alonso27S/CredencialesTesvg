@@ -23,7 +23,7 @@ const CredencialFront = ({ datos }) => {
   const fotoReal = datos?.fotourl
     ? datos.fotourl.startsWith("http")
       ? datos.fotourl
-      : `http://localhost:5000${datos.fotourl}`
+      : `https://credencialestesvg.com.mx${datos.fotourl}`
     : "/assets/default_user.png";
 
   /* ================= NOMBRE COMPLETO ================= */

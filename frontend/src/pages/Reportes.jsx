@@ -23,7 +23,7 @@ const Reportes = ({ onBack }) => {
   // ---------------------------
   const fetchReportes = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/reportes", {
+      const res = await axios.get("https://credencialestesvg.com.mx/api/reportes", {
         params: filters, // Enviar filtros al backend
       });
 

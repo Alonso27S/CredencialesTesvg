@@ -1,7 +1,7 @@
 import React from "react";
 
 // URL base del backend para cargar recursos (ej. firma)
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://credencialestesvg.com.mx";
 
 const CredencialBack = ({ datos }) => {
   // Ancho fijo de la credencial
