@@ -61,8 +61,8 @@ export const crearCredencial = async (client, idRegistro, datosUsuario) => {
     // fechaemision se genera automáticamente en la BD
     const result = await client.query(
       `
-      INSERT INTO credencial (qr, id_registro, fechaemision)
-      VALUES ($1, $2, NOW())
+      INSERT INTO credencial (qr, id_registro, fechaemision, fechavigencia, activo)
+      VALUES ($1, $2, NOW(), NOW() + INTERVAL '6months', true)
       RETURNING id
       `,
       [qrEncriptado, idRegistro]
