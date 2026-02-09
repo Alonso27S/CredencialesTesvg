@@ -7,7 +7,7 @@ export const getReportes = async (req, res) => {
     let query = `
       SELECT 
         u.id,
-        CONCAT(u.nombre, ' ', u.apPaterno, ' ', u.apMaterno) AS nombre_completo,
+        CONCAT(u.nombre, ' ', u.apellidop, ' ', u.apellidom) AS nombre_completo,
         u.area,
         u.estado,
         to_char(r.fecharegistro, 'DD/MM/YYYY') AS fecha,
