@@ -29,7 +29,7 @@ const Buscar = ({ onBack }) => {
 
       // Petición GET al endpoint de búsqueda
       const response = await axios.get(
-        "http://localhost:5000/api/buscar",
+        "https://credencialestesvg.com.mx/api/buscar",
         { params }
       );
 
@@ -42,6 +42,16 @@ const Buscar = ({ onBack }) => {
       alert("Ocurrió un error al buscar usuarios");
     }
   };
+   const renovar = async (id) => {
+    try {
+      await axios.put(`https://credencialestesvg.com.mx/api/buscar/renovar/${id}`);
+      alert("Credencial renovada correctamente");
+      buscar(); // refresca la tabla
+    } catch (error) {
+      alert("Error al renovar la credencial");
+    }
+  };
+
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -87,7 +97,8 @@ const Buscar = ({ onBack }) => {
               <th className="px-4 py-2 border">Nombre Completo</th>
               <th className="px-4 py-2 border">Carrera</th>
               <th className="px-4 py-2 border">Tipo</th>
-              <th className="px-4 py-2 border">Fecha</th>
+              <th className="px-4 py-2 border">Vigencia</th>
+              <th className="px-4 py-2 border">Acción</th>
             </tr>
           </thead>
 
@@ -121,9 +132,26 @@ const Buscar = ({ onBack }) => {
                   <td className="px-4 py-2 border">
                     {user.tipopersona}
                   </td>
-                  <td className="px-4 py-2 border">
-                    {new Date(user.creado_en).toLocaleDateString()}
+                  <td className="px-4 py-2 border font-semibold">
+                      {user.fechavigencia
+                        ? new Date(user.fechavigencia).toLocaleDateString()
+                        : "Sin credencial"}
                   </td>
+                  <td className="px-4 py-2 border">
+                      {!user.fechavigencia ? (
+                        <span className="text-gray-500">Sin credencial</span>
+                      ) : user.vencida ? (
+                        <button
+                          onClick={() => renovar(user.id)}
+                          className="bg-red-500 text-white px-3 py-1 rounded"
+                        >
+                          Renovar
+                        </button>
+                      ) : (
+                        <span className="text-green-600 font-semibold">Vigente</span>
+                      )}
+                   </td>
+
                 </tr>
               ))
 
