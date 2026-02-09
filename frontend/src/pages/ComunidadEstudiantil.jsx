@@ -8,50 +8,69 @@ const ComunidadEstudiantil = ({ onGenerarCredencial }) => {
   const [datos, setDatos] = useState([]);
   const fileRef = useRef(null);
   const navigate = useNavigate(); // ✅ Hook bien colocado
+// ================================
+//   CARGAR DATOS IMPORTADOS
+// ================================
+const cargarDatos = async () => {
+  try {
+    // 🔧 URL corregida
+    const res = await fetch(`${API}/api/importacion`);
 
-  // ================================
-  //   CARGAR DATOS IMPORTADOS
-  // ================================
-  const cargarDatos = async () => {
-    try {
-      const res = await fetch(`${API}/importados`);
-      const data = await res.json();
-      setDatos(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error(error);
-      setDatos([]);
+    // Validar respuesta
+    if (!res.ok) {
+      throw new Error("Error al obtener datos");
     }
-  };
 
-  useEffect(() => {
-    cargarDatos();
-  }, []);
+    const data = await res.json();
 
-  // ================================
-  //   IMPORTAR EXCEL
-  // ================================
-  const importarExcel = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    // Mantiene funcionalidad original
+    setDatos(Array.isArray(data) ? data : []);
 
-    const formData = new FormData();
-    formData.append("file", file);
+  } catch (error) {
+    console.error("Error cargando datos:", error);
+    setDatos([]);
+  }
+};
 
-    await fetch(`${API}/importar-excel`, {
-      method: "POST",
-      body: formData,
-    });
+useEffect(() => {
+  cargarDatos();
+}, []);
 
-    cargarDatos();
-  };
 
-  // ================================
-  //   ELIMINAR REGISTRO IMPORTADO
-  // ================================
-  const eliminar = async (id) => {
-    await fetch(`${API}/importados/${id}`, { method: "DELETE" });
-    cargarDatos();
-  };
+// ================================
+//   IMPORTAR EXCEL
+// ================================
+const importarExcel = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  // 🔧 URL corregida
+  await fetch(`${API}/api/importar-excel`, {
+    method: "POST",
+    body: formData,
+  });
+
+  // Recargar tabla
+  cargarDatos();
+};
+
+
+// ================================
+//   ELIMINAR REGISTRO IMPORTADO
+// ================================
+const eliminar = async (id) => {
+
+  // 🔧 URL corregida
+  await fetch(`${API}/api/importacion/${id}`, {
+    method: "DELETE",
+  });
+
+  // Recargar datos
+  cargarDatos();
+};
 
   // ================================
   //   UI
