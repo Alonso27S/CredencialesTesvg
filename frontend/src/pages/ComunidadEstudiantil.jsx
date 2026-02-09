@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Upload, Trash2, IdCard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const API = "https://credencialestesvg.com.mx";
+const API = "http://localhost:5000";
 
 const ComunidadEstudiantil = ({ onGenerarCredencial }) => {
   const [datos, setDatos] = useState([]);
