@@ -48,7 +48,7 @@ const importarExcel = async (e) => {
   formData.append("file", file);
 
   // 🔧 URL corregida
-  await fetch(`${API}/api/importacion/importar-excel`, {
+  await fetch(`${API}/api/routes/importar-excel`, {
     method: "POST",
     body: formData,
   });
