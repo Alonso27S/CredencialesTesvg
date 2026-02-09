@@ -40,7 +40,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/buscar", buscarRoutes);
 app.use("/api", reportesRoutes); // <<--- CORRECTO
 app.use("/api/usuarios", usuariosRoutes);
-app.use("/api", rutas);
+app.use("/", rutas);
 app.use("/api/importacion", importacionRoutes);
 app.use("/api", gestorRoutes);
 app.use("/api", qrRoutes);
