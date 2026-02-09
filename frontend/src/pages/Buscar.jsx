@@ -43,6 +43,16 @@ const Buscar = ({ onBack }) => {
     }
   };
 
+    const renovar = async (id) =>{
+      try {
+        await axios.put(`http://localhost:5000/api/buscar/renovar/${id}`);
+        alert("Credencial renovada correctamente");
+        buscar();
+      } catch (error) {
+        alert("Error al renovar la credencial");
+      }
+    };
+
   return (
     <div className="w-full max-w-4xl mx-auto">
 
@@ -87,7 +97,8 @@ const Buscar = ({ onBack }) => {
               <th className="px-4 py-2 border">Nombre Completo</th>
               <th className="px-4 py-2 border">Carrera</th>
               <th className="px-4 py-2 border">Tipo</th>
-              <th className="px-4 py-2 border">Fecha</th>
+              <th className="px-4 py-2 border">Fecha de Vigencia</th>
+              <th className="px-4 py-2 border">Acción</th>
             </tr>
           </thead>
 
@@ -121,12 +132,27 @@ const Buscar = ({ onBack }) => {
                   <td className="px-4 py-2 border">
                     {user.tipopersona}
                   </td>
-                  <td className="px-4 py-2 border">
-                    {new Date(user.creado_en).toLocaleDateString()}
-                  </td>
-                </tr>
+                 <td className="px-4 py-2 border font-semibold">
+                      {user.fechavigencia
+                        ? new Date(user.fechavigencia).toLocaleDateString()
+                        : "Sin credencial"} 
+                 </td>
+                 <td className="px-4 py-2 border">
+                      {!user.fechavigencia ? (
+                        <span className="text-gray-500">Sin credencial</span>
+                      ) : user.vencida ? (
+                        <button
+                          onClick={() => renovar(user.id)}
+                          className="bg-red-500 text-white px-3 py-1 rounded"
+                        >
+                          Renovar
+                        </button>
+                      ) : (
+                        <span className="text-green-600 font-semibold">Vigente</span>
+                      )}
+                   </td>
+                   </tr>
               ))
-
             )}
           </tbody>
         </table>
