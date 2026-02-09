@@ -64,7 +64,7 @@ const importarExcel = async (e) => {
 const eliminar = async (id) => {
 
   // 🔧 URL corregida
-  await fetch(`${API}/api/importacion${id}`, {
+  await fetch(`${API}/api/importacion/${id}`, {
     method: "DELETE",
   });
 
