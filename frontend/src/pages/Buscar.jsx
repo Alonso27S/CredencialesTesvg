@@ -98,7 +98,7 @@ const Buscar = ({ onBack }) => {
               <th className="px-4 py-2 border">Carrera</th>
               <th className="px-4 py-2 border">Tipo</th>
               <th className="px-4 py-2 border">Vigencia</th>
-              <th className="px-4 py-2 border">Acción</th>
+              <th className="px-4 py-2 border">Función</th>
             </tr>
           </thead>
 
