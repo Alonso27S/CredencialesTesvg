@@ -45,7 +45,7 @@ const Buscar = ({ onBack }) => {
 
     const renovar = async (id) =>{
       try {
-        await axios.put(`http://localhost:5000/api/buscar/renovar/${id}`);
+        await axios.put(`https://credencialestesvg.com.mx/api/buscar/renovar/${id}`);
         alert("Credencial renovada correctamente");
         buscar();
       } catch (error) {
