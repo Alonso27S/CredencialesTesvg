@@ -149,10 +149,10 @@ const AdminGestores = ({ onBack }) => {
                   <td className="p-3">{gestor.puesto}</td>
 
                   <td className="p-3 flex gap-2">
-                    <button className="text-blue-600 hover:underline">
-                      Editar rol
-                    </button>
-                    <span>|</span>
+                   {/*  <button className="text-blue-600 hover:underline">
+                    Editar rol
+                    </button> 
+                    <span>|</span> */}
                     <button
                       onClick={() => eliminarGestor(gestor.id)}
                       className="text-red-600 hover:underline"
