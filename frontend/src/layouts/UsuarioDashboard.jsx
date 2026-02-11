@@ -120,9 +120,9 @@ const UsuarioDashboard = ({ userData }) => {
 
       if (!res.ok) throw new Error(data.message);
      
-      console.log("Contraseña actual:", passwordActual);
+    /*   console.log("Contraseña actual:", passwordActual);
       console.log("Nueva contraseña:", passwordNueva);
-
+ */
       // ✅ éxito
       setModalPassOpen(false);
       setPasswordActual("");
