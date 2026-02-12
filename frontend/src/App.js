@@ -11,7 +11,6 @@ import GestorDashboard from "./layouts/GestorDashboard"; // (reservado)
 import UsuarioDashboard from "./layouts/UsuarioDashboard";
 
 function App() {
-
   // ======================================================
   // 🔐 ESTADOS DE AUTENTICACIÓN
   // ======================================================
@@ -68,10 +67,12 @@ function App() {
         firmaurl: usuario.firmaurl || "",
         rfc: usuario.rfc || "",
         curp: usuario.curp || "",
+        nss: usuario.nss || "",
+        tipopersona: usuario.tipopersona || "",
         correo: usuario.correo || "",
         qr: usuario.qr || "",
         fechaemision: usuario.fechaemision || "",
-        fechavigencia: usuario.fechavigencia || "", 
+        fechavigencia: usuario.fechavigencia || "",
         id_rol: usuario.id_rol,
         rol: rol,
       });
@@ -92,52 +93,50 @@ function App() {
   // ======================================================
   // 🧪 DEBUG
   // ======================================================
-//  useEffect(() => {
-//    console.log("🔄 isAuthenticated:", isAuthenticated);
-//    console.log("🔄 userRole:", userRole);
-//    console.log("🔄 userData:", userData);
+  //  useEffect(() => {
+  //    console.log("🔄 isAuthenticated:", isAuthenticated);
+  //    console.log("🔄 userRole:", userRole);
+  //    console.log("🔄 userData:", userData);
   //  console.log("🔄 requiereToken:", requiereToken);
   //}, [isAuthenticated, userRole, userData, requiereToken]);
 
   // ======================================================
   // ✅ LOGIN FINAL
   // ======================================================
-const handleLoginSuccess = (role, data) => {
-  const normalizedRole = role?.toLowerCase().trim();
+  const handleLoginSuccess = (role, data) => {
+    const normalizedRole = role?.toLowerCase().trim();
 
-  // ✅ GUARDAR USUARIO PARA F5
-  localStorage.setItem("usuario", JSON.stringify(data));
+    // ✅ GUARDAR USUARIO PARA F5
+    localStorage.setItem("usuario", JSON.stringify(data));
 
-  setIsAuthenticated(true);
-  setUserRole(normalizedRole);
+    setIsAuthenticated(true);
+    setUserRole(normalizedRole);
 
-  setUserData({
-    id: data.id,
-    numeroidentificador:
-      data.numero_identificador ||
-      data.numeroidentificador ||
-      data.id,
-    nombre: data.nombre || "",
-    apellidop: data.apellidop || "",
-    apellidom: data.apellidom || "",
-    nombrearea: data.nombrearea || data.nombre_area || "",
-    puesto: data.puesto || "",
-    rfc: data.rfc || "",
-    curp: data.curp || "",
-    fechaemision: data.fechaemision || "",
-    fechavigencia: data.fechavigencia || "",
-    qr: data.qr || "",
-    fotourl: data.fotourl || data.foto || "",
-    firmaurl: data.firmaurl || "",
-    correo: data.correo || "",
-    nss: data.nss || "",
-    tipoPersona: data.tipoPersona || "",
-    id_rol: data.id_rol,
-    rol: normalizedRole,
-  });
+    setUserData({
+      id: data.id,
+      numeroidentificador:
+        data.numero_identificador || data.numeroidentificador || data.id,
+      nombre: data.nombre || "",
+      apellidop: data.apellidop || "",
+      apellidom: data.apellidom || "",
+      nombrearea: data.nombrearea || data.nombre_area || "",
+      puesto: data.puesto || "",
+      rfc: data.rfc || "",
+      curp: data.curp || "",
+      fechaemision: data.fechaemision || "",
+      fechavigencia: data.fechavigencia || "",
+      qr: data.qr || "",
+      nss: data.nss || data.numerosegurosocial || "",
+      tipopersona: data.tipopersona || data.tipopersona || "",
+      fotourl: data.fotourl || data.foto || "",
+      firmaurl: data.firmaurl || "",
+      correo: data.correo || "",
+      id_rol: data.id_rol,
+      rol: normalizedRole,
+    });
 
-  console.log("✅ Login exitoso");
-};
+    console.log("✅ Login exitoso");
+  };
 
   // ======================================================
   // 🔐 BACKEND EXIGE TOKEN
@@ -185,7 +184,6 @@ const handleLoginSuccess = (role, data) => {
   // 🧭 RENDER PRINCIPAL
   // ======================================================
   return (
-
     <div>
       {requiereToken ? (
         <VerificacionToken
