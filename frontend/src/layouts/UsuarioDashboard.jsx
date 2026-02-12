@@ -61,53 +61,35 @@ const UsuarioDashboard = ({ userData }) => {
   };
 
   const handleDownload = async () => {
-  const pdf = new jsPDF({
-    orientation: "landscape",
-    unit: "px",
-    format: [900, 600],
-  });
+    const options = {
+      scale: 3,
+      useCORS: true,
+      allowTaint: true, // 
+      backgroundColor: "#FFFFFF",
+    };
 
-  // FRONT
-  const canvasFront = await html2canvas(refFront.current, {
-    scale: 3,
-    useCORS: true,
-    backgroundColor: "#FFFFFF",
-  });
+    const pdf = new jsPDF({
+      orientation: "landscape",
+      unit: "px",
+      format: [900, 600],
+    });
 
-  const imgFront = canvasFront.toDataURL("image/png");
+    // FRONT
+    const canvasFront = await html2canvas(refFront.current, options);
+    const imgFront = canvasFront.toDataURL("image/jpeg", 1.0); // 🔥 JPEG evita error PNG
 
-  pdf.addImage(
-    imgFront,
-    "PNG",
-    0,
-    0,
-    canvasFront.width,
-    canvasFront.height
-  );
+    pdf.addImage(imgFront, "JPEG", 0, 0, canvasFront.width, canvasFront.height);
 
-  // Nueva página
-  pdf.addPage();
+    pdf.addPage();
 
-  // BACK
-  const canvasBack = await html2canvas(refBack.current, {
-    scale: 3,
-    useCORS: true,
-    backgroundColor: "#FFFFFF",
-  });
+    // BACK
+    const canvasBack = await html2canvas(refBack.current, options);
+    const imgBack = canvasBack.toDataURL("image/jpeg", 1.0);
 
-  const imgBack = canvasBack.toDataURL("image/png");
+    pdf.addImage(imgBack, "JPEG", 0, 0, canvasBack.width, canvasBack.height);
 
-  pdf.addImage(
-    imgBack,
-    "PNG",
-    0,
-    0,
-    canvasBack.width,
-    canvasBack.height
-  );
-
-  pdf.save("credencial.pdf");
-};
+    pdf.save("credencial.pdf");
+  };
 
   const handleSubmitPassword = async () => {
     setErrorPass("");
