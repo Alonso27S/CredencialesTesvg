@@ -1,13 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Bell,
-  User,
-  Download,
-  KeyRound,
-  LogOut,
-  Phone,
-  X,
-} from "lucide-react";
+import { Bell, User, Download, KeyRound, LogOut, Phone, X } from "lucide-react";
+import jsPDF from "jspdf";
 
 import CredencialFront from "../pages/CredencialFrontOficial";
 import CredencialBack from "../pages/CredencialBackOficial";
@@ -20,6 +13,8 @@ const UsuarioDashboard = ({ userData }) => {
 
   const [vista, setVista] = useState("front");
   const refCredencial = useRef(null);
+  const refFront = useRef(null);
+  const refBack = useRef(null);
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
@@ -39,8 +34,7 @@ const UsuarioDashboard = ({ userData }) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   if (!usuario) {
@@ -67,17 +61,39 @@ const UsuarioDashboard = ({ userData }) => {
   };
 
   const handleDownload = async () => {
-    const canvas = await html2canvas(refCredencial.current, {
+    const pdf = new jsPDF({
+      orientation: "landscape",
+      unit: "px",
+      format: [600, 380], // tamaño tipo credencial
+    });
+
+    // Capturar frontal
+    const canvasFront = await html2canvas(refFront.current, {
       scale: 4,
       useCORS: true,
       backgroundColor: "#FFFFFF",
     });
 
-    const img = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = img;
-    link.download = "credencial.png";
-    link.click();
+    const imgFront = canvasFront.toDataURL("image/png");
+
+    pdf.addImage(imgFront, "PNG", 0, 0, canvasFront.width, canvasFront.height);
+
+    // Nueva página para trasera
+    pdf.addPage();
+
+    // Capturar trasera
+    const canvasBack = await html2canvas(refBack.current, {
+      scale: 4,
+      useCORS: true,
+      backgroundColor: "#FFFFFF",
+    });
+
+    const imgBack = canvasBack.toDataURL("image/png");
+
+    pdf.addImage(imgBack, "PNG", 0, 0, canvasBack.width, canvasBack.height);
+
+    // Descargar PDF
+    pdf.save("credencial.pdf");
   };
 
   const handleSubmitPassword = async () => {
@@ -88,7 +104,9 @@ const UsuarioDashboard = ({ userData }) => {
     }
 
     if (passwordNueva.length < 8) {
-      return setErrorPass("La nueva contraseña debe tener al menos 8 caracteres");
+      return setErrorPass(
+        "La nueva contraseña debe tener al menos 8 caracteres",
+      );
     }
 
     if (passwordNueva !== passwordConfirm) {
@@ -134,10 +152,8 @@ const UsuarioDashboard = ({ userData }) => {
     <div className="flex flex-col min-h-screen bg-gray-100">
       {/* HEADER */}
       <header className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
-
         {/* 🔹 GRID RESPONSIVE */}
         <div className="grid grid-cols-1 sm:grid-cols-3 items-center px-4 py-3 gap-2 text-center sm:text-left">
-
           {/* Logo Gobierno */}
           <div className="flex justify-center sm:justify-start">
             <img
@@ -161,11 +177,7 @@ const UsuarioDashboard = ({ userData }) => {
               className="h-10 sm:h-12"
               alt=""
             />
-            <img
-              src="/assets/logo_tecnm.png"
-              className="h-10 sm:h-12"
-              alt=""
-            />
+            <img src="/assets/logo_tecnm.png" className="h-10 sm:h-12" alt="" />
           </div>
         </div>
 
@@ -174,15 +186,12 @@ const UsuarioDashboard = ({ userData }) => {
           <h2 className="font-semibold">PANEL DEL USUARIO</h2>
 
           <div className="flex items-center gap-4">
-
             {/* Usuario */}
             <div className="flex flex-col text-center sm:text-right text-[10px] sm:text-xs">
               <span className="font-semibold">
                 {usuario.nombre} {usuario.apellidop} {usuario.apellidom}
               </span>
-              <span className="italic text-[10px]">
-                {usuario.nombrearea}
-              </span>
+              <span className="italic text-[10px]">{usuario.nombrearea}</span>
             </div>
 
             <Bell />
@@ -237,15 +246,20 @@ const UsuarioDashboard = ({ userData }) => {
           </div>
 
           {/* Credencial */}
-          <div
-            ref={refCredencial}
-            className="flex justify-center mt-6 sm:mt-8 overflow-x-auto"
-          >
-            {vista === "front" ? (
+          <div className="flex justify-center mt-6 sm:mt-8 overflow-x-auto">
+            <div
+              ref={refFront}
+              style={{ display: vista === "front" ? "block" : "none" }}
+            >
               <CredencialFront datos={datosCredencial} />
-            ) : (
+            </div>
+
+            <div
+              ref={refBack}
+              style={{ display: vista === "back" ? "block" : "none" }}
+            >
               <CredencialBack datos={datosCredencial} />
-            )}
+            </div>
           </div>
 
           <button
