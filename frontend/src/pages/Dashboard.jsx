@@ -4,6 +4,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Phone, Mail, Headset } from "lucide-react";
 
 // 🎨 Iconos usados en el dashboard (Lucide)
 import {
@@ -321,32 +322,43 @@ const Dashboard = ({ userData, onLogout }) => {
 ========================= */}
       {soporteOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl w-[90%] max-w-md p-6 relative">
+          <div className="bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-6 relative animate-fadeIn">
             {/* BOTÓN CERRAR */}
             <button
               onClick={() => setSoporteOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-black"
+              className="absolute top-3 right-3 text-gray-400 hover:text-black transition"
             >
               ✕
             </button>
 
-            {/* TÍTULO */}
-            <h2 className="text-xl font-bold mb-4 text-gray-800">
-              Soporte Técnico
-            </h2>
+            {/* HEADER */}
+            <div className="flex items-center space-x-2 mb-5">
+              <Headset className="w-6 h-6 text-blue-600" />
+              <h2 className="text-xl font-bold text-gray-800">
+                Soporte Técnico
+              </h2>
+            </div>
 
             {/* CONTENIDO */}
-            <div className="space-y-3 text-gray-700">
+            <div className="space-y-4">
               {/* TELÉFONO */}
-              <div>
-                <span className="font-semibold">📞 Teléfono:</span>
-                <p>55 1234 5678</p> {/* 👉 Cambia el número */}
+              <div className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                <Phone className="w-5 h-5 text-green-600" />
+                <div>
+                  <p className="text-sm text-gray-500">Teléfono</p>
+                  <p className="font-semibold text-gray-800">55 4909 8152 / 722 843 3371</p>
+                </div>
               </div>
 
               {/* CORREO */}
-              <div>
-                <span className="font-semibold">📧 Correo:</span>
-                <p>soporte@tudominio.com</p> {/* 👉 Cambia el correo */}
+              <div className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                <Mail className="w-5 h-5 text-red-600" />
+                <div>
+                  <p className="text-sm text-gray-500">Correo</p>
+                  <p className="font-semibold text-gray-800">
+                    soporte@tudominio.com
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -354,7 +366,7 @@ const Dashboard = ({ userData, onLogout }) => {
             <div className="mt-6 text-right">
               <button
                 onClick={() => setSoporteOpen(false)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
               >
                 Cerrar
               </button>
