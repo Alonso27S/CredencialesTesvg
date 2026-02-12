@@ -128,7 +128,6 @@ export const renovarCredencial = async (req, res) => {
     res.json ({ message: "credencial renovada correctamente"});
 
   } catch (error) {
-    console.error(error);
     res.status(500).json({message:"Error al renovar credencial"});
 
   }
