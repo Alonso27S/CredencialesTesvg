@@ -25,7 +25,7 @@ export const getGestores = async (req, res) => {
 
     res.json(result.rows);
   } catch (error) {
-    console.error("❌ Error al obtener gestores:", error);
+    console.error(" Error al obtener gestores:", error);
     res.status(500).json([]);
   }
 };
@@ -68,7 +68,7 @@ export const updateRolGestor = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("❌ Error al actualizar rol:", error);
+    console.error(" Error al actualizar rol:", error);
     res.status(500).json({
       ok: false,
       mensaje: "Error al actualizar rol",
@@ -97,7 +97,7 @@ export const deleteGestor = async (req, res) => {
 
     res.sendStatus(204);
   } catch (error) {
-    console.error("❌ Error al eliminar gestor:", error);
+    console.error(" Error al eliminar gestor:", error);
     res.status(500).json({ message: "Error al eliminar gestor" });
   }
 };

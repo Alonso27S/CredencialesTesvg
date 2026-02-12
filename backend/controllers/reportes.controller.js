@@ -46,7 +46,7 @@ export const getReportes = async (req, res) => {
     res.json(result.rows);
 
   } catch (error) {
-    console.error("❌ Error en getReportes:", error);
+    console.error("Error en getReportes:", error);
     res.status(500).json({ message: "Error al generar los reportes" });
   }
 };

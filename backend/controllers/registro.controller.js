@@ -11,8 +11,8 @@ export const registrarUsuario = async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    console.log("📥 Body recibido:", req.body);
-    console.log("📁 Archivos recibidos:", req.files);
+    console.log(" Body recibido:", req.body);
+    console.log(" Archivos recibidos:", req.files);
 
     const {
       nombre,
@@ -30,7 +30,7 @@ export const registrarUsuario = async (req, res) => {
       esUsuarioInicial,
     } = req.body;
 
-    // 📌 Rutas de archivos
+    //  Rutas de archivos
     const fotoUrl = req.files?.foto
       ? `/uploads/fotos/${req.files.foto[0].filename}`
       : null;
@@ -39,11 +39,11 @@ export const registrarUsuario = async (req, res) => {
       ? `/uploads/firmas/${req.files.firma[0].filename}`
       : null;
 
-    // 📌 Generar contraseña
+    //  Generar contraseña
     const contraseña = generarContraseñaLegible();
     const hashedPassword = await bcrypt.hash(contraseña, 10);
 
-    // 1️⃣ CREAR USUARIO
+    //  CREAR USUARIO
     const usuarioResult = await client.query(
       `INSERT INTO usuarios (
         nombre, apellidop, apellidom, tipoidentificador, numeroidentificador,
@@ -73,13 +73,13 @@ export const registrarUsuario = async (req, res) => {
     );
 
     const userId = usuarioResult.rows[0].id;
-    console.log("✅ Usuario creado:", userId);
+    console.log("Usuario creado:", userId);
 
-    // 2️⃣ CREAR REGISTRO
+    //  CREAR REGISTRO
     const idRegistro = await crearRegistro(client, userId);
-    console.log("📝 Registro creado:", idRegistro);
+    console.log(" Registro creado:", idRegistro);
 
-    // 3️⃣ CREAR CREDENCIAL con datos del usuario
+    //  CREAR CREDENCIAL con datos del usuario
     const datosUsuario = {
       nombre,
       apellidop,
@@ -93,14 +93,14 @@ export const registrarUsuario = async (req, res) => {
       idRegistro,
       datosUsuario,
     );
-    console.log("🪪 Credencial creada:", credencialInfo.idCredencial);
+    console.log(" Credencial creada:", credencialInfo.idCredencial);
 
     await client.query("COMMIT");
     const nombreCompleto = `${nombre} ${apellidop} ${apellidom}`;
 
     await enviarCredencialesCorreo(correo, nombreCompleto, contraseña);
 
-    // 📌 RESPUESTA
+    //  RESPUESTA
     res.json({
       success: true,
       message: "Usuario, registro y credencial creados correctamente",
@@ -116,7 +116,7 @@ export const registrarUsuario = async (req, res) => {
   } catch (error) {
     await client.query("ROLLBACK");
 
-    // 🟥 Correo duplicado
+    //  Correo duplicado
     if (
       error.code === "23505" &&
       error.constraint === "usuarios_correo_unique"
@@ -128,7 +128,7 @@ export const registrarUsuario = async (req, res) => {
       });
     }
 
-    console.error("❌ Error en registro:", error);
+    console.error(" Error en registro:", error);
 
     res.status(500).json({
       success: false,
@@ -137,7 +137,7 @@ export const registrarUsuario = async (req, res) => {
   }
 };
 
-// 📌 FUNCIÓN CONTRASEÑA
+//  FUNCIÓN CONTRASEÑA
 function generarContraseñaLegible() {
   const caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let contraseña = "";

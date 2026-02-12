@@ -1,7 +1,7 @@
-// 📦 Conexión a PostgreSQL
+//  Conexión a PostgreSQL
 import { pool } from "../db.js";
 
-// 🔐 Librería para generar JWT (sesión real del sistema)
+//  Librería para generar JWT (sesión real del sistema)
 import jwt from "jsonwebtoken";
 
 /**
@@ -38,7 +38,7 @@ export const verificarToken = async (req, res) => {
     /* =========================
        BUSCAR USUARIO
     ========================= */
-    // 🔐 SELECT original (datos del usuario + token 2FA)
+    //  SELECT original (datos del usuario + token 2FA)
     const result = await pool.query(
       `SELECT 
         id, 
@@ -60,9 +60,9 @@ export const verificarToken = async (req, res) => {
       [correo.trim()]
     );
 
-    // ❌ Usuario inexistente
+    //  Usuario inexistente
     if (result.rows.length === 0) {
-      console.log("❌ Usuario no encontrado:", correo);
+      console.log(" Usuario no encontrado:", correo);
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
@@ -78,9 +78,9 @@ export const verificarToken = async (req, res) => {
     /* =========================
        VALIDAR TOKEN ACTIVO
     ========================= */
-    // 🛑 No existe token o ya fue usado
+    //  No existe token o ya fue usado
     if (!user.token_2fa || !user.token_expira) {
-      console.log("❌ No hay token activo para:", correo);
+      console.log(" No hay token activo para:", correo);
       return res.status(401).json({ message: "No hay token activo" });
     }
 
@@ -90,11 +90,11 @@ export const verificarToken = async (req, res) => {
     const ahora = Date.now(); // tiempo actual
     const expira = new Date(user.token_expira).getTime();
 
-    console.log("⏱ Ahora:", ahora, "Expira:", expira);
+    console.log(" Ahora:", ahora, "Expira:", expira);
 
-    // ⛔ Token vencido o inválido
+    //  Token vencido o inválido
     if (isNaN(expira) || expira < ahora) {
-      console.log("❌ Token expirado para:", correo);
+      console.log(" Token expirado para:", correo);
       return res.status(401).json({ message: "Token expirado" });
     }
 
@@ -108,9 +108,9 @@ export const verificarToken = async (req, res) => {
 
     console.log("🔹 Comparando token DB vs recibido:", tokenBD, tokenRecibido);
 
-    // ❌ Token incorrecto
+    //  Token incorrecto
     if (tokenBD !== tokenRecibido) {
-      console.log("❌ Token incorrecto para:", correo);
+      console.log("Token incorrecto para:", correo);
       return res.status(401).json({ message: "Token incorrecto" });
     }
 
@@ -134,17 +134,17 @@ export const verificarToken = async (req, res) => {
     /* =========================
        INVALIDAR TOKEN 2FA
     ========================= */
-    // ⚠️ Evita reutilización del token
+    //  Evita reutilización del token
     await pool.query(
       "UPDATE usuarios SET token_2fa = NULL, token_expira = NULL WHERE id = $1",
       [user.id]
     );
-    console.log("✅ Token eliminado de DB para:", correo);
+    console.log(" Token eliminado de DB para:", correo);
 
     /* =========================
        CONSULTA DE CREDENCIAL
     ========================= */
-    // 🪪 NO afecta el token, solo obtiene datos visuales
+    //  NO afecta el token, solo obtiene datos visuales
     const credencialResult = await pool.query(
       `SELECT 
          c.fechaemision,
@@ -182,7 +182,7 @@ export const verificarToken = async (req, res) => {
       firmaurl: user.firmaurl,
       id_rol: user.id_rol,
 
-      // 🪪 Datos de credencial (si existen)
+      //  Datos de credencial (si existen)
       fechaemision: credencial.fechaemision || null,
       fechavigencia: credencial.fechavigencia || null,
       qr: credencial.qr || null,
@@ -190,7 +190,7 @@ export const verificarToken = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("❌ Error verificando token:", error);
+    console.error(" Error verificando token:", error);
     return res.status(500).json({
       message: "Error al verificar token",
     });
