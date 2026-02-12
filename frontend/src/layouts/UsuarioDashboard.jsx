@@ -63,7 +63,7 @@ const UsuarioDashboard = ({ userData }) => {
   const handleDownload = async () => {
     const WIDTH = 1016;
     const HEIGHT = 640;
-    
+
     const pdf = new jsPDF({
       orientation: "landscape",
       unit: "px",
@@ -77,35 +77,57 @@ const UsuarioDashboard = ({ userData }) => {
       backgroundColor: "#FFFFFF",
     };
 
-    // 🔥 Clonar front
-    const cloneFront = refFront.current.cloneNode(true);
-    cloneFront.style.width = WIDTH + "px";
-    cloneFront.style.height = HEIGHT + "px";
-
+    /* =========================
+     📦 CONTENEDOR OCULTO
+  ========================== */
     const container = document.createElement("div");
     container.style.position = "fixed";
     container.style.left = "-9999px";
-    container.appendChild(cloneFront);
+    container.style.top = "0px";
     document.body.appendChild(container);
 
+    /* =========================
+     🔥 FRONT
+  ========================== */
+    const cloneFront = refFront.current.cloneNode(true);
+
+    cloneFront.style.width = WIDTH + "px";
+    cloneFront.style.height = HEIGHT + "px";
+    cloneFront.style.transform = "scale(1)";
+    cloneFront.style.background = "#FFFFFF";
+
+    container.appendChild(cloneFront);
+
     const canvasFront = await html2canvas(cloneFront, options);
-    const imgFront = canvasFront.toDataURL("image/jpeg", 1.0);
 
-    pdf.addImage(imgFront, "JPEG", 0, 0, WIDTH, HEIGHT);
+    // ⚠️ Usar PNG evita el error "wrong PNG signature"
+    const imgFront = canvasFront.toDataURL("image/png");
 
-    // 🔥 BACK
+    pdf.addImage(imgFront, "PNG", 0, 0, WIDTH, HEIGHT);
+
+    /* =========================
+     🔥 BACK (NUEVA HOJA)
+  ========================== */
     const cloneBack = refBack.current.cloneNode(true);
+
     cloneBack.style.width = WIDTH + "px";
     cloneBack.style.height = HEIGHT + "px";
+    cloneBack.style.transform = "scale(1)";
+    cloneBack.style.background = "#FFFFFF";
+
     container.appendChild(cloneBack);
 
-    pdf.addPage();
-
     const canvasBack = await html2canvas(cloneBack, options);
-    const imgBack = canvasBack.toDataURL("image/jpeg", 1.0);
 
-      pdf.addImage(imgBack, "JPEG", 0, 0, WIDTH, HEIGHT);
+    const imgBack = canvasBack.toDataURL("image/png");
 
+    pdf.addPage(); // 👉 hoja nueva
+
+    pdf.addImage(imgBack, "PNG", 0, 0, WIDTH, HEIGHT);
+
+    /* =========================
+     💾 GUARDAR
+  ========================== */
     pdf.save("credencial.pdf");
 
     document.body.removeChild(container);
