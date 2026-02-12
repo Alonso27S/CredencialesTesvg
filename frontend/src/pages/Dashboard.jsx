@@ -210,7 +210,7 @@ const Dashboard = ({ userData, onLogout }) => {
                       }}
                       className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 text-black transition"
                     >
-                      <Headset className="w-4 h-4 text-blue-600" />
+                      <Headset className="w-4 h-4 text-black-600" />
                       <span>Soporte</span>
                     </button>
 

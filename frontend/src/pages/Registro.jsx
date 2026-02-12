@@ -16,6 +16,7 @@ const initialFormState = {
   nombreArea: "",
   tipoIdentificador: "control",
   numeroIdentificador: "",
+  numeroSeguroSocial: "",
   puesto: "",
   correo: "",
   esUsuarioInicial: "",
@@ -78,30 +79,27 @@ const Registro = ({ importado, onBack }) => {
 
   const location = useLocation();
 
-
   /* ================================
      🔹 PRECARGAR DATOS IMPORTADOS
   ================================ */
   useEffect(() => {
-  if (importado) {
-    console.log("📥 Datos importados en Registro:", importado);
+    if (importado) {
+      console.log("📥 Datos importados en Registro:", importado);
 
-    setForm((prev) => ({
-      ...prev,
-      nombre: importado.nombre || "",
-      apellidop: importado.apellidop || "",
-      apellidom: importado.apellidom || "",
-      curp: importado.curp || "",
-      rfc: importado.rfc || "",
-      numeroIdentificador:
-        importado.numeroIdentificador || "",
-      nombreArea: importado.nombreArea || "",
-      correo: importado.correo || "",
-      tipoPersona: importado.tipoPersona || "Alumno",
-    }));
-  }
-}, [importado]);
-
+      setForm((prev) => ({
+        ...prev,
+        nombre: importado.nombre || "",
+        apellidop: importado.apellidop || "",
+        apellidom: importado.apellidom || "",
+        curp: importado.curp || "",
+        rfc: importado.rfc || "",
+        numeroIdentificador: importado.numeroIdentificador || "",
+        nombreArea: importado.nombreArea || "",
+        correo: importado.correo || "",
+        tipoPersona: importado.tipoPersona || "Alumno",
+      }));
+    }
+  }, [importado]);
 
   // Estado que guarda errores por campo (ej: validaciones de texto)
   const [errors, setErrors] = useState({});
@@ -142,6 +140,9 @@ const Registro = ({ importado, onBack }) => {
       // Correo: convertir a minúsculas y limpiar error específico
       value = value.toLowerCase();
       setErrorCorreo("");
+    } else if (name === "numeroSeguroSocial") {
+      // Solo números, máx 11 (ajusta si quieres 10)
+      value = value.replace(/\D/g, "").slice(0, 11);
     } else {
       // Campos que deben ir en mayúsculas y validarse con textoSeguroRegex
       const camposMayus = [
@@ -480,6 +481,11 @@ const Registro = ({ importado, onBack }) => {
     setErrorCorreo("");
 
     try {
+      const nssFinal =
+        form.tipoPersona === "Docente" || form.tipoPersona === "Administrativo"
+          ? form.numeroIdentificador
+          : form.numeroSeguroSocial;
+
       // Construir FormData para incluir archivos y campos de texto
       const formData = new FormData();
 
@@ -501,6 +507,8 @@ const Registro = ({ importado, onBack }) => {
       formData.append("nombreArea", form.nombreArea);
       formData.append("correo", form.correo);
       formData.append("id_rol", "3"); // rol por defecto (ejemplo)
+      formData.append("numeroSeguroSocial", nssFinal);
+
       formData.append(
         "esUsuarioInicial",
         form.esUsuarioInicial === "Sí" ? "true" : "false",
@@ -719,6 +727,29 @@ const Registro = ({ importado, onBack }) => {
               onChange={handleChange}
               className="border p-2 rounded w-full"
               placeholder="Máx 11 caracteres"
+            />
+          </div>
+
+          {/* NSS */}
+          <div className="col-span-2">
+            <label className="font-medium">Número de Seguro Social</label>
+
+            <input
+              name="numeroSeguroSocial"
+              value={
+                // 🔁 Si es docente/admin usa el mismo identificador
+                form.tipoPersona === "Docente" ||
+                form.tipoPersona === "Administrativo"
+                  ? form.numeroIdentificador
+                  : form.numeroSeguroSocial
+              }
+              onChange={handleChange}
+              className="border p-2 rounded w-full"
+              placeholder="NSS"
+              disabled={
+                form.tipoPersona === "Docente" ||
+                form.tipoPersona === "Administrativo"
+              }
             />
           </div>
 

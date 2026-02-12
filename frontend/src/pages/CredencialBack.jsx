@@ -3,6 +3,13 @@ import React from "react";
 const CredencialBack = ({ datos }) => {
   const CARD_WIDTH = 300;
 
+  // 🧠 NSS DINÁMICO SEGÚN TIPO DE PERSONA
+  const nssMostrar =
+    datos?.tipoPersona === "Docente" ||
+    datos?.tipoPersona === "Administrativo"
+      ? datos?.identificador || "---------"
+      : datos?.nss || "---------";
+
   return (
     <div
       className="h-[420px] bg-[#7c1d2d] text-white rounded-xl shadow-xl p-5 flex flex-col justify-between"
@@ -17,6 +24,14 @@ const CredencialBack = ({ datos }) => {
         <div className="flex flex-col items-center">
           <p className="font-bold">CURP</p>
           <p>{datos?.curp || "---------"}</p>
+        </div>
+      </div>
+
+      {/* 🆕 NSS */}
+      <div className="flex justify-center text-sm mt-3">
+        <div className="flex flex-col items-center">
+          <p className="font-bold">NSS</p>
+          <p>{nssMostrar}</p>
         </div>
       </div>
 
