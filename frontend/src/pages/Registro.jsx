@@ -563,6 +563,8 @@ const Registro = ({ importado, onBack }) => {
     apMaterno: form.apellidom,
     area: form.nombreArea,
     identificador: form.numeroIdentificador,
+    nss: form.numeroSeguroSocial,   // 👈 nuevo
+    tipoPersona: form.tipoPersona,
     rfc: form.rfc,
     curp: form.curp,
     foto: fotoPreview, // se usa preview (base64) para mostrar la imagen localmente
