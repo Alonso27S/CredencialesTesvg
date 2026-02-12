@@ -112,7 +112,7 @@ export const renovarCredencial = async (req, res) => {
 
     await pool.query(`
       UPDATE credencial
-      SET fechavigencia = CURRENT_TIMESTAMP + INTERVAL '6 monyhs,
+      SET fechavigencia = CURRENT_TIMESTAMP + INTERVAL '6 months,
         fechaemision = CURRENT_TIMESTAMP,
         activo = TRUE
       WHERE id_registro = (
@@ -133,44 +133,33 @@ export const renovarCredencial = async (req, res) => {
 };
 
 // FUNCION PARA ACTIVAR/INACTIVAR CREDENCIAL
-
 export const cambiarEstadoCredencial = async (req, res) => {
   const client = await pool.connect();
-
-
-   //  Verificar que el usuario sea alumno (id_rol = 3)
-    const verificacion = await pool.query(`
-      SELECT id_rol 
-      FROM usuarios 
-      WHERE id = $1
-    `, [id]);
 
   try {
     const { id } = req.params;
 
     await client.query("BEGIN");
 
-    //  Obtener el estado actual de la credencial
-    const credencialActual = await client.query(`
-      SELECT c.activo, r.id_usuarios
-      FROM credencial c
-      JOIN registro r ON r.id = c.id_registro
-      WHERE r.id_usuarios = $1
-      ORDER BY c.id DESC
-      LIMIT 1
+    //  Verificar usuario y rol
+    const verificacion = await client.query(`
+      SELECT id_rol 
+      FROM usuarios 
+      WHERE id = $1
     `, [id]);
 
-    
     if (verificacion.rows.length === 0) {
+      await client.query("ROLLBACK");
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     if (verificacion.rows[0].id_rol !== 3) {
+      await client.query("ROLLBACK");
       return res.status(403).json({ message: "Solo se puede cambiar estado a usuarios" });
     }
 
     //  Cambiar estado en credencial
-    await pool.query(`
+    await client.query(`
       UPDATE credencial
       SET activo = NOT activo
       WHERE id_registro = (
@@ -182,20 +171,25 @@ export const cambiarEstadoCredencial = async (req, res) => {
       )
     `, [id]);
 
-    //  Cambiar estado también en usuarios
-    await pool.query(`
+    //  Cambiar estado en usuarios
+    await client.query(`
       UPDATE usuarios
       SET activo = NOT activo
       WHERE id = $1
     `, [id]);
 
+    await client.query("COMMIT");
+
     res.json({ message: "Estado del usuario actualizado correctamente" });
 
   } catch (error) {
+    await client.query("ROLLBACK");
     console.error(error);
     res.status(500).json({ message: "Error al cambiar estado" });
+  } finally {
+    client.release();
   }
 };
-   
+
 
     
