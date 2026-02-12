@@ -208,7 +208,7 @@ const Dashboard = ({ userData, onLogout }) => {
                         setSoporteOpen(true);
                         setUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100 text-black"
                     >
                       Soporte
                     </button>
@@ -356,7 +356,7 @@ const Dashboard = ({ userData, onLogout }) => {
                 <div>
                   <p className="text-sm text-gray-500">Correo</p>
                   <p className="font-semibold text-gray-800">
-                    soporte@tudominio.com
+                    soporte@tesvg.com
                   </p>
                 </div>
               </div>
