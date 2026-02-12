@@ -61,46 +61,50 @@ const UsuarioDashboard = ({ userData }) => {
   };
 
   const handleDownload = async () => {
+    const WIDTH = 1016;
+    const HEIGHT = 640;
+    
     const pdf = new jsPDF({
       orientation: "landscape",
       unit: "px",
-      format: [1000, 600], // tamaño credencial HD
+      format: [WIDTH, HEIGHT],
     });
 
-    // 🔥 Clonar contenedor invisible
-    const cloneFront = refFront.current.cloneNode(true);
-    const cloneBack = refBack.current.cloneNode(true);
-
-    const container = document.createElement("div");
-    container.style.position = "fixed";
-    container.style.left = "-9999px";
-    container.style.top = "0";
-    container.style.width = "1000px"; // tamaño real
-    container.style.background = "#fff";
-    container.appendChild(cloneFront);
-    container.appendChild(cloneBack);
-    document.body.appendChild(container);
-
     const options = {
-      scale: 3,
+      scale: 4,
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#FFFFFF",
     };
 
-    // FRONT
+    // 🔥 Clonar front
+    const cloneFront = refFront.current.cloneNode(true);
+    cloneFront.style.width = WIDTH + "px";
+    cloneFront.style.height = HEIGHT + "px";
+
+    const container = document.createElement("div");
+    container.style.position = "fixed";
+    container.style.left = "-9999px";
+    container.appendChild(cloneFront);
+    document.body.appendChild(container);
+
     const canvasFront = await html2canvas(cloneFront, options);
     const imgFront = canvasFront.toDataURL("image/jpeg", 1.0);
 
-    pdf.addImage(imgFront, "JPEG", 0, 0, 1000, 600);
+    pdf.addImage(imgFront, "JPEG", 0, 0, WIDTH, HEIGHT);
+
+    // 🔥 BACK
+    const cloneBack = refBack.current.cloneNode(true);
+    cloneBack.style.width = WIDTH + "px";
+    cloneBack.style.height = HEIGHT + "px";
+    container.appendChild(cloneBack);
 
     pdf.addPage();
 
-    // BACK
     const canvasBack = await html2canvas(cloneBack, options);
     const imgBack = canvasBack.toDataURL("image/jpeg", 1.0);
 
-    pdf.addImage(imgBack, "JPEG", 0, 0, 1000, 600);
+      pdf.addImage(imgBack, "JPEG", 0, 0, WIDTH, HEIGHT);
 
     pdf.save("credencial.pdf");
 
