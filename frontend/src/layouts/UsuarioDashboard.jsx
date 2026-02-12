@@ -61,40 +61,53 @@ const UsuarioDashboard = ({ userData }) => {
   };
 
   const handleDownload = async () => {
-    const pdf = new jsPDF({
-      orientation: "landscape",
-      unit: "px",
-      format: [600, 380], // tamaño tipo credencial
-    });
+  const pdf = new jsPDF({
+    orientation: "landscape",
+    unit: "px",
+    format: [900, 600],
+  });
 
-    // Capturar frontal
-    const canvasFront = await html2canvas(refFront.current, {
-      scale: 4,
-      useCORS: true,
-      backgroundColor: "#FFFFFF",
-    });
+  // FRONT
+  const canvasFront = await html2canvas(refFront.current, {
+    scale: 3,
+    useCORS: true,
+    backgroundColor: "#FFFFFF",
+  });
 
-    const imgFront = canvasFront.toDataURL("image/png");
+  const imgFront = canvasFront.toDataURL("image/png");
 
-    pdf.addImage(imgFront, "PNG", 0, 0, canvasFront.width, canvasFront.height);
+  pdf.addImage(
+    imgFront,
+    "PNG",
+    0,
+    0,
+    canvasFront.width,
+    canvasFront.height
+  );
 
-    // Nueva página para trasera
-    pdf.addPage();
+  // Nueva página
+  pdf.addPage();
 
-    // Capturar trasera
-    const canvasBack = await html2canvas(refBack.current, {
-      scale: 4,
-      useCORS: true,
-      backgroundColor: "#FFFFFF",
-    });
+  // BACK
+  const canvasBack = await html2canvas(refBack.current, {
+    scale: 3,
+    useCORS: true,
+    backgroundColor: "#FFFFFF",
+  });
 
-    const imgBack = canvasBack.toDataURL("image/png");
+  const imgBack = canvasBack.toDataURL("image/png");
 
-    pdf.addImage(imgBack, "PNG", 0, 0, canvasBack.width, canvasBack.height);
+  pdf.addImage(
+    imgBack,
+    "PNG",
+    0,
+    0,
+    canvasBack.width,
+    canvasBack.height
+  );
 
-    // Descargar PDF
-    pdf.save("credencial.pdf");
-  };
+  pdf.save("credencial.pdf");
+};
 
   const handleSubmitPassword = async () => {
     setErrorPass("");
@@ -247,16 +260,18 @@ const UsuarioDashboard = ({ userData }) => {
 
           {/* Credencial */}
           <div className="flex justify-center mt-6 sm:mt-8 overflow-x-auto">
+            {/* FRONT */}
             <div
               ref={refFront}
-              style={{ display: vista === "front" ? "block" : "none" }}
+              className={`${vista === "front" ? "block" : "absolute -left-[9999px]"}`}
             >
               <CredencialFront datos={datosCredencial} />
             </div>
 
+            {/* BACK */}
             <div
               ref={refBack}
-              style={{ display: vista === "back" ? "block" : "none" }}
+              className={`${vista === "back" ? "block" : "absolute -left-[9999px]"}`}
             >
               <CredencialBack datos={datosCredencial} />
             </div>
