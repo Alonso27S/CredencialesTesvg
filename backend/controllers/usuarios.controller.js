@@ -38,7 +38,7 @@ export const getUsuarioById = async (req, res) => {
     res.json(rows[0]);
 
   } catch (error) {
-    console.error("❌ Error SQL en getUsuarioById:", error.message);
+    console.error(" Error SQL en getUsuarioById:", error.message);
     res.status(500).json({ error: "Error al obtener usuario" });
   }
 };
@@ -65,7 +65,7 @@ export const completarPerfil = async (req, res) => {
 
     res.json({ message: "Perfil actualizado correctamente" });
   } catch (error) {
-    console.error("❌ Error SQL en completarPerfil:", error);
+    console.error(" Error SQL en completarPerfil:", error);
     res.status(500).json({ error: "Error al actualizar perfil" });
   }
 };

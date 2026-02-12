@@ -3,8 +3,7 @@ import bcrypt from "bcryptjs";
 
 export const cambiarPassword = async (req, res) => {
   const { passwordActual, passwordNueva } = req.body;
-  const userId = req.user.id; // 👈 viene del token
-
+  const userId = req.user.id; //
   if (!passwordActual || !passwordNueva) {
     return res
       .status(400)
@@ -12,7 +11,7 @@ export const cambiarPassword = async (req, res) => {
   }
 
   try {
-    // 🔍 obtener contraseña actual
+    //  obtener contraseña actual
     const result = await pool.query(
       "SELECT contraseña FROM usuarios WHERE id = $1",
       [userId]
@@ -24,7 +23,7 @@ export const cambiarPassword = async (req, res) => {
 
     const passwordHash = result.rows[0].contraseña;
 
-    // 🔐 comparar contraseña actual
+    //  comparar contraseña actual
     const match = await bcrypt.compare(passwordActual, passwordHash);
 
     if (!match) {
@@ -33,10 +32,10 @@ export const cambiarPassword = async (req, res) => {
         .json({ message: "Contraseña actual incorrecta" });
     }
 
-    // 🔒 encriptar nueva contraseña
+    //  encriptar nueva contraseña
     const nuevaHash = await bcrypt.hash(passwordNueva, 10);
 
-    // 💾 actualizar
+    //  actualizar
     await pool.query(
       "UPDATE usuarios SET contraseña = $1 WHERE id = $2",
       [nuevaHash, userId]
@@ -46,7 +45,7 @@ export const cambiarPassword = async (req, res) => {
       message: "Contraseña actualizada correctamente",
     });
   } catch (error) {
-    console.error("❌ Error cambiar contraseña:", error);
+    console.error(" Error cambiar contraseña:", error);
     return res.status(500).json({
       message: "Error del servidor",
     });

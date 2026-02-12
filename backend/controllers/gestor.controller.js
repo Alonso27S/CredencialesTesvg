@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { enviarCredencialesCorreo } from "../utils/mailer.js";
 
-// 🔑 Generar contraseña automática
+// Generar contraseña automática
 const generarPassword = () => {
   return crypto.randomBytes(4).toString("hex");
 };
@@ -26,7 +26,7 @@ export const crearGestor = async (req, res) => {
       esusuarioinicial = false,
     } = req.body;
 
-    // 🔒 Validar tipo identificador (CHECK BD)
+    //  Validar tipo identificador (CHECK BD)
     const tiposValidos = ["Numero de Control", "Matricula"];
     if (!tiposValidos.includes(tipoIdentificador)) {
       return res.status(400).json({
@@ -35,7 +35,7 @@ export const crearGestor = async (req, res) => {
       });
     }
 
-    // 🔒 Evitar correo duplicado
+    //  Evitar correo duplicado
     const existeCorreo = await pool.query(
       "SELECT 1 FROM usuarios WHERE correo = $1",
       [correo]
@@ -48,11 +48,11 @@ export const crearGestor = async (req, res) => {
       });
     }
 
-    // 🔑 Contraseña automática
+    //  Contraseña automática
     const passwordPlano = generarPassword();
     const passwordHash = await bcrypt.hash(passwordPlano, 10);
 
-    // 🧾 Insertar usuario
+    //  Insertar usuario
     await pool.query(
       `
       INSERT INTO usuarios (
@@ -85,7 +85,7 @@ export const crearGestor = async (req, res) => {
       ]
     );
 
-    // 📧 ENVIAR CREDENCIALES
+    //  ENVIAR CREDENCIALES
     const nombreCompleto = `${nombre} ${apellidoPaterno} ${apellidoMaterno}`;
     await enviarCredencialesCorreo(
       correo,
@@ -99,7 +99,7 @@ export const crearGestor = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("❌ Error:", error.message);
+    console.error(" Error:", error.message);
 
     res.status(500).json({
       ok: false,
