@@ -208,9 +208,10 @@ const Dashboard = ({ userData, onLogout }) => {
                         setSoporteOpen(true);
                         setUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100 text-black"
+                      className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 text-black transition"
                     >
-                      Soporte
+                      <Headset className="w-4 h-4 text-blue-600" />
+                      <span>Soporte</span>
                     </button>
 
                     {/* Cerrar sesión */}
@@ -346,7 +347,9 @@ const Dashboard = ({ userData, onLogout }) => {
                 <Phone className="w-5 h-5 text-green-600" />
                 <div>
                   <p className="text-sm text-gray-500">Teléfono</p>
-                  <p className="font-semibold text-gray-800">55 4909 8152 / 722 843 3371</p>
+                  <p className="font-semibold text-gray-800">
+                    55 4909 8152 / 722 843 3371
+                  </p>
                 </div>
               </div>
 
