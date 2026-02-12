@@ -57,6 +57,7 @@ const UsuarioDashboard = ({ userData }) => {
     rfc: usuario.rfc || "",
     curp: usuario.curp || "",
     nss: usuario.numerosegurosocial || usuario.nss || "",
+    tipoPersona: usuario.tipopersona || usuario.tipoPersona || "",
     fechaemision: usuario.fechaemision || "",
     fechavigencia: usuario.fechavigencia || "",
   };
