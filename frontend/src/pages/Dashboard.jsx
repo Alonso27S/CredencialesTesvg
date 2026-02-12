@@ -57,6 +57,7 @@ const Dashboard = ({ userData, onLogout }) => {
 
   // Controla el menú desplegable del usuario
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [soporteOpen, setSoporteOpen] = useState(false);
 
   // Módulo activo que se muestra en pantalla
   const [activeModule, setActiveModule] = useState("inicio");
@@ -200,6 +201,17 @@ const Dashboard = ({ userData, onLogout }) => {
                       <span>Perfil</span>
                     </button>
 
+                    {/* SOPORTE 👇 */}
+                    <button
+                      onClick={() => {
+                        setSoporteOpen(true);
+                        setUserMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Soporte
+                    </button>
+
                     {/* Cerrar sesión */}
                     <button
                       className="flex items-center space-x-2 w-full px-4 py-2 hover:bg-gray-100 text-red-600"
@@ -303,6 +315,53 @@ const Dashboard = ({ userData, onLogout }) => {
           </nav>
         </aside>
       </div>
+
+      {/* =========================
+    MODAL SOPORTE
+========================= */}
+      {soporteOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl w-[90%] max-w-md p-6 relative">
+            {/* BOTÓN CERRAR */}
+            <button
+              onClick={() => setSoporteOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-black"
+            >
+              ✕
+            </button>
+
+            {/* TÍTULO */}
+            <h2 className="text-xl font-bold mb-4 text-gray-800">
+              Soporte Técnico
+            </h2>
+
+            {/* CONTENIDO */}
+            <div className="space-y-3 text-gray-700">
+              {/* TELÉFONO */}
+              <div>
+                <span className="font-semibold">📞 Teléfono:</span>
+                <p>55 1234 5678</p> {/* 👉 Cambia el número */}
+              </div>
+
+              {/* CORREO */}
+              <div>
+                <span className="font-semibold">📧 Correo:</span>
+                <p>soporte@tudominio.com</p> {/* 👉 Cambia el correo */}
+              </div>
+            </div>
+
+            {/* BOTÓN */}
+            <div className="mt-6 text-right">
+              <button
+                onClick={() => setSoporteOpen(false)}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* =========================
           FOOTER
