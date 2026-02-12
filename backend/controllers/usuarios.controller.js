@@ -24,6 +24,7 @@ export const getUsuarioById = async (req, res) => {
         tipopersona,
         nombrearea,
         correo,
+        numerosegurosocial AS nss,
         esusuarioinicial
       FROM usuarios
       WHERE id = $1
