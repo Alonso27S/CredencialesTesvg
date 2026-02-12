@@ -61,6 +61,14 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
       const data = await response.json();
 
       /* =========================
+          USUARIO INACTIVO
+      ========================= */
+      if (data.message === "Usuario inactivo. Contacta al administrador.") {
+        alert(" Usuario inactivo. Contacta al administrador.");
+        return;
+      }
+
+      /* =========================
          LOGIN CON TOKEN
       ========================= */
       if (data.requiereToken) {

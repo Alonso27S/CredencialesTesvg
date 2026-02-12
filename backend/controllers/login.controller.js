@@ -1,13 +1,13 @@
-// 📦 Conexión a la base de datos PostgreSQL
+//  Conexión a la base de datos PostgreSQL
 import { pool } from "../db.js";
 
-// 🔐 Librería para comparar contraseñas encriptadas
+//  Librería para comparar contraseñas encriptadas
 import bcrypt from "bcryptjs";
 
-// 🔑 Generador de token para autenticación en dos pasos (2FA)
+//  Generador de token para autenticación en dos pasos (2FA)
 import { generarToken } from "../utils/token.js";
 
-// 📧 Función para enviar el token por correo
+//  Función para enviar el token por correo
 import { enviarTokenCorreo } from "../utils/mailer.js";
 
 /**
@@ -31,16 +31,28 @@ export const login = async (req, res) => {
        BUSCAR USUARIO
     ========================= */
     const result = await pool.query(
-      "SELECT * FROM usuarios WHERE correo = $1",
+      "SELECT * FROM usuarios WHERE correo = $1"
+      ,
       [correo.trim()]
     );
 
-    // ❌ Usuario no existe
+    // Usuario no existe
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     const user = result.rows[0];
+    
+    /* =========================
+       VALIDAR USUARIO ACTIVO/INACTIVO
+    ========================= */
+
+    if (user.activo === false) {
+  return res.status(403).json({
+    message: "Usuario inactivo. Contacta al administrador.",
+  });
+}
+
 
     /* =========================
        VALIDAR BLOQUEO
@@ -60,12 +72,12 @@ export const login = async (req, res) => {
       user.contraseña
     );
 
-    // ❌ Contraseña incorrecta
+    //  Contraseña incorrecta
     if (!passwordOK) {
       let intentos = user.intentos_fallidos + 1;
       let bloqueo = null;
 
-      // 🔒 Lógica de bloqueo progresivo
+      //  Lógica de bloqueo progresivo
       if (intentos === 3) {
         // Bloqueo de 3 minutos
         bloqueo = new Date(Date.now() + 3 * 60 * 1000);
@@ -92,7 +104,7 @@ export const login = async (req, res) => {
        LOGIN CORRECTO
     ========================= */
 
-    // 🔄 Resetear intentos y bloqueo
+    //  Resetear intentos y bloqueo
     await pool.query(
       `UPDATE usuarios 
        SET intentos_fallidos = 0,
@@ -120,7 +132,7 @@ export const login = async (req, res) => {
       [token, expira, user.id]
     );
 
-    // 📧 Enviar token al correo del usuario
+    //  Enviar token al correo del usuario
     await enviarTokenCorreo(user.correo, token);
 
     /* =========================
@@ -147,8 +159,8 @@ export const login = async (req, res) => {
     });
 
   } catch (error) {
-    // ❌ Error inesperado
-    console.error("❌ Error login:", error);
+    //  Error inesperado
+    console.error(" Error login:", error);
     res.status(500).json({ message: "Error en servidor" });
   }
 };

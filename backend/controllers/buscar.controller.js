@@ -18,11 +18,12 @@ export const buscarUsuario = async (req, res) => {
         u.tipopersona, 
         u.nombrearea, 
         c.fechavigencia,
+        C.activo,
         (DATE(c.fechavigencia) < CURRENT_DATE) AS vencida
       FROM usuarios u
       LEFT JOIN registro r ON r.id_usuarios = u.id
       LEFT JOIN LATERAL (
-          SELECT fechavigencia
+          SELECT fechavigencia, activo
           FROM credencial
           WHERE id_registro = r.id
           ORDER BY id DESC
@@ -54,30 +55,3 @@ export const buscarUsuario = async (req, res) => {
   }
 
 };
-export const renovarCredencial = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    await pool.query(`
-      UPDATE credencial
-      SET fechavigencia = CURRENT_TIMESTAMP + INTERVAL '6 months',
-          fechaemision = CURRENT_TIMESTAMP,
-          activo = TRUE
-      WHERE id_registro = (
-        SELECT r.id
-        FROM registro r
-        WHERE r.id_usuarios = $1
-        ORDER BY r.id DESC
-        LIMIT 1
-      )
-    `, [id]);
-
-    res.json({ message: "Credencial renovada correctamente" });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error al renovar credencial" });
-  }
-};
-
-

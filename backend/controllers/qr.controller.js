@@ -13,10 +13,10 @@ export const verificarQR = async (req, res) => {
       });
     }
     
-    // 1️⃣ Desencriptar datos del QR
+    //  Desencriptar datos del QR
     const datosDesencriptados = decryptQRData(qrData);
     
-    // 2️⃣ Verificar en la base de datos (opcional)
+    // Verificar en la base de datos (opcional)
     const query = await pool.query(
       `SELECT u.*, c.* 
        FROM usuarios u
@@ -35,7 +35,7 @@ export const verificarQR = async (req, res) => {
       });
     }
     
-    // 3️⃣ Devolver datos verificados
+    //  Devolver datos verificados
     res.json({
       success: true,
       datos: datosDesencriptados,
@@ -44,7 +44,7 @@ export const verificarQR = async (req, res) => {
     });
     
   } catch (error) {
-    console.error("❌ Error al verificar QR:", error);
+    console.error(" Error al verificar QR:", error);
     
     if (error.message.includes("bad decrypt")) {
       return res.status(400).json({
