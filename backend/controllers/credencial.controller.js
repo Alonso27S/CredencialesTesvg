@@ -137,6 +137,14 @@ export const renovarCredencial = async (req, res) => {
 export const cambiarEstadoCredencial = async (req, res) => {
   const client = await pool.connect();
 
+
+   //  Verificar que el usuario sea alumno (id_rol = 3)
+    const verificacion = await pool.query(`
+      SELECT id_rol 
+      FROM usuarios 
+      WHERE id = $1
+    `, [id]);
+
   try {
     const { id } = req.params;
 
@@ -152,46 +160,42 @@ export const cambiarEstadoCredencial = async (req, res) => {
       LIMIT 1
     `, [id]);
 
-    if (credencialActual.rows.length === 0) {
-      throw new Error("Credencial no encontrada");
+    
+    if (verificacion.rows.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    const estadoActual = credencialActual.rows[0].activo;
-    const idUsuario = credencialActual.rows[0].id_usuarios;
+    if (verificacion.rows[0].id_rol !== 3) {
+      return res.status(403).json({ message: "Solo se puede cambiar estado a usuarios" });
+    }
 
-    //  Cambiar estado de la credencial
-    await client.query(`
+    //  Cambiar estado en credencial
+    await pool.query(`
       UPDATE credencial
-      SET activo = NOT $1
+      SET activo = NOT activo
       WHERE id_registro = (
-        SELECT id
-        FROM registro
-        WHERE id_usuarios = $2
-        ORDER BY id DESC
+        SELECT r.id
+        FROM registro r
+        WHERE r.id_usuarios = $1
+        ORDER BY r.id DESC
         LIMIT 1
       )
-    `, [estadoActual, idUsuario]);
+    `, [id]);
 
-    //  Cambiar estado del usuario al mismo valor
-    await client.query(`
+    //  Cambiar estado también en usuarios
+    await pool.query(`
       UPDATE usuarios
-      SET activo = NOT $1
-      WHERE id = $2
-    `, [estadoActual, idUsuario]);
+      SET activo = NOT activo
+      WHERE id = $1
+    `, [id]);
 
-    await client.query("COMMIT");
-
-    res.json({ message: "Estado de credencial y usuario actualizado" });
+    res.json({ message: "Estado del usuario actualizado correctamente" });
 
   } catch (error) {
-    await client.query("ROLLBACK");
     console.error(error);
     res.status(500).json({ message: "Error al cambiar estado" });
-  } finally {
-    client.release();
   }
 };
+   
 
-
-
-
+    

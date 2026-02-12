@@ -6,7 +6,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Phone, Mail, Headset } from "lucide-react";
 
-// 🎨 Iconos usados en el dashboard (Lucide)
+//  Iconos usados en el dashboard (Lucide)
 import {
   Menu,
   Bell,
@@ -69,11 +69,11 @@ const Dashboard = ({ userData, onLogout }) => {
    ABRIR REGISTRO AUTOMÁTICO
 ========================= */
   useEffect(() => {
-    console.log("📍 Location state:", location.state);
-    console.log("📍 Active antes:", activeModule);
+    console.log(" Location state:", location.state);
+    console.log(" Active antes:", activeModule);
 
     if (location.state?.abrirRegistro) {
-      console.log("➡️ Cambiando a módulo REGISTRO");
+      console.log(" Cambiando a módulo REGISTRO");
 
       setActiveModule("registro");
 
@@ -202,7 +202,7 @@ const Dashboard = ({ userData, onLogout }) => {
                       <span>Perfil</span>
                     </button>
 
-                    {/* SOPORTE 👇 */}
+                    {/* SOPORTE  */}
                     <button
                       onClick={() => {
                         setSoporteOpen(true);
@@ -254,12 +254,12 @@ const Dashboard = ({ userData, onLogout }) => {
           {activeModule === "comunidad" && (
             <Comunidad
               onGenerarCredencial={(data) => {
-                console.log("📍 Active antes:", activeModule);
+                console.log(" Active antes:", activeModule);
 
                 setRegistroImportado(data);
                 setActiveModule("registro");
 
-                console.log("📍 Active después: registro");
+                console.log(" Active después: registro");
               }}
             />
           )}

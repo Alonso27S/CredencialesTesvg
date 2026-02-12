@@ -8,7 +8,7 @@ const AdminGestores = ({ onBack }) => {
   const [showForm, setShowForm] = useState(false);
 
   // 🔹 Lista de gestores (usuarios con id_rol 1 y 2)
-  // ⚠️ El filtrado por rol SE HACE EN EL BACKEND
+  //  El filtrado por rol SE HACE EN EL BACKEND
   const [gestores, setGestores] = useState([]);
 
   // 🔹 Texto escrito en el buscador
@@ -17,7 +17,7 @@ const AdminGestores = ({ onBack }) => {
   // 🔹 Endpoint del backend
   const BASE_URL = "https://credencialestesvg.com.mx/api/gestores";
 
-  // 🔐 Token de autenticación (JWT)
+  // Token de autenticación (JWT)
   const token = localStorage.getItem("token");
 
   /* =====================================================
@@ -29,18 +29,18 @@ const AdminGestores = ({ onBack }) => {
         `${BASE_URL}?nombre=${busqueda}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 🔐 necesario para rutas protegidas
+            Authorization: `Bearer ${token}`, //  necesario para rutas protegidas
           },
         }
       );
 
       const data = await res.json();
 
-      // 🛡️ Evita errores si el backend devuelve algo incorrecto
+      //  Evita errores si el backend devuelve algo incorrecto
       setGestores(Array.isArray(data) ? data : []);
 
     } catch (error) {
-      console.error("❌ Error al cargar gestores", error);
+      console.error(" Error al cargar gestores", error);
     }
   };
 
@@ -59,7 +59,7 @@ const AdminGestores = ({ onBack }) => {
       const res = await fetch(`${BASE_URL}/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`, // 🔒 protegido por requireAdmin
+          Authorization: `Bearer ${token}`, //  protegido por requireAdmin
         },
       });
 
@@ -68,7 +68,7 @@ const AdminGestores = ({ onBack }) => {
         return;
       }
 
-      // 🔄 Recargar la tabla después de eliminar
+      //  Recargar la tabla después de eliminar
       obtenerGestores();
 
     } catch (error) {

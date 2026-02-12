@@ -9,7 +9,7 @@ const ALGORITHM = "aes-256-gcm";
 // ⚠ Usa una contraseña, NO una key directa
 const SECRET = process.env.QR_ENCRYPTION_KEY || "clave-por-defecto-segura";
 
-// 🔐 Derivar clave de 32 BYTES exactos
+//  Derivar clave de 32 BYTES exactos
 const KEY = crypto
   .createHash("sha256")
   .update(SECRET)
@@ -32,7 +32,7 @@ export const encryptQRData = (data) => {
 
     return Buffer.concat([iv, authTag, encrypted]).toString("base64");
   } catch (error) {
-    console.error("❌ Error al encriptar datos QR:", error);
+    console.error(" Error al encriptar datos QR:", error);
     throw error;
   }
 };
@@ -55,7 +55,7 @@ export const decryptQRData = (encryptedData) => {
 
     return JSON.parse(decrypted.toString("utf8"));
   } catch (error) {
-    console.error("❌ Error al desencriptar datos QR:", error);
+    console.error(" Error al desencriptar datos QR:", error);
     throw error;
   }
 };

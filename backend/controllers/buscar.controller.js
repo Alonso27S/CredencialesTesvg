@@ -29,7 +29,7 @@ export const buscarUsuario = async (req, res) => {
           ORDER BY id DESC
           LIMIT 1
     ) c ON true
-     WHERE 1=1
+     WHERE u.id_rol = 3
 `;
 
     // Arreglo que almacenará los valores de los filtros

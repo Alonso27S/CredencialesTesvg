@@ -51,17 +51,17 @@ const NuevoGestorForm = ({ onBack }) => {
 
     let newValue = value;
 
-    // ✅ Checkbox normal
+    // Checkbox normal
     if (type === "checkbox") {
       newValue = checked;
     }
 
-    // ✅ NO tocar selects
+    //  NO tocar selects
     else if (e.target.tagName === "SELECT") {
       newValue = value;
     }
 
-    // ✅ Inputs de texto
+    //  Inputs de texto
     else {
       newValue = sanitizeInput(value);
 
@@ -145,7 +145,7 @@ const NuevoGestorForm = ({ onBack }) => {
         return;
       }
 
-      alert("✅ Gestor creado correctamente\n📧 Contraseña enviada al correo");
+      alert("✔️ Gestor creado correctamente\n ✉️ Contraseña enviada al correo");
 
       setForm({
         nombre: "",

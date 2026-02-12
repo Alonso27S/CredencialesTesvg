@@ -42,7 +42,7 @@ const CredencialFront = ({ datos }) => {
 
     QRCode.toDataURL(datos.qr, { width: 160, margin: 1 })
       .then(setQrImage)
-      .catch((err) => console.error("❌ Error generando QR:", err));
+      .catch((err) => console.error(" Error generando QR:", err));
   }, [datos]);
 
   return (

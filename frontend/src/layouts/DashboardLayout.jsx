@@ -6,7 +6,7 @@ const DashboardLayout = ({ userData }) => {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center">
         <h2 className="text-xl font-semibold text-red-600">
-          ❌ Error: Usuario no válido
+           Error: Usuario no válido
         </h2>
       </div>
     );

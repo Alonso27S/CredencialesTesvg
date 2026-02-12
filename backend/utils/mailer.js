@@ -23,9 +23,9 @@ export const enviarTokenCorreo = async (correo, token) => {
       `,
     });
 
-    console.log("✅ Token enviado correctamente");
+    console.log(" ✅ Token enviado correctamente");
   } catch (error) {
-    console.error("❌ Error enviando correo:", error.message);
+    console.error(" Error enviando correo:", error.message);
     throw new Error("No se pudo enviar el correo");
   }
 };
@@ -46,22 +46,22 @@ export const enviarCredencialesCorreo = async (correo, nombreCompleto, password)
       html: `
         <h2>Bienvenido(a) ${nombreCompleto}</h2>
 
-        <p>Tu usuario ha sido creado correctamente en el sistema.</p>
+        <p> Tu usuario ha sido creado correctamente en el sistema.</p>
 
         <p><b>Usuario:</b> ${correo}</p>
         <p><b>Contraseña temporal:</b></p>
         <h1 style="letter-spacing:2px;">${password}</h1>
 
-        <p>⚠️ Por seguridad, te recomendamos cambiar tu contraseña al iniciar sesión.</p>
+        <p> Por seguridad, te recomendamos cambiar tu contraseña al iniciar sesión.</p>
 
         <br>
         <p>Si no reconoces este registro, ignora este mensaje.</p>
       `,
     });
 
-    console.log("✅ Credenciales enviadas por correo");
+    console.log(" Credenciales enviadas por correo");
   } catch (error) {
-    console.error("❌ Error enviando credenciales:", error.message);
+    console.error("Error enviando credenciales:", error.message);
     throw new Error("No se pudo enviar el correo de credenciales");
   }
 };
