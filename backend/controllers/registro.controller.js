@@ -26,9 +26,16 @@ export const registrarUsuario = async (req, res) => {
       tipoPersona,
       nombreArea,
       correo,
+      numeroSeguroSocial, // 👈 NUEVO
       id_rol = 3,
       esUsuarioInicial,
     } = req.body;
+
+    // 🧠 NSS solo si es alumno
+    const nssFinal =
+      tipoPersona === "Alumno"
+        ? numeroSeguroSocial
+        : null;
 
     //  Rutas de archivos
     const fotoUrl = req.files?.foto
@@ -47,10 +54,10 @@ export const registrarUsuario = async (req, res) => {
     const usuarioResult = await client.query(
       `INSERT INTO usuarios (
         nombre, apellidop, apellidom, tipoidentificador, numeroidentificador,
-        rfc, curp, fotourl, firmaurl, puesto, tipopersona,
+        rfc, curp, numerosegurosocial, fotourl, firmaurl, puesto, tipopersona,
         nombrearea, correo, contraseña, id_rol, esusuarioinicial
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
       RETURNING id`,
       [
         nombre,
@@ -60,6 +67,7 @@ export const registrarUsuario = async (req, res) => {
         numeroIdentificador,
         rfc,
         curp,
+        nssFinal, // 👈 NSS guardado aquí
         fotoUrl,
         firmaUrl,
         puesto,
@@ -79,7 +87,7 @@ export const registrarUsuario = async (req, res) => {
     const idRegistro = await crearRegistro(client, userId);
     console.log(" Registro creado:", idRegistro);
 
-    //  CREAR CREDENCIAL con datos del usuario
+    //  CREAR CREDENCIAL
     const datosUsuario = {
       nombre,
       apellidop,
@@ -93,30 +101,34 @@ export const registrarUsuario = async (req, res) => {
       idRegistro,
       datosUsuario,
     );
+
     console.log(" Credencial creada:", credencialInfo.idCredencial);
 
     await client.query("COMMIT");
+
     const nombreCompleto = `${nombre} ${apellidop} ${apellidom}`;
 
-    await enviarCredencialesCorreo(correo, nombreCompleto, contraseña);
+    await enviarCredencialesCorreo(
+      correo,
+      nombreCompleto,
+      contraseña,
+    );
 
-    //  RESPUESTA
     res.json({
       success: true,
-      message: "Usuario, registro y credencial creados correctamente",
+      message:
+        "Usuario, registro y credencial creados correctamente",
       userId,
       registroId: idRegistro,
       credencialId: credencialInfo.idCredencial,
-      qrEncriptado: credencialInfo.qrEncriptado, // Opcional: devolver QR
+      qrEncriptado: credencialInfo.qrEncriptado,
       passwordGenerada: contraseña,
       correo,
     });
 
-    //
   } catch (error) {
     await client.query("ROLLBACK");
 
-    //  Correo duplicado
     if (
       error.code === "23505" &&
       error.constraint === "usuarios_correo_unique"
@@ -139,7 +151,8 @@ export const registrarUsuario = async (req, res) => {
 
 //  FUNCIÓN CONTRASEÑA
 function generarContraseñaLegible() {
-  const caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const caracteres =
+    "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let contraseña = "";
 
   for (let i = 0; i < 8; i++) {
