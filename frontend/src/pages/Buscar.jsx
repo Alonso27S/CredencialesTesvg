@@ -144,6 +144,13 @@ const Buscar = ({ onBack }) => {
                   <td className="px-4 py-2 border">
                     {user.tipopersona}
                   </td>
+                  {/* VIGENCIA = FECHA */}
+                  <td className="px-4 py-2 border text-center font-semibold">
+                    {user.fechavigencia
+                      ? formatearFecha(user.fechavigencia)
+                      : "—"}
+                  </td>
+                  {/* ESTADO = VIGENTE / VENCIDA / SIN */}
                   <td className="px-4 py-2 border text-center font-semibold">
                     {obtenerEstado(user) === "Vencida" && user.activo ? (
                       <button
