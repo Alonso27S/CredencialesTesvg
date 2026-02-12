@@ -61,34 +61,50 @@ const UsuarioDashboard = ({ userData }) => {
   };
 
   const handleDownload = async () => {
-    const options = {
-      scale: 3,
-      useCORS: true,
-      allowTaint: true, // 
-      backgroundColor: "#FFFFFF",
-    };
-
     const pdf = new jsPDF({
       orientation: "landscape",
       unit: "px",
-      format: [900, 600],
+      format: [1000, 600], // tamaño credencial HD
     });
 
-    // FRONT
-    const canvasFront = await html2canvas(refFront.current, options);
-    const imgFront = canvasFront.toDataURL("image/jpeg", 1.0); // 🔥 JPEG evita error PNG
+    // 🔥 Clonar contenedor invisible
+    const cloneFront = refFront.current.cloneNode(true);
+    const cloneBack = refBack.current.cloneNode(true);
 
-    pdf.addImage(imgFront, "JPEG", 0, 0, canvasFront.width, canvasFront.height);
+    const container = document.createElement("div");
+    container.style.position = "fixed";
+    container.style.left = "-9999px";
+    container.style.top = "0";
+    container.style.width = "1000px"; // tamaño real
+    container.style.background = "#fff";
+    container.appendChild(cloneFront);
+    container.appendChild(cloneBack);
+    document.body.appendChild(container);
+
+    const options = {
+      scale: 3,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "#FFFFFF",
+    };
+
+    // FRONT
+    const canvasFront = await html2canvas(cloneFront, options);
+    const imgFront = canvasFront.toDataURL("image/jpeg", 1.0);
+
+    pdf.addImage(imgFront, "JPEG", 0, 0, 1000, 600);
 
     pdf.addPage();
 
     // BACK
-    const canvasBack = await html2canvas(refBack.current, options);
+    const canvasBack = await html2canvas(cloneBack, options);
     const imgBack = canvasBack.toDataURL("image/jpeg", 1.0);
 
-    pdf.addImage(imgBack, "JPEG", 0, 0, canvasBack.width, canvasBack.height);
+    pdf.addImage(imgBack, "JPEG", 0, 0, 1000, 600);
 
     pdf.save("credencial.pdf");
+
+    document.body.removeChild(container);
   };
 
   const handleSubmitPassword = async () => {
