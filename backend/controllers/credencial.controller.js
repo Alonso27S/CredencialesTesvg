@@ -112,7 +112,8 @@ export const renovarCredencial = async (req, res) => {
 
     await pool.query(`
       UPDATE credencial
-      SET fechavigencia = CURRENT_TIMESTAMP + INTERVAL '6 months,
+      SET 
+      fechavigencia = CURRENT_TIMESTAMP + INTERVAL '6 months',
         fechaemision = CURRENT_TIMESTAMP,
         activo = TRUE
       WHERE id_registro = (
@@ -127,6 +128,7 @@ export const renovarCredencial = async (req, res) => {
     res.json ({ message: "credencial renovada correctamente"});
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({message:"Error al renovar credencial"});
 
   }
