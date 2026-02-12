@@ -1,9 +1,9 @@
 // controllers/credencial.controller.js
 
-// 🔐 Módulo nativo de Node para generar hashes criptográficos
+// Módulo nativo de Node para generar hashes criptográficos
 import crypto from "crypto";
-
-// 🔒 Función personalizada para encriptar los datos del QR
+import { pool } from "../db.js";
+// Función personalizada para encriptar los datos del QR
 import { encryptQRData } from "../utils/cryptoUtils.js";
 
 /**
@@ -104,3 +104,59 @@ export const crearCredencial = async (client, idRegistro, datosUsuario) => {
     throw error; // Se relanza para que la transacción haga rollback
   }
 };
+// FUNCION PARA RENOVAR CREDENCIAL
+
+export const renovarCredencial = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await pool.query(`
+      UPDATE credencial
+      SET fechavigencia = CURRENT_TIMESTAMP + INTERVAL '6 monyhs,
+        fechaemision = CURRENT_TIMESTAMP,
+        activo = TRUE
+      WHERE id_registro = (
+        SELECT r.id
+        FROM registro r
+        WHERE r.id_usuarios = $1
+        ORDER BY r.id DESC
+        LIMIT 1
+      )
+    `, [id]);
+
+    res.json ({ message: "credencial renovada correctamente"});
+
+  } catch (error) {
+    res.status(500).json({message:"Error al renovar credencial"});
+
+  }
+};
+
+// FUNCION PARA ACTIVAR/INACTIVAR CREDENCIAL
+
+export const cambiarEstadoCredencial = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await pool.query(`
+      UPDATE credencial
+      SET activo = NOT activo
+      WHERE id_registro = (
+        SELECT r.id
+        FROM registro r
+        WHERE r.id_usuarios = $1
+        ORDER BY r.id DESC
+        LIMIT 1
+      )
+    `, [id]);
+
+    res.json({ message: "Estado actualizado" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Error al cambiar estado" });
+  }
+};
+
+
+
+

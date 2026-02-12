@@ -43,15 +43,25 @@ const Buscar = ({ onBack }) => {
     }
   };
 
-    const renovar = async (id) =>{
-      try {
-        await axios.put(`http://localhost:5000/api/buscar/renovar/${id}`);
-        alert("Credencial renovada correctamente");
-        buscar();
-      } catch (error) {
-        alert("Error al renovar la credencial");
-      }
-    };
+     const renovar = async (id) => {
+    await axios.put(`https://credencialestesvg.com.mx/api/credencial/renovar/${id}`);
+    buscar();
+  };
+
+   const cambiarEstado = async (id) => {
+    await axios.put(`https://credencialestesvg.com.mx/api/credencial/estado/${id}`);
+    buscar();
+  };
+
+  const formatearFecha = (fecha) => {
+    return new Date(fecha).toLocaleDateString();
+  };
+
+  const obtenerEstado = (user) => {
+    if (!user.fechavigencia) return "Sin credencial";
+    if (user.vencida) return "Vencida";
+    return "Vigente";
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -98,7 +108,8 @@ const Buscar = ({ onBack }) => {
               <th className="px-4 py-2 border">Carrera</th>
               <th className="px-4 py-2 border">Tipo</th>
               <th className="px-4 py-2 border">Fecha de Vigencia</th>
-              <th className="px-4 py-2 border">Acción</th>
+              <th className="px-4 py-2 border">Estado</th>
+              <th className="px-4 py-2 border">Credencial</th>
             </tr>
           </thead>
 
@@ -132,33 +143,52 @@ const Buscar = ({ onBack }) => {
                   <td className="px-4 py-2 border">
                     {user.tipopersona}
                   </td>
-                 <td className="px-4 py-2 border font-semibold">
-                      {user.fechavigencia
-                        ? new Date(user.fechavigencia).toLocaleDateString()
-                        : "Sin credencial"} 
-                 </td>
-                 <td className="px-4 py-2 border">
-                      {!user.fechavigencia ? (
-                        <span className="text-gray-500">Sin credencial</span>
-                      ) : user.vencida ? (
-                        <button
-                          onClick={() => renovar(user.id)}
-                          className="bg-red-500 text-white px-3 py-1 rounded"
-                        >
-                          Renovar
-                        </button>
-                      ) : (
-                        <span className="text-green-600 font-semibold">Vigente</span>
-                      )}
-                   </td>
-                   </tr>
+                  <td className="px-4 py-2 border text-center font-semibold">
+                    {obtenerEstado(user) === "Vencida" && user.activo ? (
+                      <button
+                        onClick={() => renovar(user.id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded"
+                      >
+                        Vencida (Renovar)
+                      </button>
+                    ) : (
+                      <span
+                        className={
+                          obtenerEstado(user) === "Vigente"
+                            ? "text-green-600"
+                            : "text-gray-500"
+                        }
+                      >
+                        {obtenerEstado(user)}
+                      </span>
+                    )}
+                  </td>
+
+                   {/* CREDENCIAL = SWITCH CON TEXTO */}
+                  <td className="px-4 py-2 border text-center">
+                    <div
+                      onClick={() => cambiarEstado(user.id)}
+                      className={`relative mx-auto w-24 h-8 flex items-center rounded-full cursor-pointer transition-all duration-300 ${
+                        user.activo ? "bg-green-500" : "bg-gray-300"
+                      }`}
+                    >
+                      <div
+                        className={`absolute w-7 h-7 bg-white rounded-full shadow-md transform transition-all duration-300 ${
+                          user.activo ? "translate-x-16" : "translate-x-1"
+                        }`}
+                      />
+                      <span className="absolute w-full text-xs font-bold text-white text-center">
+                        {user.activo ? "Activa" : "Inactiva"}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
 
-      {/* BOTÓN PARA REGRESAR AL MÓDULO ANTERIOR */}
       <div className="flex justify-end mt-5">
         <button
           className="bg-gray-300 px-6 py-2 rounded-full font-semibold hover:bg-gray-400"
@@ -167,10 +197,8 @@ const Buscar = ({ onBack }) => {
           Regresar
         </button>
       </div>
-
     </div>
   );
 };
 
-// Exporta el componente Buscar
-export default Buscar;
+export default Buscar;                
