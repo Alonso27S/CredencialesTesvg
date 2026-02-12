@@ -4,6 +4,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Phone, Mail, Headset } from "lucide-react";
 
 // 🎨 Iconos usados en el dashboard (Lucide)
 import {
@@ -57,6 +58,7 @@ const Dashboard = ({ userData, onLogout }) => {
 
   // Controla el menú desplegable del usuario
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [soporteOpen, setSoporteOpen] = useState(false);
 
   // Módulo activo que se muestra en pantalla
   const [activeModule, setActiveModule] = useState("inicio");
@@ -200,6 +202,18 @@ const Dashboard = ({ userData, onLogout }) => {
                       <span>Perfil</span>
                     </button>
 
+                    {/* SOPORTE 👇 */}
+                    <button
+                      onClick={() => {
+                        setSoporteOpen(true);
+                        setUserMenuOpen(false);
+                      }}
+                      className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 text-black transition"
+                    >
+                      <Headset className="w-4 h-4 text-blue-600" />
+                      <span>Soporte</span>
+                    </button>
+
                     {/* Cerrar sesión */}
                     <button
                       className="flex items-center space-x-2 w-full px-4 py-2 hover:bg-gray-100 text-red-600"
@@ -303,6 +317,66 @@ const Dashboard = ({ userData, onLogout }) => {
           </nav>
         </aside>
       </div>
+
+      {/* =========================
+    MODAL SOPORTE
+========================= */}
+      {soporteOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-6 relative animate-fadeIn">
+            {/* BOTÓN CERRAR */}
+            <button
+              onClick={() => setSoporteOpen(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-black transition"
+            >
+              ✕
+            </button>
+
+            {/* HEADER */}
+            <div className="flex items-center space-x-2 mb-5">
+              <Headset className="w-6 h-6 text-blue-600" />
+              <h2 className="text-xl font-bold text-gray-800">
+                Soporte Técnico
+              </h2>
+            </div>
+
+            {/* CONTENIDO */}
+            <div className="space-y-4">
+              {/* TELÉFONO */}
+              <div className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                <Phone className="w-5 h-5 text-green-600" />
+                <div>
+                  <p className="text-sm text-gray-500">Teléfono</p>
+                  <p className="font-semibold text-gray-800">
+                    55 4909 8152 / 722 843 3371
+                  </p>
+                </div>
+              </div>
+
+              {/* CORREO */}
+              <div className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
+                <Mail className="w-5 h-5 text-red-600" />
+                <div>
+                  <p className="text-sm text-gray-500">Correo</p>
+                  <p className="font-semibold text-gray-800">
+                    soporte@tesvg.com
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* BOTÓN */}
+            <div className="mt-6 text-right">
+              <button
+                onClick={() => setSoporteOpen(false)}
+                className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* =========================
           FOOTER
