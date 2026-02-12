@@ -23,7 +23,7 @@ export const buscarUsuario = async (req, res) => {
       FROM usuarios u
       LEFT JOIN registro r ON r.id_usuarios = u.id
       LEFT JOIN LATERAL (
-          SELECT fechavigencia
+          SELECT fechavigencia, activo
           FROM credencial
           WHERE id_registro = r.id
           ORDER BY id DESC
