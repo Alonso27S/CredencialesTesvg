@@ -23,7 +23,7 @@ const CredencialBack = ({ datos }) => {
    * - Alumno → RFC | NSS | CURP
    * - Administrativo → RFC | CURP
    */
-  const esAlumno = datos?.tipo?.toLowerCase() === "alumno";
+  const esAlumno = datos?.tipoPersona?.toLowerCase() === "Alumno";
 
   return (
     <div
