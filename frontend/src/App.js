@@ -130,6 +130,8 @@ const handleLoginSuccess = (role, data) => {
     fotourl: data.fotourl || data.foto || "",
     firmaurl: data.firmaurl || "",
     correo: data.correo || "",
+    nss: data.nss || "",
+    tipoPersona: data.tipoPersona || "",
     id_rol: data.id_rol,
     rol: normalizedRole,
   });
