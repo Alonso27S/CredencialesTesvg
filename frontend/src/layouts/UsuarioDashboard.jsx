@@ -60,16 +60,10 @@ const UsuarioDashboard = ({ userData }) => {
     fechavigencia: usuario.fechavigencia || "",
   };
 
+  /* 
+      DESCARGA UNA SOLA IMAGEN (FRONT + BACK)
+  */
   const handleDownload = async () => {
-    const WIDTH = 1016;
-    const HEIGHT = 640;
-
-    const pdf = new jsPDF({
-      orientation: "landscape",
-      unit: "px",
-      format: [WIDTH, HEIGHT],
-    });
-
     const options = {
       scale: 4,
       useCORS: true,
@@ -77,58 +71,34 @@ const UsuarioDashboard = ({ userData }) => {
       backgroundColor: "#FFFFFF",
     };
 
-    /* =========================
-     📦 CONTENEDOR OCULTO
-  ========================== */
     const container = document.createElement("div");
     container.style.position = "fixed";
     container.style.left = "-9999px";
     container.style.top = "0px";
+    container.style.display = "flex";
+    container.style.gap = "40px";
+    container.style.alignItems = "center";
+    container.style.background = "#FFFFFF";
+    container.style.padding = "20px";
+
     document.body.appendChild(container);
 
-    /* =========================
-     🔥 FRONT
-  ========================== */
     const cloneFront = refFront.current.cloneNode(true);
-
-    cloneFront.style.width = WIDTH + "px";
-    cloneFront.style.height = HEIGHT + "px";
-    cloneFront.style.transform = "scale(1)";
-    cloneFront.style.background = "#FFFFFF";
-
-    container.appendChild(cloneFront);
-
-    const canvasFront = await html2canvas(cloneFront, options);
-
-    // ⚠️ Usar PNG evita el error "wrong PNG signature"
-    const imgFront = canvasFront.toDataURL("image/png");
-
-    pdf.addImage(imgFront, "PNG", 0, 0, WIDTH, HEIGHT);
-
-    /* =========================
-     🔥 BACK (NUEVA HOJA)
-  ========================== */
     const cloneBack = refBack.current.cloneNode(true);
 
-    cloneBack.style.width = WIDTH + "px";
-    cloneBack.style.height = HEIGHT + "px";
-    cloneBack.style.transform = "scale(1)";
-    cloneBack.style.background = "#FFFFFF";
+    cloneFront.style.position = "static";
+    cloneBack.style.position = "static";
 
+    container.appendChild(cloneFront);
     container.appendChild(cloneBack);
 
-    const canvasBack = await html2canvas(cloneBack, options);
+    const canvas = await html2canvas(container, options);
+    const img = canvas.toDataURL("image/png");
 
-    const imgBack = canvasBack.toDataURL("image/png");
-
-    pdf.addPage(); // 👉 hoja nueva
-
-    pdf.addImage(imgBack, "PNG", 0, 0, WIDTH, HEIGHT);
-
-    /* =========================
-     💾 GUARDAR
-  ========================== */
-    pdf.save("credencial.pdf");
+    const link = document.createElement("a");
+    link.href = img;
+    link.download = "credencial_frente_reverso.png";
+    link.click();
 
     document.body.removeChild(container);
   };
@@ -191,39 +161,26 @@ const UsuarioDashboard = ({ userData }) => {
       <header className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
         {/* 🔹 GRID RESPONSIVE */}
         <div className="grid grid-cols-1 sm:grid-cols-3 items-center px-4 py-3 gap-2 text-center sm:text-left">
-          {/* Logo Gobierno */}
           <div className="flex justify-center sm:justify-start">
-            <img
-              src="/assets/logo_gobierno.png"
-              className="h-10 sm:h-12"
-              alt=""
-            />
+            <img src="/assets/logo_gobierno.png" className="h-10 sm:h-12" alt="" />
           </div>
 
-          {/* Título */}
           <h1 className="font-bold text-sm sm:text-lg leading-tight px-2">
             Tecnológico de Estudios Superiores
             <br className="hidden sm:block" />
             de Villa Guerrero
           </h1>
 
-          {/* Logos derechos */}
           <div className="flex justify-center sm:justify-end gap-2">
-            <img
-              src="/assets/logo_tesvg2.png"
-              className="h-10 sm:h-12"
-              alt=""
-            />
+            <img src="/assets/logo_tesvg2.png" className="h-10 sm:h-12" alt="" />
             <img src="/assets/logo_tecnm.png" className="h-10 sm:h-12" alt="" />
           </div>
         </div>
 
-        {/* BARRA VINO */}
         <div className="flex flex-col sm:flex-row sm:justify-between items-center px-4 sm:px-6 py-2 sm:py-3 text-white bg-[#8A2136] gap-2">
           <h2 className="font-semibold">PANEL DEL USUARIO</h2>
 
           <div className="flex items-center gap-4">
-            {/* Usuario */}
             <div className="flex flex-col text-center sm:text-right text-[10px] sm:text-xs">
               <span className="font-semibold">
                 {usuario.nombre} {usuario.apellidop} {usuario.apellidom}
@@ -282,9 +239,7 @@ const UsuarioDashboard = ({ userData }) => {
             <button onClick={() => setVista("back")}>Trasera</button>
           </div>
 
-          {/* Credencial */}
           <div className="flex justify-center mt-6 sm:mt-8 overflow-x-auto">
-            {/* FRONT */}
             <div
               ref={refFront}
               className={`${vista === "front" ? "block" : "absolute -left-[9999px]"}`}
@@ -292,7 +247,6 @@ const UsuarioDashboard = ({ userData }) => {
               <CredencialFront datos={datosCredencial} />
             </div>
 
-            {/* BACK */}
             <div
               ref={refBack}
               className={`${vista === "back" ? "block" : "absolute -left-[9999px]"}`}
