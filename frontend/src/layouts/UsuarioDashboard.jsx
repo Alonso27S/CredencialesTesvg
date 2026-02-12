@@ -1,13 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Bell,
-  User,
-  Download,
-  KeyRound,
-  LogOut,
-  Phone,
-  X,
-} from "lucide-react";
+import { Bell, User, Download, KeyRound, LogOut, Phone, X } from "lucide-react";
+import jsPDF from "jspdf";
 
 import CredencialFront from "../pages/CredencialFrontOficial";
 import CredencialBack from "../pages/CredencialBackOficial";
@@ -20,12 +13,12 @@ const UsuarioDashboard = ({ userData }) => {
 
   const [vista, setVista] = useState("front");
   const refCredencial = useRef(null);
+  const refFront = useRef(null);
+  const refBack = useRef(null);
 
-  // 🔹 menú usuario
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
 
-  // 🔐 modal cambiar contraseña
   const [modalPassOpen, setModalPassOpen] = useState(false);
   const [passwordActual, setPasswordActual] = useState("");
   const [passwordNueva, setPasswordNueva] = useState("");
@@ -33,7 +26,6 @@ const UsuarioDashboard = ({ userData }) => {
   const [errorPass, setErrorPass] = useState("");
   const [loadingPass, setLoadingPass] = useState(false);
 
-  // 🧠 cerrar menú al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
@@ -42,8 +34,7 @@ const UsuarioDashboard = ({ userData }) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   if (!usuario) {
@@ -69,22 +60,49 @@ const UsuarioDashboard = ({ userData }) => {
     fechavigencia: usuario.fechavigencia || "",
   };
 
-  // 📥 Descargar credencial
+  /* 
+      DESCARGA UNA SOLA IMAGEN (FRONT + BACK)
+  */
   const handleDownload = async () => {
-    const canvas = await html2canvas(refCredencial.current, {
+    const options = {
       scale: 4,
       useCORS: true,
+      allowTaint: true,
       backgroundColor: "#FFFFFF",
-    });
+    };
 
+    const container = document.createElement("div");
+    container.style.position = "fixed";
+    container.style.left = "-9999px";
+    container.style.top = "0px";
+    container.style.display = "flex";
+    container.style.gap = "40px";
+    container.style.alignItems = "center";
+    container.style.background = "#FFFFFF";
+    container.style.padding = "20px";
+
+    document.body.appendChild(container);
+
+    const cloneFront = refFront.current.cloneNode(true);
+    const cloneBack = refBack.current.cloneNode(true);
+
+    cloneFront.style.position = "static";
+    cloneBack.style.position = "static";
+
+    container.appendChild(cloneFront);
+    container.appendChild(cloneBack);
+
+    const canvas = await html2canvas(container, options);
     const img = canvas.toDataURL("image/png");
+
     const link = document.createElement("a");
     link.href = img;
-    link.download = "credencial.png";
+    link.download = "credencial_frente_reverso.png";
     link.click();
+
+    document.body.removeChild(container);
   };
 
-  // 🔐 cambiar contraseña (REAL)
   const handleSubmitPassword = async () => {
     setErrorPass("");
 
@@ -93,7 +111,9 @@ const UsuarioDashboard = ({ userData }) => {
     }
 
     if (passwordNueva.length < 8) {
-      return setErrorPass("La nueva contraseña debe tener al menos 8 caracteres");
+      return setErrorPass(
+        "La nueva contraseña debe tener al menos 8 caracteres",
+      );
     }
 
     if (passwordNueva !== passwordConfirm) {
@@ -103,7 +123,6 @@ const UsuarioDashboard = ({ userData }) => {
     try {
       setLoadingPass(true);
 
-      
       const res = await fetch(`${BASE_URL}/api/usuarios/cambiar-password`, {
         method: "POST",
         headers: {
@@ -117,19 +136,13 @@ const UsuarioDashboard = ({ userData }) => {
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message);
-     
-      console.log("Contraseña actual:", passwordActual);
-      console.log("Nueva contraseña:", passwordNueva);
 
-      // ✅ éxito
       setModalPassOpen(false);
       setPasswordActual("");
       setPasswordNueva("");
       setPasswordConfirm("");
       alert("Contraseña actualizada correctamente");
-
     } catch (err) {
       setErrorPass(err.message || "Error al cambiar contraseña");
     } finally {
@@ -146,29 +159,33 @@ const UsuarioDashboard = ({ userData }) => {
     <div className="flex flex-col min-h-screen bg-gray-100">
       {/* HEADER */}
       <header className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
-        <div className="grid grid-cols-3 items-center px-4 py-3">
-          <img src="/assets/logo_gobierno.png" className="h-12" alt="" />
-          <h1 className="text-center font-bold text-lg">
+        {/* 🔹 GRID RESPONSIVE */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 items-center px-4 py-3 gap-2 text-center sm:text-left">
+          <div className="flex justify-center sm:justify-start">
+            <img src="/assets/logo_gobierno.png" className="h-10 sm:h-12" alt="" />
+          </div>
+
+          <h1 className="font-bold text-sm sm:text-lg leading-tight px-2">
             Tecnológico de Estudios Superiores
-            <br /> de Villa Guerrero
+            <br className="hidden sm:block" />
+            de Villa Guerrero
           </h1>
-          <div className="flex justify-end gap-2">
-            <img src="/assets/logo_tesvg2.png" className="h-12" alt="" />
-            <img src="/assets/logo_tecnm.png" className="h-12" alt="" />
+
+          <div className="flex justify-center sm:justify-end gap-2">
+            <img src="/assets/logo_tesvg2.png" className="h-10 sm:h-12" alt="" />
+            <img src="/assets/logo_tecnm.png" className="h-10 sm:h-12" alt="" />
           </div>
         </div>
 
-        <div className="flex justify-between px-6 py-3 text-white bg-[#8A2136]">
+        <div className="flex flex-col sm:flex-row sm:justify-between items-center px-4 sm:px-6 py-2 sm:py-3 text-white bg-[#8A2136] gap-2">
           <h2 className="font-semibold">PANEL DEL USUARIO</h2>
 
           <div className="flex items-center gap-4">
-            <div className="hidden sm:flex flex-col text-right text-xs">
+            <div className="flex flex-col text-center sm:text-right text-[10px] sm:text-xs">
               <span className="font-semibold">
                 {usuario.nombre} {usuario.apellidop} {usuario.apellidom}
               </span>
-              <span className="italic text-[10px]">
-                {usuario.nombrearea}
-              </span>
+              <span className="italic text-[10px]">{usuario.nombrearea}</span>
             </div>
 
             <Bell />
@@ -211,23 +228,31 @@ const UsuarioDashboard = ({ userData }) => {
       </header>
 
       {/* CONTENIDO */}
-      <main className="flex-1 mt-[140px] p-6">
-        <div className="bg-white p-8 rounded-xl text-center">
-          <h1 className="text-2xl font-bold text-[#8A2136]">
+      <main className="flex-1 mt-[180px] sm:mt-[140px] p-3 sm:p-6">
+        <div className="bg-white p-4 sm:p-8 rounded-xl text-center">
+          <h1 className="text-xl sm:text-2xl font-bold text-[#8A2136]">
             Credencial Institucional
           </h1>
 
-          <div className="flex justify-center gap-4 mt-6">
+          <div className="flex justify-center gap-4 mt-6 flex-wrap">
             <button onClick={() => setVista("front")}>Frontal</button>
             <button onClick={() => setVista("back")}>Trasera</button>
           </div>
 
-          <div ref={refCredencial} className="flex justify-center mt-8">
-            {vista === "front" ? (
+          <div className="flex justify-center mt-6 sm:mt-8 overflow-x-auto">
+            <div
+              ref={refFront}
+              className={`${vista === "front" ? "block" : "absolute -left-[9999px]"}`}
+            >
               <CredencialFront datos={datosCredencial} />
-            ) : (
+            </div>
+
+            <div
+              ref={refBack}
+              className={`${vista === "back" ? "block" : "absolute -left-[9999px]"}`}
+            >
               <CredencialBack datos={datosCredencial} />
-            )}
+            </div>
           </div>
 
           <button
@@ -240,7 +265,7 @@ const UsuarioDashboard = ({ userData }) => {
         </div>
       </main>
 
-      {/* 🔐 MODAL CAMBIAR CONTRASEÑA */}
+      {/* MODAL */}
       {modalPassOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl w-full max-w-md p-6 relative">

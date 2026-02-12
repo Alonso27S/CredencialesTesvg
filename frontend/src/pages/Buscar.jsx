@@ -43,6 +43,7 @@ const Buscar = ({ onBack }) => {
     }
   };
 
+
      const renovar = async (id) => {
     await axios.put(`https://credencialestesvg.com.mx/api/credencial/renovar/${id}`);
     buscar();

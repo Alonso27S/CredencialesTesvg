@@ -92,12 +92,12 @@ function App() {
   // ======================================================
   // 🧪 DEBUG
   // ======================================================
-  useEffect(() => {
-    console.log("🔄 isAuthenticated:", isAuthenticated);
-    console.log("🔄 userRole:", userRole);
-    console.log("🔄 userData:", userData);
-    console.log("🔄 requiereToken:", requiereToken);
-  }, [isAuthenticated, userRole, userData, requiereToken]);
+//  useEffect(() => {
+//    console.log("🔄 isAuthenticated:", isAuthenticated);
+//    console.log("🔄 userRole:", userRole);
+//    console.log("🔄 userData:", userData);
+  //  console.log("🔄 requiereToken:", requiereToken);
+  //}, [isAuthenticated, userRole, userData, requiereToken]);
 
   // ======================================================
   // ✅ LOGIN FINAL

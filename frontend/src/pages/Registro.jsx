@@ -705,7 +705,7 @@ const Registro = ({ importado, onBack }) => {
                   checked={form.tipoIdentificador === "matricula"}
                   onChange={handleChange}
                 />
-                Matrícula
+                Clave Issemym
               </label>
             </div>
           </div>
