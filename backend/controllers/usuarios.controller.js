@@ -21,7 +21,7 @@ export const getUsuarioById = async (req, res) => {
         fotourl,
         firmaurl,
         puesto,
-        tipopersona,
+        tipopersona ,
         nombrearea,
         correo,
         numerosegurosocial AS nss,
