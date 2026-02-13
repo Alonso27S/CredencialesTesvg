@@ -53,11 +53,13 @@ export const verificarToken = async (req, res) => {
         firmaurl,
         rfc,
         curp, 
+        tipopersona,
+        numerosegurosocial AS nss,
         token_2fa, 
         token_expira 
        FROM usuarios 
        WHERE correo = $1`,
-      [correo.trim()]
+      [correo.trim()],
     );
 
     //  Usuario inexistente
@@ -123,12 +125,12 @@ export const verificarToken = async (req, res) => {
     ========================= */
     const jwtToken = jwt.sign(
       {
-        id: user.id,          // ID del usuario
-        correo: user.correo,  // Correo
-        rol: user.id_rol,     // Rol del sistema
+        id: user.id, // ID del usuario
+        correo: user.correo, // Correo
+        rol: user.id_rol, // Rol del sistema
       },
       process.env.JWT_SECRET, // Clave secreta
-      { expiresIn: "1h" }     // Vigencia del JWT
+      { expiresIn: "1h" }, // Vigencia del JWT
     );
 
     /* =========================
@@ -137,7 +139,7 @@ export const verificarToken = async (req, res) => {
     //  Evita reutilización del token
     await pool.query(
       "UPDATE usuarios SET token_2fa = NULL, token_expira = NULL WHERE id = $1",
-      [user.id]
+      [user.id],
     );
     console.log(" Token eliminado de DB para:", correo);
 
@@ -156,7 +158,7 @@ export const verificarToken = async (req, res) => {
        WHERE r.id_usuarios = $1
        ORDER BY c.id DESC
        LIMIT 1`,
-      [user.id]
+      [user.id],
     );
 
     // Si no hay credencial, se devuelve objeto vacío
@@ -178,6 +180,9 @@ export const verificarToken = async (req, res) => {
       numeroidentificador: user.numeroidentificador,
       rfc: user.rfc,
       curp: user.curp,
+      tipopersona: user.tipopersona,
+      nss: user.nss,
+
       fotourl: user.fotourl,
       firmaurl: user.firmaurl,
       id_rol: user.id_rol,
@@ -188,7 +193,6 @@ export const verificarToken = async (req, res) => {
       qr: credencial.qr || null,
       activo: credencial.activo ?? null,
     });
-
   } catch (error) {
     console.error(" Error verificando token:", error);
     return res.status(500).json({

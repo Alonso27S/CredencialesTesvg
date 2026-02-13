@@ -31,9 +31,8 @@ export const login = async (req, res) => {
        BUSCAR USUARIO
     ========================= */
     const result = await pool.query(
-      "SELECT * FROM usuarios WHERE correo = $1"
-      ,
-      [correo.trim()]
+      "SELECT * FROM usuarios WHERE correo = $1",
+      [correo.trim()],
     );
 
     // Usuario no existe
@@ -42,17 +41,16 @@ export const login = async (req, res) => {
     }
 
     const user = result.rows[0];
-    
+
     /* =========================
        VALIDAR USUARIO ACTIVO/INACTIVO
     ========================= */
 
     if (user.activo === false) {
-  return res.status(403).json({
-    message: "Usuario inactivo. Contacta al administrador.",
-  });
-}
-
+      return res.status(403).json({
+        message: "Usuario inactivo. Contacta al administrador.",
+      });
+    }
 
     /* =========================
        VALIDAR BLOQUEO
@@ -67,10 +65,7 @@ export const login = async (req, res) => {
     /* =========================
        VALIDAR CONTRASEÑA
     ========================= */
-    const passwordOK = await bcrypt.compare(
-      contraseña,
-      user.contraseña
-    );
+    const passwordOK = await bcrypt.compare(contraseña, user.contraseña);
 
     //  Contraseña incorrecta
     if (!passwordOK) {
@@ -92,7 +87,7 @@ export const login = async (req, res) => {
          SET intentos_fallidos = $1,
              bloqueado_hasta = $2
          WHERE id = $3`,
-        [intentos, bloqueo, user.id]
+        [intentos, bloqueo, user.id],
       );
 
       return res.status(401).json({
@@ -110,7 +105,7 @@ export const login = async (req, res) => {
        SET intentos_fallidos = 0,
            bloqueado_hasta = NULL
        WHERE id = $1`,
-      [user.id]
+      [user.id],
     );
 
     /* =========================
@@ -129,7 +124,7 @@ export const login = async (req, res) => {
        SET token_2fa = $1,
            token_expira = $2
        WHERE id = $3`,
-      [token, expira, user.id]
+      [token, expira, user.id],
     );
 
     //  Enviar token al correo del usuario
@@ -153,11 +148,12 @@ export const login = async (req, res) => {
         firmaurl: user.firmaurl,
         rfc: user.rfc,
         curp: user.curp,
+        tipopersona: user.tipopersona,
+        nss: user.numerosegurosocial,
         id_rol: user.id_rol,
         correo: user.correo,
       },
     });
-
   } catch (error) {
     //  Error inesperado
     console.error(" Error login:", error);
