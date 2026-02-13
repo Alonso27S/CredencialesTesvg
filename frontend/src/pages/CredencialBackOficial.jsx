@@ -4,6 +4,7 @@ import React from "react";
 const BASE_URL = "https://credencialestesvg.com.mx";
 
 const CredencialBack = ({ datos }) => {
+
   /**
    * =========================================================
    *   FIRMA
@@ -19,7 +20,8 @@ const CredencialBack = ({ datos }) => {
    *   LÓGICA
    * =========================================================
    */
-  const esAlumno = datos?.tipopersona?.toLowerCase() === "alumno";
+  const esAlumno =
+    datos?.tipopersona?.toLowerCase() === "alumno";
 
   return (
     <div
@@ -45,7 +47,9 @@ const CredencialBack = ({ datos }) => {
       >
         {/* RFC */}
         <div className="flex flex-col items-center flex-1">
-          <p className="font-bold text-[10px] sm:text-xs">RFC</p>
+          <p className="font-bold text-[10px] sm:text-xs">
+            RFC
+          </p>
           <p className="text-center break-words leading-tight">
             {datos?.rfc || "--------"}
           </p>
@@ -56,7 +60,9 @@ const CredencialBack = ({ datos }) => {
 
         {/* CURP */}
         <div className="flex flex-col items-center flex-1">
-          <p className="font-bold text-[10px] sm:text-xs">CURP</p>
+          <p className="font-bold text-[10px] sm:text-xs">
+            CURP
+          </p>
           <p className="text-center break-words leading-tight">
             {datos?.curp || "--------"}
           </p>
@@ -74,7 +80,9 @@ const CredencialBack = ({ datos }) => {
             flex flex-col items-center
           "
         >
-          <p className="font-bold text-[10px] sm:text-xs">NSS</p>
+          <p className="font-bold text-[10px] sm:text-xs">
+            NSS
+          </p>
 
           <p
             className="
@@ -92,6 +100,7 @@ const CredencialBack = ({ datos }) => {
             FIRMA
       ===================================================== */}
       <div className="mt-4 text-center w-full">
+
         {firmaReal ? (
           <div className="flex justify-center">
             <img
@@ -108,16 +117,23 @@ const CredencialBack = ({ datos }) => {
             />
           </div>
         ) : (
-          <p className="text-[10px] italic opacity-70">Sin firma registrada</p>
+          <p className="text-[10px] italic opacity-70">
+            Sin firma registrada
+          </p>
         )}
 
-        <p className="text-xs sm:text-sm mt-1">Firma del Alumno</p>
+        <p className="text-xs sm:text-sm mt-1">
+          Firma del Alumno
+        </p>
+
+        <div className="h-6 sm:h-8"></div>
 
         <p className="font-bold text-xs sm:text-sm leading-none text-center">
           Dr. Zain Bernal Beltrán
           <br />
           Director General
         </p>
+      
       </div>
 
       {/* =====================================================
@@ -145,7 +161,9 @@ const CredencialBack = ({ datos }) => {
       <p className="text-center text-xs sm:text-sm tracking-wide">
         Vigencia:{" "}
         {datos?.fechavigencia
-          ? new Date(datos.fechavigencia).toLocaleDateString("es-MX")
+          ? new Date(
+              datos.fechavigencia
+            ).toLocaleDateString("es-MX")
           : "----"}
       </p>
     </div>

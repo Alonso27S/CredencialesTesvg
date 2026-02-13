@@ -90,7 +90,7 @@ function App() {
   const [requiereToken, setRequiereToken] = useState(false);
   const [correoToken, setCorreoToken] = useState(null);
 
-  // ======================================================
+/*   // ======================================================
   // 🧪 DEBUG
   // ======================================================
   useEffect(() => {
@@ -98,7 +98,7 @@ function App() {
     console.log("🔄 userRole:", userRole);
     console.log("🔄 userData:", userData);
     console.log("🔄 requiereToken:", requiereToken);
-  }, [isAuthenticated, userRole, userData, requiereToken]);
+  }, [isAuthenticated, userRole, userData, requiereToken]); */
 
   // ======================================================
   // ✅ LOGIN FINAL
