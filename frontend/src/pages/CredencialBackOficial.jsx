@@ -126,7 +126,7 @@ const CredencialBack = ({ datos }) => {
     "
           >
             <img
-              src="/assets/firma_director.png"
+              src="/assets/fimaDigiltal.png"
               alt="Firma Director"
               className="
         max-h-full
