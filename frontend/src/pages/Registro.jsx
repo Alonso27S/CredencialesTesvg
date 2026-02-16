@@ -23,6 +23,18 @@ const initialFormState = {
   contraseña: "",
 };
 
+
+const AREAS = [
+  "INGENIERIA EN SISTEMAS COMPUTACIONALES",
+  "INGENIERIA EN INDUSTRIAS ALIMENTARIAS",
+  "INGENIERIA INDUSTRIAL ",
+  "INGENIERIA EN INOVACION AGRICOLA SUSTENTABLE",
+  "INGENIERIA ELECTRONICA",
+  "LICENCIATURA EN ADMINISTRACION",
+  "LICENCIATURA EN ARQUITECTURA",
+  "LICENCIATURA EN TURISMO",
+];
+
 const Registro = ({ importado, onBack }) => {
   // Estado principal del formulario
   const [form, setForm] = useState(initialFormState);
@@ -680,13 +692,21 @@ const Registro = ({ importado, onBack }) => {
           {/* AREA */}
           <div>
             <label className="font-medium">Área / Departamento</label>
-            <input
-              name="nombreArea"
-              value={form.nombreArea}
-              onChange={handleChange}
-              placeholder="Ej: SISTEMAS"
-              className="border p-2 rounded w-full"
-            />
+            <select
+            name="nombreArea" 
+            value={form.nombreArea}
+            onChange={handleChange}
+            className={`border p-2 rounded w-full ${
+            isMobile ? "text-base py-3" : ""
+          }`}
+          >
+            <option value="">Seleccione un área</option>
+                  {AREAS.map((area) => (
+                    <option key={area} value={area}>
+                      {area}
+                    </option>
+                  ))}
+          </select>
           </div>
 
           {/* TIPO IDENTIFICADOR */}
