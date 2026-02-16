@@ -691,23 +691,23 @@ const Registro = ({ importado, onBack }) => {
 
           {/* AREA */}
           <div>
-            <label className="font-medium">Área / Departamento</label>
-            <select
-            name="nombreArea" 
-            value={form.nombreArea}
-            onChange={handleChange}
-            className={`border p-2 rounded w-full ${
-            isMobile ? "text-base py-3" : ""
-          }`}
-          >
-            <option value="">Seleccione un área</option>
+                <label className="font-medium">Área / Departamento</label>
+                <select
+                  name="nombreArea"
+                  value={form.nombreArea}
+                  onChange={handleChange}
+                  className={`border p-2 rounded w-full ${
+                    isMobile ? "text-base py-3" : ""
+                  }`}
+                >
+                  <option value="">Seleccione un área</option>
                   {AREAS.map((area) => (
                     <option key={area} value={area}>
                       {area}
                     </option>
                   ))}
-          </select>
-          </div>
+                </select>
+           </div>
 
           {/* TIPO IDENTIFICADOR */}
           <div className="col-span-2">
