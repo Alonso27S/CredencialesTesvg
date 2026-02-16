@@ -696,9 +696,7 @@ const Registro = ({ importado, onBack }) => {
                   name="nombreArea"
                   value={form.nombreArea}
                   onChange={handleChange}
-                  className={`border p-2 rounded w-full ${
-                    isMobile ? "text-base py-3" : ""
-                  }`}
+                  className="border p-2 rounded w-full"
                 >
                   <option value="">Seleccione un área</option>
                   {AREAS.map((area) => (
