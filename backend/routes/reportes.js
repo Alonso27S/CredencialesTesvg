@@ -1,6 +1,7 @@
 // routes/reportes.js
 import express from "express";
-import pool from "../db.js"; // tu conexión a postgres
+import { pool } from "../db.js";
+
 
 const router = express.Router();
 
