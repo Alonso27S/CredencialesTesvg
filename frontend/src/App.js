@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Login from "./components/Login";
 import VerificacionToken from "./pages/VerificarToken";
 import { Routes, Route } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Buscar from "./modules/buscar/Buscar";
 
 // 📊 Dashboards según rol
 import Dashboard from "./pages/Dashboard"; // Superadmin y Admin
@@ -11,6 +13,8 @@ import GestorDashboard from "./layouts/GestorDashboard"; // (reservado)
 import UsuarioDashboard from "./layouts/UsuarioDashboard";
 
 function App() {
+
+  const location = useLocation();
   // ======================================================
   // 🔐 ESTADOS DE AUTENTICACIÓN
   // ======================================================
@@ -184,26 +188,30 @@ function App() {
   // 🧭 RENDER PRINCIPAL
   // ======================================================
   return (
-    <div>
-      {requiereToken ? (
-        <VerificacionToken
-          correo={correoToken}
-          onVerificado={handleTokenVerified}
-        />
-      ) : isAuthenticated ? (
-        userRole === "superadmin" || userRole === "admin" ? (
-          <Dashboard userData={userData} onLogout={handleLogout} />
-        ) : (
-          <UsuarioDashboard userData={userData} onLogout={handleLogout} />
-        )
+  <div>
+
+    {location.pathname === "/buscar" ? (
+      <Buscar />
+    ) : requiereToken ? (
+      <VerificacionToken
+        correo={correoToken}
+        onVerificado={handleTokenVerified}
+      />
+    ) : isAuthenticated ? (
+      userRole === "superadmin" || userRole === "admin" ? (
+        <Dashboard userData={userData} onLogout={handleLogout} />
       ) : (
-        <Login
-          onLoginSuccess={handleLoginSuccess}
-          onRequireToken={handleRequireToken}
-        />
-      )}
-    </div>
-  );
+        <UsuarioDashboard userData={userData} onLogout={handleLogout} />
+      )
+    ) : (
+      <Login
+        onLoginSuccess={handleLoginSuccess}
+        onRequireToken={handleRequireToken}
+      />
+    )}
+
+  </div>
+);
 }
 
 export default App;

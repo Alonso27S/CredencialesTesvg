@@ -47,6 +47,7 @@ app.use("/api", qrRoutes);
 app.use("/api/credencial", credencialRoutes);
 
 
+
 app.use((req, res) => {
   res.status(404).json({ message: `Ruta ${req.originalUrl} no encontrada` });
 });
