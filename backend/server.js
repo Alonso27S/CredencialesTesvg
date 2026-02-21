@@ -16,6 +16,8 @@ import rutas from "./routes/routes.js";
 import importacionRoutes from "./routes/importacion.routes.js";
 import credencialRoutes from "./routes/credencial.routes.js";
 
+import reportesRoutes from "./routes/reportes.js";
+
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -28,6 +30,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/reportes", reportesRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/usuarios", usuarioRoutes);
