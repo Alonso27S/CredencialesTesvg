@@ -6,7 +6,7 @@ import qrRoutes from "./routes/qr.routes.js";
 import authRoutes from "./routes/auth.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import buscarRoutes from "./routes/buscar.routes.js";
-import reportesRoutes from "./routes/reportes.routes.js";
+/* import reportesRoutes from "./routes/reportes.routes.js"; */
 import tokenRoutes from "./routes/token.routes.js";
 import usuariosRoutes from "./routes/usuarios.routes.js";
 import usuarioRoutes from "./routes/usuario.routes.js";
@@ -41,7 +41,7 @@ app.use("/api/registro", registroRoutes);
 app.use("/api/qr", qrRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/buscar", buscarRoutes);
-app.use("/api", reportesRoutes); // <<--- CORRECTO
+/* app.use("/api", reportesRoutes);  */// <<--- CORRECTO
 app.use("/api/usuarios", usuariosRoutes);
 app.use("/api", rutas);
 app.use("/api/importacion", importacionRoutes);
