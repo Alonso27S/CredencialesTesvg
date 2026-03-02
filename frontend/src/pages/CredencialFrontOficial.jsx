@@ -5,10 +5,10 @@ import QRCode from "qrcode";
  * CredencialFront
  * ----------------------------------------------------
  * Componente que renderiza el frente de la credencial.
- * - Totalmente responsive
- * - QR auto-ajustable según longitud del nombre
- * - Layout estable (QR nunca se tapa con la barra)
- * - Preparado para documentación técnica
+ * - Layout blindado contra textos largos
+ * - QR estable
+ * - Responsive
+ * - No se montan elementos
  */
 const CredencialFront = ({ datos }) => {
   /* ================= CONSTANTES DE DISEÑO ================= */
@@ -42,7 +42,7 @@ const CredencialFront = ({ datos }) => {
 
     QRCode.toDataURL(datos.qr, { width: 160, margin: 1 })
       .then(setQrImage)
-      .catch((err) => console.error(" Error generando QR:", err));
+      .catch((err) => console.error("Error generando QR:", err));
   }, [datos]);
 
   return (
@@ -67,10 +67,10 @@ const CredencialFront = ({ datos }) => {
 
       {/* ================= CONTENIDO ================= */}
       <div
-        className="flex flex-col items-center px-3 z-20 flex-1"
+        className="flex flex-col items-center px-3 z-20 flex-1 justify-start"
         style={{ paddingBottom: BAR_HEIGHT + 6 }}
       >
-        {/* Foto */}
+        {/* ================= FOTO ================= */}
         <div className="mt-3">
           <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
             <img
@@ -84,40 +84,50 @@ const CredencialFront = ({ datos }) => {
           </div>
         </div>
 
-        {/* Nombre y Área */}
-     <div className="text-center mt-3 px-2">
-       {/* Nombre */}
-       <p className="font-bold text-[15px] leading-tight break-words">
-         {nombreCompleto}
-       </p>
+        {/* ================= BLOQUE INFORMACIÓN ================= */}
+        <div className="text-center mt-3 px-2 w-full">
 
-       {/* Área dinámica */}
-       <p
-         className={`text-gray-800 leading-tight break-words ${
-           datos?.nombrearea?.length > 45
-             ? "text-[11px]"
-             : datos?.nombrearea?.length > 30
-             ? "text-xs"
-             : "text-sm"
-         }`}
-         style={{
-           display: "-webkit-box",
-           WebkitLineClamp: 2,
-           WebkitBoxOrient: "vertical",
-           overflow: "hidden",
-         }}
-       >     
-         {datos?.nombrearea}
-       </p>
-     </div>
+          {/* Nombre */}
+          <p
+            className={`font-bold leading-tight break-words ${
+              nombreCompleto.length > 40
+                ? "text-[13px]"
+                : nombreCompleto.length > 30
+                ? "text-[14px]"
+                : "text-[15px]"
+            }`}
+          >
+            {nombreCompleto}
+          </p>
 
-        {/* Identificador */}
-        <p className="text-center text-gray-800 mt-1 text-sm">
-          {datos?.numeroidentificador}
-        </p>
+          {/* Área (máximo 2 líneas reales, jamás invade) */}
+          <p
+            className="text-gray-800 leading-tight mt-1"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              fontSize:
+                datos?.nombrearea?.length > 45
+                  ? "11px"
+                  : datos?.nombrearea?.length > 30
+                  ? "12px"
+                  : "13px",
+            }}
+          >
+            {datos?.nombrearea}
+          </p>
 
-        {/* Texto institucional */}
-        <p className="text-center font-extrabold text-xl mt-1">
+          {/* Identificador separado */}
+          <p className="text-gray-800 mt-2 text-[13px] font-medium">
+            {datos?.numeroidentificador}
+          </p>
+
+        </div>
+
+        {/* ================= TEXTO INSTITUCIONAL ================= */}
+        <p className="text-center font-extrabold text-xl mt-3">
           EDUCACIÓN
         </p>
 
@@ -125,8 +135,8 @@ const CredencialFront = ({ datos }) => {
           SECRETARÍA DE EDUCACIÓN, CIENCIA, TECNOLOGÍA E INNOVACIÓN
         </p>
 
-        {/* QR */}
-        <div className="mt-auto mb-2">
+        {/* ================= QR ================= */}
+        <div className="mt-4 mb-2">
           {qrImage ? (
             <img
               src={qrImage}
@@ -140,14 +150,14 @@ const CredencialFront = ({ datos }) => {
         </div>
       </div>
 
-      {/* Decoración */}
+      {/* ================= DECORACIÓN ================= */}
       <img
         src="/assets/logo_colibri.png"
         className="absolute left-0 bottom-[44px] h-[260px] opacity-20 z-0 pointer-events-none"
         alt="Decoración"
       />
 
-      {/* Barra inferior */}
+      {/* ================= BARRA INFERIOR ================= */}
       <div
         className="absolute bottom-0 left-0 w-full z-40 px-3
                    flex items-center justify-center"
