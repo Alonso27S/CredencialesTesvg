@@ -106,13 +106,16 @@ export const registrarUsuario = async (req, res) => {
 
     await client.query("COMMIT");
 
-    const nombreCompleto = `${nombre} ${apellidop} ${apellidom}`;
-
-    await enviarCredencialesCorreo(
-      correo,
-      nombreCompleto,
-      contraseña,
-    );
+    try {
+      await enviarCredencialesCorreo(
+        correo,
+        nombreCompleto,
+        contraseña,
+      );
+    } catch (mailError) {
+      console.error("Error enviando correo:", mailError);
+      // NO regreses error al cliente
+    }
 
     res.json({
       success: true,
@@ -146,6 +149,10 @@ export const registrarUsuario = async (req, res) => {
       success: false,
       message: "Error al registrar usuario",
     });
+
+    } finally {
+    client.release(); 
+  
   }
 };
 
