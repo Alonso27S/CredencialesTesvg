@@ -1,42 +1,27 @@
 import React, { useEffect, useState, useMemo } from "react";
 import QRCode from "qrcode";
 
-/**
- * CredencialFront
- * ----------------------------------------------------
- * Componente que renderiza el frente de la credencial.
- * - Layout blindado contra textos largos
- * - QR estable
- * - Responsive
- * - No se montan elementos
- */
 const CredencialFront = ({ datos }) => {
-  /* ================= CONSTANTES DE DISEÑO ================= */
   const CARD_WIDTH = 300;
   const CARD_HEIGHT = 420;
   const BAR_HEIGHT = 44;
 
-  /* ================= ESTADO ================= */
   const [qrImage, setQrImage] = useState(null);
 
-  /* ================= FOTO ================= */
   const fotoReal = datos?.fotourl
     ? datos.fotourl.startsWith("http")
       ? datos.fotourl
       : `https://credencialestesvg.com.mx${datos.fotourl}`
     : "/assets/default_user.png";
 
-  /* ================= NOMBRE COMPLETO ================= */
   const nombreCompleto = `${datos?.nombre || ""} ${datos?.apellidop || ""} ${datos?.apellidom || ""}`.trim();
 
-  /* ================= TAMAÑO DINÁMICO DEL QR ================= */
   const qrSize = useMemo(() => {
     if (nombreCompleto.length > 40) return 80;
     if (nombreCompleto.length > 30) return 90;
     return 96;
   }, [nombreCompleto]);
 
-  /* ================= GENERAR QR ================= */
   useEffect(() => {
     if (!datos?.qr) return;
 
@@ -47,45 +32,46 @@ const CredencialFront = ({ datos }) => {
 
   return (
     <div
-      className="relative bg-[#d6b99c] rounded-xl shadow-xl border border-gray-300
-                 overflow-hidden flex flex-col"
+      className="relative bg-[#d6b99c] rounded-xl shadow-xl border border-gray-300 overflow-hidden"
       style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
     >
-      {/* ================= LOGOS SUPERIORES ================= */}
-      <div className="flex justify-between items-center px-3 pt-3 z-30">
-        <img
-          src="/assets/logo_gobierno.png"
-          className="h-8 w-auto object-contain"
-          alt="Gobierno"
-        />
-        <img
-          src="/assets/logo_tesvg2.png"
-          className="h-8 w-auto object-contain"
-          alt="TESVG"
-        />
-      </div>
-
-      {/* ================= CONTENIDO ================= */}
+      {/* ===== CONTENEDOR PRINCIPAL FLEX VERTICAL ===== */}
       <div
-        className="flex flex-col items-center px-3 z-20 flex-1 justify-start"
-        style={{ paddingBottom: BAR_HEIGHT + 6 }}
+        className="flex flex-col h-full"
+        style={{ paddingBottom: BAR_HEIGHT }}
       >
-        {/* ================= FOTO ================= */}
-        <div className="mt-3">
-          <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
+        {/* ================= ZONA SUPERIOR ================= */}
+        <div className="px-3 pt-3">
+          <div className="flex justify-between items-center">
             <img
-              src={fotoReal}
-              className="w-full h-full object-cover"
-              alt="Foto usuario"
-              onError={(e) => {
-                e.currentTarget.src = "/assets/default_user.png";
-              }}
+              src="/assets/logo_gobierno.png"
+              className="h-8 object-contain"
+              alt="Gobierno"
             />
+            <img
+              src="/assets/logo_tesvg2.png"
+              className="h-8 object-contain"
+              alt="TESVG"
+            />
+          </div>
+
+          {/* Foto */}
+          <div className="flex justify-center mt-3">
+            <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
+              <img
+                src={fotoReal}
+                className="w-full h-full object-cover"
+                alt="Foto usuario"
+                onError={(e) => {
+                  e.currentTarget.src = "/assets/default_user.png";
+                }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* ================= BLOQUE INFORMACIÓN ================= */}
-        <div className="text-center mt-3 px-2 w-full">
+        {/* ================= ZONA INFORMACIÓN (ALTURA FIJA REAL) ================= */}
+        <div className="px-3 mt-3 text-center h-[110px] flex flex-col justify-start">
 
           {/* Nombre */}
           <p
@@ -100,7 +86,7 @@ const CredencialFront = ({ datos }) => {
             {nombreCompleto}
           </p>
 
-          {/* Área (máximo 2 líneas reales, jamás invade) */}
+          {/* Área (máximo 2 líneas reales) */}
           <p
             className="text-gray-800 leading-tight mt-1"
             style={{
@@ -119,48 +105,50 @@ const CredencialFront = ({ datos }) => {
             {datos?.nombrearea}
           </p>
 
-          {/* Identificador separado */}
+          {/* Identificador SIEMPRE abajo del área */}
           <p className="text-gray-800 mt-2 text-[13px] font-medium">
             {datos?.numeroidentificador}
           </p>
 
         </div>
 
-        {/* ================= TEXTO INSTITUCIONAL ================= */}
-        <p className="text-center font-extrabold text-xl mt-3">
-          EDUCACIÓN
-        </p>
+        {/* ================= ZONA INFERIOR FLEXIBLE ================= */}
+        <div className="flex-1 flex flex-col items-center justify-start px-3">
 
-        <p className="text-center text-[10px] px-2 leading-tight">
-          SECRETARÍA DE EDUCACIÓN, CIENCIA, TECNOLOGÍA E INNOVACIÓN
-        </p>
+          <p className="text-center font-extrabold text-xl mt-1">
+            EDUCACIÓN
+          </p>
 
-        {/* ================= QR ================= */}
-        <div className="mt-4 mb-2">
-          {qrImage ? (
-            <img
-              src={qrImage}
-              alt="QR Credencial"
-              className="bg-white p-1 rounded shadow"
-              style={{ width: qrSize, height: qrSize }}
-            />
-          ) : (
-            <p className="text-xs text-gray-600">Generando QR...</p>
-          )}
+          <p className="text-center text-[10px] px-2 leading-tight">
+            SECRETARÍA DE EDUCACIÓN, CIENCIA, TECNOLOGÍA E INNOVACIÓN
+          </p>
+
+          {/* QR */}
+          <div className="mt-3">
+            {qrImage ? (
+              <img
+                src={qrImage}
+                alt="QR Credencial"
+                className="bg-white p-1 rounded shadow"
+                style={{ width: qrSize, height: qrSize }}
+              />
+            ) : (
+              <p className="text-xs text-gray-600">Generando QR...</p>
+            )}
+          </div>
         </div>
       </div>
 
       {/* ================= DECORACIÓN ================= */}
       <img
         src="/assets/logo_colibri.png"
-        className="absolute left-0 bottom-[44px] h-[260px] opacity-20 z-0 pointer-events-none"
+        className="absolute left-0 bottom-[44px] h-[260px] opacity-20 pointer-events-none"
         alt="Decoración"
       />
 
       {/* ================= BARRA INFERIOR ================= */}
       <div
-        className="absolute bottom-0 left-0 w-full z-40 px-3
-                   flex items-center justify-center"
+        className="absolute bottom-0 left-0 w-full flex items-center justify-center"
         style={{ height: BAR_HEIGHT }}
       >
         <img
