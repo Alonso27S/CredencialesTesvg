@@ -84,15 +84,32 @@ const CredencialFront = ({ datos }) => {
           </div>
         </div>
 
-        {/* Nombre */}
-        <div className="text-center mt-3 max-h-[64px] overflow-hidden">
-          <p className="font-bold text-base leading-tight break-words">
-            {nombreCompleto}
-          </p>
-          <p className="text-gray-800 text-sm leading-tight break-words">
-            {datos?.nombrearea}
-          </p>
-        </div>
+        {/* Nombre y Área */}
+     <div className="text-center mt-3 px-2">
+       {/* Nombre */}
+       <p className="font-bold text-[15px] leading-tight break-words">
+         {nombreCompleto}
+       </p>
+
+       {/* Área dinámica */}
+       <p
+         className={`text-gray-800 leading-tight break-words ${
+           datos?.nombrearea?.length > 45
+             ? "text-[11px]"
+             : datos?.nombrearea?.length > 30
+             ? "text-xs"
+             : "text-sm"
+         }`}
+         style={{
+           display: "-webkit-box",
+           WebkitLineClamp: 2,
+           WebkitBoxOrient: "vertical",
+           overflow: "hidden",
+         }}
+       >     
+         {datos?.nombrearea}
+       </p>
+     </div>
 
         {/* Identificador */}
         <p className="text-center text-gray-800 mt-1 text-sm">
