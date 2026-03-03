@@ -106,6 +106,8 @@ export const registrarUsuario = async (req, res) => {
 
     await client.query("COMMIT");
 
+    const nombreCompleto = `${nombre} ${apellidop} ${apellidom}`;
+
     try {
       await enviarCredencialesCorreo(
         correo,
