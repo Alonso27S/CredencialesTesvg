@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const generarHash = async () => {
   try {
-    const password = "DulceM##"  //  Cambia esta contraseña por la que quieres
+    const password = "PerlaG$$"  //  Cambia esta contraseña por la que quieres
 
     console.log(" Generando hash para:", password);
 

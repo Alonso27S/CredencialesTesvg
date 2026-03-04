@@ -111,7 +111,7 @@ const CredencialBack = ({ datos }) => {
           <p className="text-[10px] italic opacity-70">Sin firma registrada</p>
         )}
 
-        <p className="text-xs sm:text-sm mt-1">Firma del Alumno</p>
+        <p className="text-xs sm:text-sm mt-1">Firma</p>
 
         {/* ================================
       FIRMA DIRECTOR (FIJA)
