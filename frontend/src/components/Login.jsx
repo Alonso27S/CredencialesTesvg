@@ -17,6 +17,7 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
   const [loading, setLoading] = useState(false);     // Estado de carga
   const [correo, setCorreo] = useState("");          // Correo ingresado
   const [contraseña, setContraseña] = useState("");  // Contraseña ingresada
+  const [mostrarPassword, setMostrarPassword] = useState(false);
 
   /* =========================
      EFECTO DE ANIMACIÓN
@@ -193,6 +194,26 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
               disabled={loading}
               className="w-full px-4 py-2 border rounded-md"
             />
+
+            {/* Contraseña */}
+<div className="relative w-full">
+  <input
+    type={mostrarPassword ? "text" : "password"}
+    placeholder="Contraseña"
+    value={contraseña}
+    onChange={(e) => setContraseña(e.target.value)}
+    disabled={loading}
+    className="w-full px-4 py-2 border rounded-md pr-10"
+  />
+
+  <button
+    type="button"
+    onClick={() => setMostrarPassword(!mostrarPassword)}
+    className="absolute right-3 top-2 text-gray-500"
+  >
+    {mostrarPassword ? "🙈" : "👁"}
+  </button>
+</div>
 
             {/* Botón */}
             <button
