@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { Eye, EyeOff } from "lucide-react";
 /**
  * Componente Login
  * ----------------
@@ -13,10 +13,10 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
   /* =========================
      ESTADOS
   ========================= */
-  const [animate, setAnimate] = useState(false);     // Animación inicial
-  const [loading, setLoading] = useState(false);     // Estado de carga
-  const [correo, setCorreo] = useState("");          // Correo ingresado
-  const [contraseña, setContraseña] = useState("");  // Contraseña ingresada
+  const [animate, setAnimate] = useState(false); // Animación inicial
+  const [loading, setLoading] = useState(false); // Estado de carga
+  const [correo, setCorreo] = useState(""); // Correo ingresado
+  const [contraseña, setContraseña] = useState(""); // Contraseña ingresada
   const [mostrarPassword, setMostrarPassword] = useState(false);
 
   /* =========================
@@ -50,14 +50,17 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
 
     try {
       /* ---- Petición al backend ---- */
-      const response = await fetch("https://credencialestesvg.com.mx/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          correo: correo.trim(),
-          contraseña,
-        }),
-      });
+      const response = await fetch(
+        "https://credencialestesvg.com.mx/api/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            correo: correo.trim(),
+            contraseña,
+          }),
+        },
+      );
 
       const data = await response.json();
 
@@ -128,7 +131,6 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
 
       // Redirección final
       onLoginSuccess(rol, data.user);
-
     } catch (error) {
       console.error("Error en login:", error);
       alert("Error de conexión con el servidor");
@@ -142,19 +144,29 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
   ========================= */
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 overflow-hidden">
-      
       {/* ================= HEADER ================= */}
       <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
         <div className="grid grid-cols-3 items-center px-4 py-3">
-          <img src="/assets/logo_gobierno.png" alt="Gobierno" className="h-10" />
-          <img src="/assets/logo_tesvg2.png" alt="TESVG" className="h-10 mx-auto" />
-          <img src="/assets/logo_tecnm.png" alt="TecNM" className="h-10 ml-auto" />
+          <img
+            src="/assets/logo_gobierno.png"
+            alt="Gobierno"
+            className="h-10"
+          />
+          <img
+            src="/assets/logo_tesvg2.png"
+            alt="TESVG"
+            className="h-10 mx-auto"
+          />
+          <img
+            src="/assets/logo_tecnm.png"
+            alt="TecNM"
+            className="h-10 ml-auto"
+          />
         </div>
       </header>
 
       {/* ================= MAIN ================= */}
       <main className="flex-grow flex items-center justify-center px-4 py-32 mt-[120px]">
-
         {/* Imagen */}
         <div
           className={`hidden md:flex w-1/2 justify-center transition-all duration-1000 ${
@@ -186,34 +198,25 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
             />
 
             {/* Contraseña */}
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={contraseña}
-              onChange={(e) => setContraseña(e.target.value)}
-              disabled={loading}
-              className="w-full px-4 py-2 border rounded-md"
-            />
-
             {/* Contraseña */}
-<div className="relative w-full">
-  <input
-    type={mostrarPassword ? "text" : "password"}
-    placeholder="Contraseña"
-    value={contraseña}
-    onChange={(e) => setContraseña(e.target.value)}
-    disabled={loading}
-    className="w-full px-4 py-2 border rounded-md pr-10"
-  />
+            <div className="relative w-full">
+              <input
+                type={mostrarPassword ? "text" : "password"}
+                placeholder="Contraseña"
+                value={contraseña}
+                onChange={(e) => setContraseña(e.target.value)}
+                disabled={loading}
+                className="w-full px-4 py-2 border rounded-md pr-10"
+              />
 
-  <button
-    type="button"
-    onClick={() => setMostrarPassword(!mostrarPassword)}
-    className="absolute right-3 top-2 text-gray-500"
-  >
-    {mostrarPassword ? "🙈" : "👁"}
-  </button>
-</div>
+              <button
+                type="button"
+                onClick={() => setMostrarPassword(!mostrarPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {mostrarPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
 
             {/* Botón */}
             <button
