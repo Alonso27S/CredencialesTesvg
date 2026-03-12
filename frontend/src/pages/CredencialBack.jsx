@@ -14,8 +14,8 @@ const CredencialBack = ({ datos }) => {
       {/* RFC & CURP */}
       <div className="flex justify-between text-sm mt-2 px-2">
         <div className="flex flex-col items-center">
-          <p className="font-bold">RFC</p>
-          <p>{datos?.rfc || "---------"}</p>
+          <p className="font-bold" translate="no">RFC</p>
+          <p translate="no">{datos?.rfc || "---------"}</p>
         </div>
         <div className="flex flex-col items-center">
           <p className="font-bold">CURP</p>
@@ -27,8 +27,8 @@ const CredencialBack = ({ datos }) => {
       {mostrarNSS && (
         <div className="flex justify-center text-sm mt-3">
           <div className="flex flex-col items-center">
-            <p className="font-bold">NSS</p>
-            <p>{datos?.nss || "---------"}</p>
+            <p className="font-bold" translate="no">NSS</p>
+            <p translate="no">{datos?.nss || "---------"}</p>
           </div>
         </div>
       )}
