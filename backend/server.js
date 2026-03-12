@@ -14,8 +14,8 @@ import gestoresRoutes from "./routes/gestores.routes.js";
 import rutas from "./routes/routes.js";
 import importacionRoutes from "./routes/importacion.routes.js";
 import credencialRoutes from "./routes/credencial.routes.js";
-
 import reportesRoutes from "./routes/reportes.js";
+
 
 
 import path from "path";
@@ -40,13 +40,13 @@ app.use("/api/registro", registroRoutes);
 app.use("/api/qr", qrRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/buscar", buscarRoutes);
-app.use("/api", reportesRoutes); 
 app.use("/api/usuarios", usuariosRoutes);
 app.use("/api", rutas);
 app.use("/api/importacion", importacionRoutes);
 app.use("/api", gestorRoutes);
 app.use("/api", qrRoutes);
 app.use("/api/credencial", credencialRoutes);
+app.use("/api/reportes", reportesRoutes);
 
 
 
