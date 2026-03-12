@@ -8,8 +8,13 @@ export const getReportes = async (req, res) => {
       SELECT 
         u.id,
         CONCAT(u.nombre, ' ', u.apellidop, ' ', u.apellidom) AS nombre_completo,
-        u.area,
-        u.estado,
+        u.numeroidentificador,
+        u.numerosegurosocial AS nss,
+        u.nombrearea AS area,
+        CASE 
+          WHEN u.activo = true THEN 'Activo'
+          ELSE 'Inactivo'
+        END AS estado,
         to_char(r.fecharegistro, 'DD/MM/YYYY') AS fecha,
         to_char(r.fecharegistro, 'HH24:MI') AS hora
       FROM usuarios u
@@ -21,21 +26,25 @@ export const getReportes = async (req, res) => {
 
     if (tipoPersonal) {
       params.push(tipoPersonal);
-      query += ` AND u.tipo = $${params.length}`;
+      query += ` AND u.tipopersona = $${params.length}`;
     }
 
     if (area) {
-      params.push(area);
-      query += ` AND u.area = $${params.length}`;
+      params.push(`%${area}%`);
+      query += ` AND LOWER(u.nombrearea) LIKE LOWER($${params.length})`;
     }
 
     if (estado) {
-      params.push(estado);
-      query += ` AND u.estado = $${params.length}`;
+      if (estado === "Activo") {
+        query += ` AND u.activo = true`;
+      } else if (estado === "Inactivo") {
+        query += ` AND u.activo = false`;
+      }
     }
 
     if (fechaInicio && fechaFin) {
-      params.push(fechaInicio, fechaFin);
+      params.push(fechaInicio);
+      params.push(fechaFin);
       query += ` AND r.fecharegistro BETWEEN $${params.length - 1} AND $${params.length}`;
     }
 
@@ -44,7 +53,6 @@ export const getReportes = async (req, res) => {
     const result = await pool.query(query, params);
 
     res.json(result.rows);
-
   } catch (error) {
     console.error("Error en getReportes:", error);
     res.status(500).json({ message: "Error al generar los reportes" });

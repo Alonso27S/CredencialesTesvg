@@ -6,7 +6,6 @@ import qrRoutes from "./routes/qr.routes.js";
 import authRoutes from "./routes/auth.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import buscarRoutes from "./routes/buscar.routes.js";
-/* import reportesRoutes from "./routes/reportes.routes.js"; */
 import tokenRoutes from "./routes/token.routes.js";
 import usuariosRoutes from "./routes/usuarios.routes.js";
 import usuarioRoutes from "./routes/usuario.routes.js";
@@ -15,8 +14,8 @@ import gestoresRoutes from "./routes/gestores.routes.js";
 import rutas from "./routes/routes.js";
 import importacionRoutes from "./routes/importacion.routes.js";
 import credencialRoutes from "./routes/credencial.routes.js";
-
 import reportesRoutes from "./routes/reportes.js";
+
 
 
 import path from "path";
@@ -30,7 +29,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/reportes", reportesRoutes);
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/usuarios", usuarioRoutes);
@@ -41,13 +40,13 @@ app.use("/api/registro", registroRoutes);
 app.use("/api/qr", qrRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/buscar", buscarRoutes);
-/* app.use("/api", reportesRoutes);  */// <<--- CORRECTO
 app.use("/api/usuarios", usuariosRoutes);
 app.use("/api", rutas);
 app.use("/api/importacion", importacionRoutes);
 app.use("/api", gestorRoutes);
 app.use("/api", qrRoutes);
 app.use("/api/credencial", credencialRoutes);
+app.use("/api/reportes", reportesRoutes);
 
 
 
