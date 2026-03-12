@@ -30,8 +30,8 @@ export const getReportes = async (req, res) => {
     }
 
     if (area) {
-      params.push(area);
-      query += ` AND u.nombrearea = $${params.length}`;
+      params.push(`%${area}%`);
+      query += ` AND LOWER(u.nombrearea) LIKE LOWER($${params.length})`;
     }
 
     if (estado) {
@@ -53,7 +53,6 @@ export const getReportes = async (req, res) => {
     const result = await pool.query(query, params);
 
     res.json(result.rows);
-
   } catch (error) {
     console.error("Error en getReportes:", error);
     res.status(500).json({ message: "Error al generar los reportes" });
