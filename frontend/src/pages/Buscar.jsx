@@ -106,6 +106,7 @@ const Buscar = ({ onBack }) => {
             <tr>
               <th className="px-4 py-2 border">ID</th>
               <th className="px-4 py-2 border">Nombre Completo</th>
+              <th className="px-4 py-2 border">Correo</th>
               <th className="px-4 py-2 border">Carrera</th>
               <th className="px-4 py-2 border">Tipo</th>
               <th className="px-4 py-2 border">Fecha de Vigencia</th>
@@ -121,7 +122,7 @@ const Buscar = ({ onBack }) => {
             {resultados.length === 0 ? (
               <tr>
                 <td
-                  colSpan="5"
+                  colSpan="8"
                   className="px-4 py-2 border text-center text-gray-500"
                 >
                   No hay resultados
@@ -137,6 +138,9 @@ const Buscar = ({ onBack }) => {
                   </td>
                   <td className="px-4 py-2 border">
                     {user.nombre} {user.apellidop} {user.apellidom}
+                  </td>
+                  <td className="px-4 py-2 border">
+                    {user.correo}
                   </td>
                   <td className="px-4 py-2 border">
                     {user.nombrearea}

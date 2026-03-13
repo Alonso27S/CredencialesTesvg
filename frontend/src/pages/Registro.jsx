@@ -694,7 +694,7 @@ const Registro = ({ importado, onBack }) => {
               RFC
               </label>
             <input
-            translate="no"
+              translate="no"
               name="rfc"
               value={form.rfc}
               onChange={handleChange}
