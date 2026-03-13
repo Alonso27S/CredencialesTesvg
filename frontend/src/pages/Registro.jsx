@@ -53,7 +53,7 @@ const AREAS = [
   "DEPARTAMENTO DE TITULACIÓN Y EGRESADOS",//
   "DEPARTAMENTO DE SERVICIO SOCIAL Y PRÁCTICAS PROFESIONALES", //
   "DEPARTAMENTO DE PLANEACIÓN Y EVALUACIÓN", //
-  "DEPARTAMENTO DE ESTADISTICA Y EVALUACION",
+  "DEPARTAMENTO DE ESTADISTICA Y EVALUACIÓN",
   "DEPARTAMENTO DE CONTROL ESCOLAR",
   "DEPARTAMENTO DE PERSONAL",//
   "DEPARTAMENTO DE PRESUPUESTOS Y CONTABILIDAD",
@@ -602,7 +602,7 @@ const Registro = ({ importado, onBack }) => {
     apMaterno: form.apellidom,
     area: form.nombreArea,
     identificador: form.numeroIdentificador,
-    nss: form.numeroSeguroSocial,   // 👈 nuevo
+    nss: form.numeroSeguroSocial,   
     tipoPersona: form.tipoPersona,
     rfc: form.rfc,
     curp: form.curp,
@@ -690,9 +690,7 @@ const Registro = ({ importado, onBack }) => {
 
           {/* RFC */}
           <div>
-            <label className="font-medium" translate="no">
-              RFC
-              </label>
+            <label className="font-medium" translate="no">RFC</label>
             <input
               translate="no"
               name="rfc"
@@ -701,7 +699,7 @@ const Registro = ({ importado, onBack }) => {
               className="border p-2 rounded w-full"
               placeholder="12-13 caracteres"
             />
-          </div>
+          </div> 
 
           {/* TIPO PERSONA */}
           <div>
@@ -782,7 +780,7 @@ const Registro = ({ importado, onBack }) => {
 
           {/* NSS */}
           <div className="col-span-2">
-            <label className="font-medium" translate="no">Número de Seguro Social</label>
+            <label className="font-medium">Número de Seguro Social</label>
 
             <input
               name="numeroSeguroSocial"
@@ -912,7 +910,7 @@ const Registro = ({ importado, onBack }) => {
           <div className="col-span-2 mt-4">
             <button
               onClick={handleSubmit}
-              //  BLOQUEO TOTAL DEL BOTÓN
+              // 🔒 BLOQUEO TOTAL DEL BOTÓN
               disabled={loading || !isFormValid()}
               // Tooltip UX
               title={
