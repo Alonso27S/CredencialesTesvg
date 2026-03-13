@@ -912,7 +912,7 @@ const Registro = ({ importado, onBack }) => {
           <div className="col-span-2 mt-4">
             <button
               onClick={handleSubmit}
-              // 🔒 BLOQUEO TOTAL DEL BOTÓN
+              //  BLOQUEO TOTAL DEL BOTÓN
               disabled={loading || !isFormValid()}
               // Tooltip UX
               title={

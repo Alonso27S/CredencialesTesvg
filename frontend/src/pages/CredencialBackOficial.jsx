@@ -167,7 +167,7 @@ const CredencialBack = ({ datos }) => {
       </div>
 
       {/* =====================================================
-            VIGENCIA
+            VIGENCIAA
       ===================================================== */}
       <p className="text-center text-xs sm:text-sm tracking-wide">
         Vigencia:{" "}

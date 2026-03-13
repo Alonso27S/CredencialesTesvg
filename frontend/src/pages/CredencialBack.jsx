@@ -3,7 +3,7 @@ import React from "react";
 const CredencialBack = ({ datos }) => {
   const CARD_WIDTH = 300;
 
-  // 🧠 Validar si mostrar NSS (solo alumnos)
+  //  Validar si mostrar NSS (solo alumnos)
   const mostrarNSS = datos?.tipoPersona === "Alumno";
 
   return (
@@ -23,7 +23,7 @@ const CredencialBack = ({ datos }) => {
         </div>
       </div>
 
-      {/* 🆕 NSS SOLO SI ES ALUMNO */}
+      {/* NSS SOLO SI ES ALUMNO */}
       {mostrarNSS && (
         <div className="flex justify-center text-sm mt-3">
           <div className="flex flex-col items-center">
