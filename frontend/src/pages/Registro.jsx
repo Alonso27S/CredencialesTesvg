@@ -690,11 +690,8 @@ const Registro = ({ importado, onBack }) => {
 
           {/* RFC */}
           <div>
-            <label className="font-medium" translate="no">
-              RFC
-              </label>
+            <label className="font-medium">RFC</label>
             <input
-            translate="no"
               name="rfc"
               value={form.rfc}
               onChange={handleChange}
@@ -782,7 +779,7 @@ const Registro = ({ importado, onBack }) => {
 
           {/* NSS */}
           <div className="col-span-2">
-            <label className="font-medium" translate="no">Número de Seguro Social</label>
+            <label className="font-medium">Número de Seguro Social</label>
 
             <input
               name="numeroSeguroSocial"
@@ -912,7 +909,7 @@ const Registro = ({ importado, onBack }) => {
           <div className="col-span-2 mt-4">
             <button
               onClick={handleSubmit}
-              //  BLOQUEO TOTAL DEL BOTÓN
+              // 🔒 BLOQUEO TOTAL DEL BOTÓN
               disabled={loading || !isFormValid()}
               // Tooltip UX
               title={
