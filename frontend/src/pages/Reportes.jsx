@@ -126,10 +126,10 @@ const Reportes = ({ onBack }) => {
           >
             <option value="">Selecciona...</option>
             <option value="Arquitectura">Arquitectura</option>
-            <option value="Administracion">Administracion</option>
+            <option value="Administracion">Administración</option>
             <option value="Turismo">Turismo</option>
-            <option value="Igenieria Sistemas Compuatcionales">
-              Igenieria Sistemas Compuatcionales
+            <option value="Igenieria Sistemas Computacionales">
+              Igenieria Sistemas Computacionales
             </option>
             <option value="Ingenieria Electronica">
               Ingenieria Electronica
@@ -138,10 +138,10 @@ const Reportes = ({ onBack }) => {
               Ingenieria Industrial
             </option>
             <option value="Ingenieria en Indrustrias Alimentarias">
-              Ingenieria en Indrustrias Alimentarias
+              Ingeniería en Industrias Alimentarias
             </option>
             <option value="Ingenieria en Innovacion Agricola Sustentable">
-              Ingenieria en Innovacion Agricola Sustentable
+              Ingenieria en Inovacion Agricola Sustentable
             </option>
           </select>
         </div>

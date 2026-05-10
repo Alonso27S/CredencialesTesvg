@@ -3,11 +3,11 @@ import bcrypt from "bcryptjs";
 
 const generarHash = async () => {
   try {
-    const password = "LINETE2#"  //  Cambia esta contraseña por la que quieres
+    const password = "Maria7$"  //  Contraseña nueva
 
     console.log(" Generando hash para:", password);
 
-    const saltRounds = 10; // Recomendado
+    const saltRounds = 10; // 
     const hash = await bcrypt.hash(password, saltRounds);
 
     console.log("HASH GENERADO:");
