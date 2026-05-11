@@ -74,7 +74,7 @@ const Reportes = ({ onBack }) => {
             <option value="Ingenieria Sistemas Computacionales">Ingenieria en Sistemas Computacionales</option>
             <option value="Ingenieria Electronica">Ingenieria Electronica</option>
             <option value="Ingenieria Industrial">Ingenieria Industrial</option>
-            <option value="Ingenieria en Indrustrias Alimentarias">Ingenieria en Industrias Alimentarias</option>
+            <option value="Ingenieria en Industrias Alimentarias">Ingenieria en Industrias Alimentarias</option>
             <option value="Ingenieria en Inovacion Agricola Sustentable">Ingenieria en Inovacion Agricola Sustentable </option>
             
           </select>
