@@ -83,7 +83,7 @@ const Buscar = ({ onBack }) => {
             type="text"
             placeholder="Nombre,Número de control o correo"
             className="w-full outline-none"
-            value={numeroidentificador}
+            value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
           />
         </div>
