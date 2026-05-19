@@ -61,7 +61,7 @@ export const buscarUsuario = async (req, res) => {
     }
 
     baseQuery += ` ORDER BY u.nombre ASC`;
-    
+    console.log(baseQuery)
 
     const result = await pool.query(baseQuery, values);
 
