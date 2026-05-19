@@ -43,7 +43,8 @@ export const buscarUsuario = async (req, res) => {
     // Buscar por número identificador (Número de Control o Matrícula)
     if (busqueda) {
       baseQuery += ` 
-      AND numeroidentificador ILIKE $${contador}
+      AND (
+      U.numeroidentificador ILIKE $${contador}
       OR u.nombre ILIKE $${contador}
       OR u.apellidop ILIKE $${contador}
       OR u.apellidom ILIKE $${contador}
@@ -52,7 +53,7 @@ export const buscarUsuario = async (req, res) => {
                 u.apellidop,' ',
                 u.apellidom
              ) ILIKE $${contador}
-      OR u.correoelectronico ILIKE $${contador}
+      OR u.correo ILIKE $${contador}
     )
     `;
      values.push(`%${busqueda}%`);
