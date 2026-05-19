@@ -12,7 +12,7 @@ import axios from "axios";
 const Buscar = ({ onBack }) => {
 
   // Estado que almacena el número identificador ingresado por el usuario
-  const [numeroidentificador, setNumeroidentificador] = useState("");
+  const [busqueda, setBusqueda] = useState("");
 
   // Estado que almacena los resultados obtenidos del backend
   const [resultados, setResultados] = useState([]);
@@ -24,8 +24,8 @@ const Buscar = ({ onBack }) => {
       const params = {};
 
       // Si existe un número identificador, se agrega a los parámetros
-      if (numeroidentificador)
-        params.numeroidentificador = numeroidentificador;
+      if (busqueda)
+        params.busqueda = busqueda;
 
       // Petición GET al endpoint de búsqueda
       const response = await axios.get(
@@ -42,8 +42,9 @@ const Buscar = ({ onBack }) => {
       alert("Ocurrió un error al buscar usuarios");
     }
   };
-
+//Renovar credencial
      const renovar = async (id) => {
+
     await axios.put(`https://credencialestesvg.com.mx/api/credencial/renovar/${id}`);
     buscar();
   };
@@ -80,10 +81,10 @@ const Buscar = ({ onBack }) => {
           <Search className="text-gray-500 mr-2" size={20} />
           <input
             type="text"
-            placeholder="ej. 2021123005"
+            placeholder="Nombre,Número de control o correo"
             className="w-full outline-none"
             value={numeroidentificador}
-            onChange={(e) => setNumeroidentificador(e.target.value)}
+            onChange={(e) => setBusqueda(e.target.value)}
           />
         </div>
 
@@ -97,19 +98,18 @@ const Buscar = ({ onBack }) => {
       </div>
 
       {/* TABLA DE RESULTADOS */}
-      <div className="overflow-x-auto mt-4">
-        <table className="w-full border-collapse border border-gray-300 rounded-xl overflow-hidden">
+      <div className="w-full overflow-x-auto rounded-2xl shadow-md border border-gray-200 mt-4">
+        <table className="min-w-[1000px] w-full text-sm md:text-base border-collapse">
 
           {/* Encabezado de la tabla */}
           <thead className="bg-gray-200 text-left">
             <tr>
-              <th className="px-4 py-2 border">ID</th>
-              <th className="px-4 py-2 border">Nombre Completo</th>
-              <th className="px-4 py-2 border">Carrera</th>
-              <th className="px-4 py-2 border">Tipo</th>
-              <th className="px-4 py-2 border">Fecha de Vigencia</th>
-              <th className="px-4 py-2 border">Estado</th>
-              <th className="px-4 py-2 border">Credencial</th>
+              <th className="px-4 py-3 text-left">Nombre Completo</th>
+              <th className="px-4 py-3 text-left">Area</th>
+              <th className="px-4 py-3 text-left">Tipo</th>
+              <th className="px-4 py-3 text-left">Correo</th>
+              <th className="px-4 py-3 text-left">Estado</th>
+              <th className="px-4 py-3 text-left">Credencial</th>
             </tr>
           </thead>
 
@@ -121,7 +121,7 @@ const Buscar = ({ onBack }) => {
               <tr>
                 <td
                   colSpan="5"
-                  className="px-4 py-2 border text-center text-gray-500"
+                  className="px-4 py-3 text-left text-center text-gray-500"
                 >
                   No hay resultados
                 </td>
@@ -130,20 +130,26 @@ const Buscar = ({ onBack }) => {
 
               // Renderiza cada resultado recibido
               resultados.map((user) => (
-                <tr key={user.id}>
-                  <td className="px-4 py-2 border font-semibold">
-                    {user.id}
-                  </td>
-                  <td className="px-4 py-2 border">
+                 <tr
+                  key={user.id}
+                  className="border-b hover:bg-gray-50 transition-all duration-200"
+                >
+                  {/* NOMBRE */}
+                  <td className="px-4 py-3 font-medium">
                     {user.nombre} {user.apellidop} {user.apellidom}
                   </td>
-                  <td className="px-4 py-2 border">
+                   {/* Nombre area */}
+                  <td className="px-4 py-3">
                     {user.nombrearea}
                   </td>
-                  <td className="px-4 py-2 border">
+                  <td className="px-4 py-3 text-center">
                     {user.tipopersona}
                   </td>
-                  <td className="px-4 py-2 border text-center font-semibold">
+                  <td className="px-4 py-3 break-all">
+                    {user.correo}
+                  </td>
+                   {/* ESTADO */}
+                  <td className="px-4 py-3 text-left text-center font-semibold">
                     {obtenerEstado(user) === "Vencida" && user.activo ? (
                       <button
                         onClick={() => renovar(user.id)}
@@ -153,11 +159,11 @@ const Buscar = ({ onBack }) => {
                       </button>
                     ) : (
                       <span
-                        className={
+                        className={`font-semibold ${
                           obtenerEstado(user) === "Vigente"
                             ? "text-green-600"
                             : "text-gray-500"
-                        }
+                        }`}
                       >
                         {obtenerEstado(user)}
                       </span>
@@ -165,11 +171,11 @@ const Buscar = ({ onBack }) => {
                   </td>
 
                    {/* CREDENCIAL = SWITCH CON TEXTO */}
-                  <td className="px-4 py-2 border text-center">
+                  <td className="px-4 py-3 text-left text-center">
                     <div
                       onClick={() => cambiarEstado(user.id)}
                       className={`relative mx-auto w-24 h-8 flex items-center rounded-full cursor-pointer transition-all duration-300 ${
-                        user.activo ? "bg-green-500" : "bg-gray-300"
+                        user.activo ? "bg-green-500" : "bg-gray-400"
                       }`}
                     >
                       <div
@@ -188,10 +194,10 @@ const Buscar = ({ onBack }) => {
           </tbody>
         </table>
       </div>
-
+      {/* BOTÓN REGRESAR */}
       <div className="flex justify-end mt-5">
         <button
-          className="bg-gray-300 px-6 py-2 rounded-full font-semibold hover:bg-gray-400"
+          className="bg-gray-300 px-6 py-2 rounded-full font-semibold hover:bg-gray-400 transition"
           onClick={onBack}
         >
           Regresar

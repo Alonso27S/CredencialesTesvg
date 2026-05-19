@@ -5,7 +5,7 @@ import { pool } from "../db.js";
 export const buscarUsuario = async (req, res) => {
   try {
     // Se extraen los posibles filtros enviados por query params
-    const { numeroidentificador} = req.query;
+    const { busqueda } = req.query;
 
     // Consulta base
     // WHERE 1=1 se usa para poder concatenar filtros fácilmente con AND
@@ -15,6 +15,8 @@ export const buscarUsuario = async (req, res) => {
         u.nombre, 
         u.apellidop, 
         u.apellidom, 
+        u.correo,
+        u.numeroidentificador,
         u.tipopersona, 
         u.nombrearea, 
         c.fechavigencia,
@@ -23,7 +25,7 @@ export const buscarUsuario = async (req, res) => {
       FROM usuarios u
       LEFT JOIN registro r ON r.id_usuarios = u.id
       LEFT JOIN LATERAL (
-          SELECT fechavigencia
+          SELECT fechavigencia, activo
           FROM credencial
           WHERE id_registro = r.id
           ORDER BY id DESC
@@ -39,11 +41,26 @@ export const buscarUsuario = async (req, res) => {
     let contador = 1;
 
     // Buscar por número identificador (Número de Control o Matrícula)
-    if (numeroidentificador) {
-      baseQuery += ` AND numeroidentificador = $${contador}`;
-      values.push(numeroidentificador);
+    if (busqueda) {
+      baseQuery += ` 
+      AND numeroidentificador ILIKE $${contador}
+      OR u.nombre ILIKE $${contador}
+      OR u.apellidop ILIKE $${contador}
+      OR u.apellidom ILIKE $${contador}
+      OR CONCAT(
+                u.nombre,' ',
+                u.apellidop,' ',
+                u.apellidom
+             ) ILIKE $${contador}
+      OR u.correoelectronico ILIKE $${contador}
+    )
+    `;
+     values.push(`%${busqueda}%`);
       contador++;
     }
+
+    baseQuery += ` ORDER BY u.nombre ASC`;
+    
 
     const result = await pool.query(baseQuery, values);
 
