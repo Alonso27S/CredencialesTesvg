@@ -4,14 +4,19 @@ import axios from "axios";
 
 
 const EditarUsuario = ({ usuario, onBack }) => {
-if (!usuario) {
-  return <div>No hay usuario seleccionado</div>;
-}
+
   const [nombre, setNombre] = useState(usuario.nombre);
   const [apellidop, setApellidop] = useState(usuario.apellidop);
   const [apellidom, setApellidom] = useState(usuario.apellidom);
   const [correo, setCorreo] = useState(usuario.correo);
-  const [numeroidentificador, setNumeroidentificador] = useState(usuario.numeroidentificador);
+  const [numeroidentificador, setNumeroidentificador] = useState(
+    usuario?.numeroidentificador || ""
+  );
+
+  if (!usuario) {
+    return <div>No hay usuario seleccionado</div>;
+  }
+
 
   const guardarCambios = async () => {
 
