@@ -14,7 +14,8 @@ const EditarUsuario = ({ usuario, onBack }) => {
     try {
 
       await axios.put(
-        `https://credencialestesvg.com.mx/api
+        `https://credencialestesvg.com.mx/api/edusuarios/${usuario.id}`,
+        
         {
           nombre,
           apellidop,
