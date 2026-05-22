@@ -173,34 +173,37 @@ const Buscar = ({ onBack, onEditar }) => {
                   </td>
 
                    {/* CREDENCIAL = SWITCH CON TEXTO */}
-                  <td className="px-4 py-3 text-left text-center">
-                    <div
-                      onClick={() => cambiarEstado(user.id)}
-                      className={`relative mx-auto w-24 h-8 flex items-center rounded-full cursor-pointer transition-all duration-300 ${
-                        user.activo ? "bg-green-500" : "bg-gray-400"
-                      }`}
-                    >
-                      <div
-                        className={`absolute w-7 h-7 bg-white rounded-full shadow-md transform transition-all duration-300 ${
-                          user.activo ? "translate-x-16" : "translate-x-1"
-                        }`}
-                      />
-                      <span className="absolute w-full text-xs font-bold text-white text-center">
-                        {user.activo ? "Activa" : "Inactiva"}
-                      </span>
-                    </div>
+                  <td className="px-4 py-3 text-center">
 
-                     {/* BOTÓN EDITAR */}
+                        <div
+                          onClick={() => cambiarEstado(user.id)}
+                          className={`relative mx-auto w-24 h-8 flex items-center rounded-full cursor-pointer transition-all duration-300 ${
+                            user.activo ? "bg-green-500" : "bg-gray-400"
+                          }`}
+                        >
+                          <div
+                            className={`absolute w-7 h-7 bg-white rounded-full shadow-md transform transition-all duration-300 ${
+                              user.activo ? "translate-x-16" : "translate-x-1"
+                            }`}
+                          />
 
-                  
-                      <button
-                      onClick={() => onEditar(user)}
-                       className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-lg"
-                      >
-                         Editar Usuario
-                      </button>
-                    
-                  </td>
+                          <span className="absolute w-full text-xs font-bold text-white text-center">
+                            {user.activo ? "Activa" : "Inactiva"}
+                          </span>
+                        </div>
+
+                      </td>
+
+                      <td className="px-4 py-3 text-center">
+
+                        <button
+                          onClick={() => onEditar(user)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-lg"
+                        >
+                          Editar Usuario
+                        </button>
+
+                      </td>
                 </tr>
               ))
             )}

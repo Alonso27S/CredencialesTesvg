@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const EditarUsuario = ({ usuario, onBack }) => {
 
+
+const EditarUsuario = ({ usuario, onBack }) => {
+if (!usuario) {
+  return <div>No hay usuario seleccionado</div>;
+}
   const [nombre, setNombre] = useState(usuario.nombre);
   const [apellidop, setApellidop] = useState(usuario.apellidop);
   const [apellidom, setApellidom] = useState(usuario.apellidom);
@@ -15,7 +19,7 @@ const EditarUsuario = ({ usuario, onBack }) => {
 
       await axios.put(
         `https://credencialestesvg.com.mx/api/edusuarios/${usuario.id}`,
-        
+
         {
           nombre,
           apellidop,
