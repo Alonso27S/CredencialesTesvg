@@ -1,6 +1,6 @@
 import { pool } from "../db.js";
 
-export const actualizarUsuario = async (req, res) => {
+export const edusuarios = async (req, res) => {
 
   try {
 

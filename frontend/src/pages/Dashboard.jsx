@@ -254,7 +254,7 @@ const Dashboard = ({ userData, onLogout }) => {
                   onBack={() => setActiveModule("inicio")}
                   onEditar={(user) => {
                     setUsuarioEditar(user);
-                    setActiveModule("editarUsuario");
+                    setActiveModule("EditarUsuario");
                   }}
                 />
               )}

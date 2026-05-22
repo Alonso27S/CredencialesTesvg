@@ -192,14 +192,14 @@ const Buscar = ({ onBack, onEditar }) => {
 
                      {/* BOTÓN EDITAR */}
 
-                    <td className="px-4 py-2 border text-center">
+                  
                       <button
                       onClick={() => onEditar(user)}
                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-lg"
                       >
                          Editar Usuario
                       </button>
-                    </td>
+                    
                   </td>
                 </tr>
               ))
