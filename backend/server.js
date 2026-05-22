@@ -16,10 +16,12 @@ import importacionRoutes from "./routes/importacion.routes.js";
 import credencialRoutes from "./routes/credencial.routes.js";
 import reportesRoutes from "./routes/reportes.js";
 
+import edusuariosRoutes from "./routes/edusuarios.routes.js";
 
 
 import path from "path";
 import { fileURLToPath } from "url";
+import EditarUsuario from "../frontend/src/components/EditarUsuario.jsx";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,6 +35,7 @@ app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/edusuarios", edusuariosRoutes);
 app.use("/api/gestores", gestoresRoutes);
 app.use("/api", authRoutes);
 app.use("/api", tokenRoutes); // <<--- CORRECTO
@@ -47,6 +50,7 @@ app.use("/api", gestorRoutes);
 app.use("/api", qrRoutes);
 app.use("/api/credencial", credencialRoutes);
 app.use("/api/reportes", reportesRoutes);
+
 
 
 

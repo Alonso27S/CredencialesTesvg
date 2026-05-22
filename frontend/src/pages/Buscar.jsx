@@ -9,7 +9,7 @@ import axios from "axios";
 
 // Componente Buscar
 // Recibe la función onBack como prop para regresar al módulo anterior
-const Buscar = ({ onBack }) => {
+const Buscar = ({ onBack, onEditar }) => {
 
   // Estado que almacena el número identificador ingresado por el usuario
   const [busqueda, setBusqueda] = useState("");
@@ -110,6 +110,7 @@ const Buscar = ({ onBack }) => {
               <th className="px-4 py-3 text-left">Correo</th>
               <th className="px-4 py-3 text-left">Estado</th>
               <th className="px-4 py-3 text-left">Credencial</th>
+              <th className="px-4 py-3 text-left">Editar</th>
             </tr>
           </thead>
 
@@ -133,6 +134,7 @@ const Buscar = ({ onBack }) => {
                  <tr
                   key={user.id}
                   className="border-b hover:bg-gray-50 transition-all duration-200"
+                  
                 >
                   {/* NOMBRE */}
                   <td className="px-4 py-3 font-medium">
@@ -187,6 +189,17 @@ const Buscar = ({ onBack }) => {
                         {user.activo ? "Activa" : "Inactiva"}
                       </span>
                     </div>
+
+                     {/* BOTÓN EDITAR */}
+
+                    <td className="px-4 py-2 border text-center">
+                      <button
+                      onClick={() => onEditar(user)}
+                       className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-lg"
+                      >
+                         Editar Usuario
+                      </button>
+                    </td>
                   </td>
                 </tr>
               ))

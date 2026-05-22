@@ -31,6 +31,7 @@ import Reportes from "./Reportes";
 import Perfil from "./Perfil";
 import Registro from "./Registro";
 import Visitas from "./Visitas";
+import EditarUsuario from "../components/EditarUsuario";
 
 /**
  * COMPONENTE: Dashboard
@@ -53,6 +54,8 @@ const Dashboard = ({ userData, onLogout }) => {
 
   const [registroImportado, setRegistroImportado] = useState(null);
 
+  const [usuarioEditar, setUsuarioEditar] = useState(null);
+
   // Controla apertura del menú lateral
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -65,6 +68,7 @@ const Dashboard = ({ userData, onLogout }) => {
 
   // Referencia para detectar clics fuera del menú de usuario
   const userMenuRef = useRef(null);
+
   /* =========================
    ABRIR REGISTRO AUTOMÁTICO
 ========================= */
@@ -246,8 +250,14 @@ const Dashboard = ({ userData, onLogout }) => {
           {/* Render dinámico de módulos */}
           {activeModule === "inicio" && <Inicio />}
           {activeModule === "buscar" && (
-            <Buscar onBack={() => setActiveModule("inicio")} />
-          )}
+                <Buscar
+                  onBack={() => setActiveModule("inicio")}
+                  onEditar={(user) => {
+                    setUsuarioEditar(user);
+                    setActiveModule("editarUsuario");
+                  }}
+                />
+              )}
           {activeModule === "gestores" && (
             <AdminGestores onBack={() => setActiveModule("inicio")} />
           )}
@@ -276,6 +286,13 @@ const Dashboard = ({ userData, onLogout }) => {
 
           {activeModule === "visitas" && <Visitas />}
           {activeModule === "perfil" && <Perfil userId={userId} />}
+          {activeModule === "editarUsuario" && (
+              <EditarUsuario
+                usuario={usuarioEditar}
+                onBack={() => setActiveModule("buscar")}
+              />
+            )}
+
         </main>
 
         {/* =========================
