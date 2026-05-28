@@ -1,11 +1,11 @@
 import express from "express";
 
 import {
-  actualizarUsuario
+  edusuarios
 } from "../controllers/edusuarios.controller.js";
 
 const router = express.Router();
 
-router.put("/:id", actualizarUsuario);
+router.put("/:id", edusuarios);
 
 export default router;

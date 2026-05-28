@@ -98,19 +98,19 @@ const Buscar = ({ onBack, onEditar }) => {
       </div>
 
       {/* TABLA DE RESULTADOS */}
-      <div className="w-full overflow-x-auto rounded-2xl shadow-md border border-gray-200 mt-4">
-        <table className="min-w-[1000px] w-full text-sm md:text-base border-collapse">
+      <div className="w-full rounded-2xl shadow-md border border-gray-200 mt-4 overflow-hidden">
+        <table className="w-full table-fixed text-[10px] sm:text-xs md:text-sm lg:text-base">
 
           {/* Encabezado de la tabla */}
           <thead className="bg-gray-200 text-left">
             <tr>
-              <th className="px-4 py-3 text-left">Nombre Completo</th>
-              <th className="px-4 py-3 text-left">Area</th>
-              <th className="px-4 py-3 text-left">Tipo</th>
-              <th className="px-4 py-3 text-left">Correo</th>
-              <th className="px-4 py-3 text-left">Estado</th>
-              <th className="px-4 py-3 text-left">Credencial</th>
-              <th className="px-4 py-3 text-left">Editar</th>
+              <th className="px-2 sm:px-3 md:px-4 py-2 break-words">Nombre Completo</th>
+              <th className="px-2 sm:px-3 md:px-4 py-2 break-words">Area</th>
+              <th className="px-2 sm:px-3 md:px-4 py-2 break-words">Tipo</th>
+              <th className="px-2 sm:px-3 md:px-4 py-2 break-words">Correo</th>
+              <th className="px-2 sm:px-3 md:px-4 py-2 break-words">Estado</th>
+              <th className="px-2 sm:px-3 md:px-4 py-2 break-words">Credencial</th>
+              <th className="px-2 sm:px-3 md:px-4 py-2 break-words">Editar</th>
             </tr>
           </thead>
 
@@ -122,7 +122,7 @@ const Buscar = ({ onBack, onEditar }) => {
               <tr>
                 <td
                   colSpan="5"
-                  className="px-4 py-3 text-left text-center text-gray-500"
+                  className="px-2 sm:px-3 md:px-4 py-2 break-words text-center text-gray-500"
                 >
                   No hay resultados
                 </td>
@@ -151,7 +151,7 @@ const Buscar = ({ onBack, onEditar }) => {
                     {user.correo}
                   </td>
                    {/* ESTADO */}
-                  <td className="px-4 py-3 text-left text-center font-semibold">
+                  <td className="px-2 sm:px-3 md:px-4 py-2 break-words text-center font-semibold">
                     {obtenerEstado(user) === "Vencida" && user.activo ? (
                       <button
                         onClick={() => renovar(user.id)}
@@ -173,34 +173,37 @@ const Buscar = ({ onBack, onEditar }) => {
                   </td>
 
                    {/* CREDENCIAL = SWITCH CON TEXTO */}
-                  <td className="px-4 py-3 text-left text-center">
-                    <div
-                      onClick={() => cambiarEstado(user.id)}
-                      className={`relative mx-auto w-24 h-8 flex items-center rounded-full cursor-pointer transition-all duration-300 ${
-                        user.activo ? "bg-green-500" : "bg-gray-400"
-                      }`}
-                    >
-                      <div
-                        className={`absolute w-7 h-7 bg-white rounded-full shadow-md transform transition-all duration-300 ${
-                          user.activo ? "translate-x-16" : "translate-x-1"
-                        }`}
-                      />
-                      <span className="absolute w-full text-xs font-bold text-white text-center">
-                        {user.activo ? "Activa" : "Inactiva"}
-                      </span>
-                    </div>
+                  <td className="px-4 py-3 text-center">
 
-                     {/* BOTÓN EDITAR */}
+                        <div
+                          onClick={() => cambiarEstado(user.id)}
+                          className={`relative mx-auto w-16 sm:w-20 md:w-24 h-7 flex items-center rounded-full cursor-pointer transition-all duration-300 ${
+                            user.activo ? "bg-green-500" : "bg-gray-400"
+                          }`}
+                        >
+                          <div
+                            className={`absolute w-7 h-7 bg-white rounded-full shadow-md transform transition-all duration-300 ${
+                              user.activo ? "translate-x-16" : "translate-x-1"
+                            }`}
+                          />
 
-                    <td className="px-4 py-2 border text-center">
-                      <button
-                      onClick={() => onEditar(user)}
-                       className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-lg"
-                      >
-                         Editar Usuario
-                      </button>
-                    </td>
-                  </td>
+                          <span className="absolute w-full text-xs font-bold text-white text-center">
+                            {user.activo ? "Activa" : "Inactiva"}
+                          </span>
+                        </div>
+
+                      </td>
+
+                      <td className="px-4 py-3 text-center">
+
+                        <button
+                          onClick={() => onEditar(user)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-lg"
+                        >
+                          Editar Usuario
+                        </button>
+
+                      </td>
                 </tr>
               ))
             )}

@@ -254,7 +254,7 @@ const Dashboard = ({ userData, onLogout }) => {
                   onBack={() => setActiveModule("inicio")}
                   onEditar={(user) => {
                     setUsuarioEditar(user);
-                    setActiveModule("editarUsuario");
+                    setActiveModule("EditarUsuario");
                   }}
                 />
               )}
@@ -286,7 +286,7 @@ const Dashboard = ({ userData, onLogout }) => {
 
           {activeModule === "visitas" && <Visitas />}
           {activeModule === "perfil" && <Perfil userId={userId} />}
-          {activeModule === "editarUsuario" && (
+          {activeModule === "EditarUsuario" && (
               <EditarUsuario
                 usuario={usuarioEditar}
                 onBack={() => setActiveModule("buscar")}

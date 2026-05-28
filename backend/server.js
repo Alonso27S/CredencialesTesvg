@@ -22,7 +22,7 @@ import verificarRoutes from "./routes/verificar.routes.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
-import EditarUsuario from "../frontend/src/components/EditarUsuario.jsx";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
