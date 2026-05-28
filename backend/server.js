@@ -19,6 +19,7 @@ import reportesRoutes from "./routes/reportes.js";
 import edusuariosRoutes from "./routes/edusuarios.routes.js";
 import verificarRoutes from "./routes/verificarA.routes.js";
 
+
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -50,7 +51,7 @@ app.use("/api", gestorRoutes);
 app.use("/api", qrRoutes);
 app.use("/api/credencial", credencialRoutes);
 app.use("/api/reportes", reportesRoutes);
-
+app.use("/api/verificar", verificarRoutes);
 
 
 
