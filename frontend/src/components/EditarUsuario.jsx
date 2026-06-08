@@ -7,7 +7,7 @@ import axios from "axios";
 
 const EditarUsuario = ({ usuario, onBack }) => {
 const idrolUsuario = localStorage.getItem("id_rol");
-console.log("ROL:", rolUsuario);
+console.log("ROL:", idrolUsuario);
 
   const [nombre, setNombre] = useState(usuario.nombre);
   const [apellidop, setApellidop] = useState(usuario.apellidop);
