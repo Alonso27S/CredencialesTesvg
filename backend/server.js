@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import registroRoutes from "./routes/registro.js";
-import qrRoutes from "./routes/qr.routes.js";
+
 
 import authRoutes from "./routes/auth.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
@@ -41,7 +41,7 @@ app.use("/api/gestores", gestoresRoutes);
 app.use("/api", authRoutes);
 app.use("/api", tokenRoutes); // <<--- CORRECTO
 app.use("/api/registro", registroRoutes);
-app.use("/api/qr", qrRoutes);
+
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/buscar", buscarRoutes);
 app.use("/api/usuarios", usuariosRoutes);
