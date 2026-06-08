@@ -2,6 +2,7 @@ import { pool } from "../db.js";
 
 export const verificarQR = async (req, res) => {
 
+    console.log("******** VERIFICAR CONTROLLER EJECUTADO ********");
     try {
 
         const { qr } = req.body;
