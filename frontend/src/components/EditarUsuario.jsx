@@ -6,7 +6,7 @@ import axios from "axios";
   
 
 const EditarUsuario = ({ usuario, onBack }) => {
-const rolUsuario = localStorage.getItem("rol");
+const idrolUsuario = localStorage.getItem("id_rol");
 console.log("ROL:", rolUsuario);
 
   const [nombre, setNombre] = useState(usuario.nombre);
@@ -243,7 +243,7 @@ console.log("ROL:", rolUsuario);
 
       {/* SEGURIDAD */}
 
-      {rolUsuario === "sepueradmin" && (
+      {idrolUsuario === "1" && (
 
         <>
           <div className="border-b pb-2 mt-10 mb-6">
