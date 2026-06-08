@@ -3,14 +3,10 @@ import axios from "axios";
 
 
 
+  
+
 const EditarUsuario = ({ usuario, onBack }) => {
-
-  if (!usuario) {
-    return  <div>No hay usuario seleccionado</div>;
-
-  }
-   const rolUsuario = localStorage.getItem("rol");
-
+const rolUsuario = localStorage.getItem("rol");
   const [nombre, setNombre] = useState(usuario.nombre);
   const [apellidop, setApellidop] = useState(usuario.apellidop);
   const [apellidom, setApellidom] = useState(usuario.apellidom);
@@ -28,6 +24,11 @@ const EditarUsuario = ({ usuario, onBack }) => {
   );
    const [nuevaPassword, setNuevaPassword] = useState("");
   const [confirmarPassword, setConfirmarPassword] = useState(""); 
+
+  if (!usuario) {
+    return  <div>No hay usuario seleccionado</div>;
+
+  }
 
   const guardarCambios = async () => {
 
@@ -51,7 +52,7 @@ const EditarUsuario = ({ usuario, onBack }) => {
           rfc,
           area,
           puesto,
-          tipodeidentificador,
+          tipoidentificador,
           nuevaPassword
         }
       );
