@@ -6,96 +6,81 @@ export const verificarQR = async (req, res) => {
 
         const { qr } = req.body;
 
-        // VALIDAR QR
         if (!qr) {
 
             return res.status(400).json({
-
                 message: "QR requerido"
-
             });
         }
 
-        // CONSULTA
         const consulta = await pool.query(
-
             `
             SELECT
 
-                r.nombre,
-                r.apellidop,
-                r.apellidom,
-                r.numeroidentificador,
+                u.id,
+                u.nombre,
+                u.apellidop,
+                u.apellidom,
+                u.numeroidentificador,
+                u.nombrearea,
+                u.fotourl,
 
-                c.fecha_emision,
-                c.fecha_vigencia,
-                c.qr_encriptado,
-                c.has_verificacion,
-                c.activo
+                c.activo,
+                c.fechaemision,
+                c.fechavigencia
 
             FROM credencial c
 
             INNER JOIN registro r
-            ON r.id = c.id_registro
+                ON r.id = c.id_registro
 
-            WHERE c.qr_encriptado = $1
+            INNER JOIN usuarios u
+                ON u.id = r.id_usuarios
+
+            WHERE c.qr = $1
             `,
             [qr]
-
         );
 
-        // SI NO EXISTE
         if (consulta.rows.length === 0) {
 
             return res.status(404).json({
-
                 message: "Credencial no encontrada"
-
             });
         }
 
-        // DATOS
         const usuario = consulta.rows[0];
 
-        // RESPUESTA
         res.json({
 
-            nombre:
-                usuario.nombre,
-
-            apellidoPaterno:
-                usuario.apellidop,
-
-            apellidoMaterno:
-                usuario.apellidom,
+            nombreCompleto:
+                `${usuario.nombre} ${usuario.apellidop} ${usuario.apellidom}`,
 
             numeroControl:
                 usuario.numeroidentificador,
 
-            fecha_emision:
-                usuario.fecha_emision,
+            area:
+                usuario.nombrearea,
 
-            fecha_vigencia:
-                usuario.fecha_vigencia,
+            foto:
+                usuario.fotourl,
 
             activo:
                 usuario.activo,
 
-            verificado:
-                usuario.has_verificacion
+            fechaEmision:
+                usuario.fechaemision,
 
+            fechaVigencia:
+                usuario.fechavigencia
         });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
         res.status(500).json({
-
             message: "Error interno del servidor"
-
         });
     }
 };
