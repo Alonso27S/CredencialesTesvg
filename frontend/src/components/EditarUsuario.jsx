@@ -36,10 +36,10 @@ console.log("ROL:", rolUsuario);
 
     try {
 
-      if (rolUsuario === "superadmin" 
+      if (idrolUsuario === "1" 
         && nuevaPassword && nuevaPassword !== confirmarPassword) {
           alert("Las contraseñas no coinciden");
-
+            return;
       }
       await axios.put(
         `https://credencialestesvg.com.mx/api/edusuarios/${usuario.id}`,
