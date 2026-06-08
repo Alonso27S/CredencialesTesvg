@@ -17,6 +17,7 @@ import credencialRoutes from "./routes/credencial.routes.js";
 import reportesRoutes from "./routes/reportes.js";
 
 import edusuariosRoutes from "./routes/edusuarios.routes.js";
+import verificarRoutes from "./routes/verificar.routes.js";
 
 
 import path from "path";
@@ -50,6 +51,8 @@ app.use("/api", gestorRoutes);
 app.use("/api", qrRoutes);
 app.use("/api/credencial", credencialRoutes);
 app.use("/api/reportes", reportesRoutes);
+app.use("/api", verificarRoutes);
+
 
 
 
