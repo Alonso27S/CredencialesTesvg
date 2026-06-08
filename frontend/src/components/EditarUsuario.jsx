@@ -7,6 +7,7 @@ import axios from "axios";
 
 const EditarUsuario = ({ usuario, onBack }) => {
 const rolUsuario = localStorage.getItem("rol");
+
   const [nombre, setNombre] = useState(usuario.nombre);
   const [apellidop, setApellidop] = useState(usuario.apellidop);
   const [apellidom, setApellidom] = useState(usuario.apellidom);
@@ -34,7 +35,7 @@ const rolUsuario = localStorage.getItem("rol");
 
     try {
 
-      if (rolUsuario === "Superadministrador" 
+      if (rolUsuario === "Superadmin" 
         && nuevaPassword && nuevaPassword !== confirmarPassword) {
           alert("Las contraseñas no coinciden");
 
