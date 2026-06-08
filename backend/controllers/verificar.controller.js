@@ -6,6 +6,12 @@ export const verificarQR = async (req, res) => {
 
         const { qr } = req.body;
 
+        console.log("================================");
+        console.log("QR RECIBIDO DESDE FLUTTER:");
+        console.log(qr);
+        console.log("LONGITUD:", qr?.length);
+        console.log("================================");
+
         if (!qr) {
 
             return res.status(400).json({
@@ -13,7 +19,13 @@ export const verificarQR = async (req, res) => {
             });
         }
 
+        const qrLimpio = qr.trim();
+
+        console.log("QR LIMPIO:");
+        console.log(qrLimpio);
+
         const consulta = await pool.query(
+
             `
             SELECT
 
@@ -39,13 +51,23 @@ export const verificarQR = async (req, res) => {
 
             WHERE c.qr = $1
             `,
-            [qr]
+            [qrLimpio]
+
         );
+
+        console.log("================================");
+        console.log("RESULTADO QUERY:");
+        console.log(consulta.rows);
+        console.log("TOTAL FILAS:", consulta.rows.length);
+        console.log("================================");
 
         if (consulta.rows.length === 0) {
 
             return res.status(404).json({
-                message: "Credencial no encontrada"
+
+                message: "Credencial no encontrada",
+                qrRecibido: qrLimpio
+
             });
         }
 
@@ -73,14 +95,23 @@ export const verificarQR = async (req, res) => {
 
             fechaVigencia:
                 usuario.fechavigencia
+
         });
 
-    } catch (error) {
+    }
+    catch (error) {
+
+        console.error("ERROR:");
 
         console.error(error);
 
         res.status(500).json({
-            message: "Error interno del servidor"
+
+            message:
+                "Error interno del servidor",
+
+            error:
+                error.message
         });
     }
 };
