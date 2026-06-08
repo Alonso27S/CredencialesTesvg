@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-
-
-  
-
 const EditarUsuario = ({ usuario, onBack }) => {
-const idrolUsuario = localStorage.getItem("id_rol");
+const usuarioSesion = JSON.parse(
+  localStorage.getItem("usuario")
+);
+
+const idrolUsuario = usuarioSesion?.id_rol;
+
 console.log("ROL:", idrolUsuario);
 
   const [nombre, setNombre] = useState(usuario.nombre);
