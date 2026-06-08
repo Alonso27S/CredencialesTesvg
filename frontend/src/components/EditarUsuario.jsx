@@ -35,7 +35,7 @@ const rolUsuario = localStorage.getItem("rol");
 
     try {
 
-      if (rolUsuario === "Superadmin" 
+      if (rolUsuario === "superadmin" 
         && nuevaPassword && nuevaPassword !== confirmarPassword) {
           alert("Las contraseñas no coinciden");
 
