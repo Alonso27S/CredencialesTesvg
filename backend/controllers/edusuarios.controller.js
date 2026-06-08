@@ -1,4 +1,5 @@
 import { pool } from "../db.js";
+import bcrypt from "bcryptjs";
 
 export const edusuarios = async (req, res) => {
 
@@ -11,8 +12,18 @@ export const edusuarios = async (req, res) => {
       apellidop,
       apellidom,
       correo,
-      numeroidentificador
+      numeroidentificador,
+      curp,
+      rfc,
+      tipo,
+      area,
+      puesto,
+      tipoidentificador,
+      nuevaPassword
+
     } = req.body;
+
+    if (!nuevaPassword) {
 
     await pool.query(
       `
@@ -22,18 +33,73 @@ export const edusuarios = async (req, res) => {
         apellidop = $2,
         apellidom = $3,
         correo = $4,
-        numeroidentificador = $5
-      WHERE id = $6
-      `,
+        numeroidentificador = $5,
+        curp = $6,
+        rfc = $7,
+        tipo = $8,
+        area = $9,
+        puesto = $10,
+        tipoidentificador = $11
+        WHERE id = $12
+        `,
       [
         nombre,
         apellidop,
         apellidom,
         correo,
         numeroidentificador,
+        curp,
+        rfc,
+        tipo,
+        area,
+        puesto,
+        tipoidentificador,
         id
-      ]
-    );
+        ]
+      );
+    } else {
+      // Encriptar nueva contraseña
+      const contraseña = await bcrypt.hash(
+        nuevaPassword,
+        10
+      );
+
+      await pool.query(
+        `
+        UPDATE usuarios
+        SET
+          nombre = $1,
+          apellidop = $2,
+          apellidom = $3,
+          correo = $4,
+          numeroidentificador = $5,
+          curp = $6,
+          rfc = $7,
+          tipo = $8,
+          area = $9,
+          puesto = $10,
+          tipoidentificador = $11,
+          contraseña = $12
+        WHERE id = $13
+        `,
+        [
+          nombre,
+          apellidop,
+          apellidom,
+          correo,
+          numeroidentificador,
+          curp,
+          rfc,
+          tipo,
+          area,
+          puesto,
+          tipoidentificador,
+          contraseña,
+          id
+        ]
+      );
+
+    }
 
     res.json({
       success: true,
