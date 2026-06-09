@@ -77,53 +77,52 @@ export const verificarQR = async (req, res) => {
 
         const usuario = consulta.rows[0];
 
+        // Validar credencial activa
+        if (!usuario.activo) {
+
+            return res.status(403).json({
+
+                success: false,
+                message: "Credencial inactiva"
+
+            });
+        }
+
         const idCredencial =
             usuario.id_credencial;
 
-        // ===========================
-        // BUSCAR ÚLTIMO ACCESO
-        // ===========================
+        // ====================================
+        // BUSCAR REGISTRO DEL DÍA
+        // ====================================
 
-        const ultimoAcceso = await pool.query(
+        const accesoHoy = await pool.query(
 
             `
             SELECT *
             FROM registroacceso
             WHERE id_credencial = $1
-            ORDER BY fecha DESC, id DESC
+            AND DATE(fecha) = CURRENT_DATE
+            ORDER BY id DESC
             LIMIT 1
             `,
             [idCredencial]
 
         );
 
-        let movimiento = "ENTRADA";
+        console.log("================================");
+        console.log("ACCESO DEL DÍA:");
+        console.log(accesoHoy.rows);
+        console.log("================================");
 
-        if (ultimoAcceso.rows.length > 0) {
+        let movimiento = "";
 
-            const ultimo =
-                ultimoAcceso.rows[0];
+        // ====================================
+        // NO HAY REGISTRO HOY = ENTRADA
+        // ====================================
 
-            console.log("ÚLTIMO ACCESO:");
-            console.log(ultimo);
+        if (accesoHoy.rows.length === 0) {
 
-            if (
-                ultimo.horasalida === null ||
-                ultimo.horasalida === "00:00:00"
-            ) {
-
-                movimiento = "SALIDA";
-            }
-        }
-
-        console.log("MOVIMIENTO:");
-        console.log(movimiento);
-
-        // ===========================
-        // REGISTRAR ENTRADA
-        // ===========================
-
-        if (movimiento === "ENTRADA") {
+            movimiento = "ENTRADA";
 
             await pool.query(
 
@@ -149,42 +148,80 @@ export const verificarQR = async (req, res) => {
 
             );
 
-            console.log(
-                "ENTRADA REGISTRADA"
-            );
+            console.log("ENTRADA REGISTRADA");
         }
 
-        // ===========================
-        // REGISTRAR SALIDA
-        // ===========================
+        // ====================================
+        // YA HAY REGISTRO HOY
+        // ====================================
 
-        if (movimiento === "SALIDA") {
+        else {
 
-            await pool.query(
+            const registro =
+                accesoHoy.rows[0];
 
-                `
-                UPDATE registroacceso
-                SET
+            console.log("REGISTRO HOY:");
+            console.log(registro);
 
-                    horasalida = CURRENT_TIME,
-                    tipo_acceso = 'SALIDA'
+            // SI NO TIENE SALIDA
+            if (
 
-                WHERE id = $1
-                `,
-                [ultimoAcceso.rows[0].id]
+                registro.horasalida === null ||
 
-            );
+                registro.horasalida === "00:00:00"
 
-            console.log(
-                "SALIDA REGISTRADA"
-            );
+            ) {
+
+                movimiento = "SALIDA";
+
+                await pool.query(
+
+                    `
+                    UPDATE registroacceso
+                    SET
+
+                        horasalida = CURRENT_TIME,
+                        tipo_acceso = 'SALIDA'
+
+                    WHERE id = $1
+                    `,
+                    [registro.id]
+
+                );
+
+                console.log("SALIDA REGISTRADA");
+            }
+
+            // YA TIENE ENTRADA Y SALIDA
+            else {
+
+                console.log(
+                    "YA REGISTRÓ ENTRADA Y SALIDA HOY"
+                );
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message:
+                        "La credencial ya registró entrada y salida el día de hoy",
+
+                    nombreCompleto:
+                        `${usuario.nombre} ${usuario.apellidop} ${usuario.apellidom}`,
+
+                    activo:
+                        usuario.activo
+                });
+            }
         }
 
-        // ===========================
+        // ====================================
         // RESPUESTA A FLUTTER
-        // ===========================
+        // ====================================
 
         res.json({
+
+            success: true,
 
             nombreCompleto:
                 `${usuario.nombre} ${usuario.apellidop} ${usuario.apellidom}`,
@@ -220,6 +257,8 @@ export const verificarQR = async (req, res) => {
         console.error(error);
 
         res.status(500).json({
+
+            success: false,
 
             message:
                 "Error interno del servidor",
