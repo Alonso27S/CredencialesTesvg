@@ -204,7 +204,7 @@ export const verificarQR = async (req, res) => {
                     success: false,
 
                     message:
-                        "La credencial ya registró entrada y salida el día de hoy",
+                        "El usuario excedió el límite de accesos permitidos para el día de hoy",
 
                     nombreCompleto:
                         `${usuario.nombre} ${usuario.apellidop} ${usuario.apellidom}`,
