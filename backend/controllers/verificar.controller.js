@@ -3,6 +3,7 @@ import { pool } from "../db.js";
 export const verificarQR = async (req, res) => {
 
     console.log("******** VERIFICAR CONTROLLER EJECUTADO ********");
+
     try {
 
         const { qr } = req.body;
@@ -29,6 +30,8 @@ export const verificarQR = async (req, res) => {
 
             `
             SELECT
+
+                c.id AS id_credencial,
 
                 u.id,
                 u.nombre,
@@ -74,6 +77,113 @@ export const verificarQR = async (req, res) => {
 
         const usuario = consulta.rows[0];
 
+        const idCredencial =
+            usuario.id_credencial;
+
+        // ===========================
+        // BUSCAR ÚLTIMO ACCESO
+        // ===========================
+
+        const ultimoAcceso = await pool.query(
+
+            `
+            SELECT *
+            FROM registroacceso
+            WHERE id_credencial = $1
+            ORDER BY fecha DESC, id DESC
+            LIMIT 1
+            `,
+            [idCredencial]
+
+        );
+
+        let movimiento = "ENTRADA";
+
+        if (ultimoAcceso.rows.length > 0) {
+
+            const ultimo =
+                ultimoAcceso.rows[0];
+
+            console.log("ÚLTIMO ACCESO:");
+            console.log(ultimo);
+
+            if (
+                ultimo.horasalida === null ||
+                ultimo.horasalida === "00:00:00"
+            ) {
+
+                movimiento = "SALIDA";
+            }
+        }
+
+        console.log("MOVIMIENTO:");
+        console.log(movimiento);
+
+        // ===========================
+        // REGISTRAR ENTRADA
+        // ===========================
+
+        if (movimiento === "ENTRADA") {
+
+            await pool.query(
+
+                `
+                INSERT INTO registroacceso
+                (
+                    fecha,
+                    horaentrada,
+                    horasalida,
+                    tipo_acceso,
+                    id_credencial
+                )
+                VALUES
+                (
+                    CURRENT_TIMESTAMP,
+                    CURRENT_TIME,
+                    '00:00:00',
+                    'ENTRADA',
+                    $1
+                )
+                `,
+                [idCredencial]
+
+            );
+
+            console.log(
+                "ENTRADA REGISTRADA"
+            );
+        }
+
+        // ===========================
+        // REGISTRAR SALIDA
+        // ===========================
+
+        if (movimiento === "SALIDA") {
+
+            await pool.query(
+
+                `
+                UPDATE registroacceso
+                SET
+
+                    horasalida = CURRENT_TIME,
+                    tipo_acceso = 'SALIDA'
+
+                WHERE id = $1
+                `,
+                [ultimoAcceso.rows[0].id]
+
+            );
+
+            console.log(
+                "SALIDA REGISTRADA"
+            );
+        }
+
+        // ===========================
+        // RESPUESTA A FLUTTER
+        // ===========================
+
         res.json({
 
             nombreCompleto:
@@ -95,7 +205,10 @@ export const verificarQR = async (req, res) => {
                 usuario.fechaemision,
 
             fechaVigencia:
-                usuario.fechavigencia
+                usuario.fechavigencia,
+
+            movimiento:
+                movimiento
 
         });
 
