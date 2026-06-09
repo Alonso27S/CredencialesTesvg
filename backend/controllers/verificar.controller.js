@@ -107,19 +107,27 @@ export const verificarQR = async (req, res) => {
         const inicioDiaOperativo =
             new Date();
 
-        const ahora = new Date();
+        inicioDiaOperativo.setHours(
+            6,
+            0,
+            0,
+            0
+        );
 
-const inicioDiaOperativo = new Date();
+        // Si aún no son las 6 AM,
+        // seguimos usando el día anterior
 
-// PRUEBA TEMPORAL
-inicioDiaOperativo.setMinutes(
-    inicioDiaOperativo.getMinutes() - 1
-);
+        if (ahora.getHours() < 6) {
 
-console.log("================================");
-console.log("INICIO DÍA OPERATIVO:");
-console.log(inicioDiaOperativo);
-console.log("================================");
+            inicioDiaOperativo.setDate(
+                inicioDiaOperativo.getDate() - 1
+            );
+        }
+
+        console.log("================================");
+        console.log("INICIO DÍA OPERATIVO:");
+        console.log(inicioDiaOperativo);
+        console.log("================================");
 
         // ====================================
         // BUSCAR ACCESO DEL DÍA OPERATIVO
