@@ -69,7 +69,10 @@ export const verificarQR = async (req, res) => {
 
             return res.status(404).json({
 
+                success: false,
+
                 message: "Credencial no encontrada",
+
                 qrRecibido: qrLimpio
 
             });
@@ -77,12 +80,16 @@ export const verificarQR = async (req, res) => {
 
         const usuario = consulta.rows[0];
 
-        // Validar credencial activa
+        // ====================================
+        // VALIDAR CREDENCIAL ACTIVA
+        // ====================================
+
         if (!usuario.activo) {
 
             return res.status(403).json({
 
                 success: false,
+
                 message: "Credencial inactiva"
 
             });
@@ -92,7 +99,30 @@ export const verificarQR = async (req, res) => {
             usuario.id_credencial;
 
         // ====================================
-        // BUSCAR REGISTRO DEL DÍA
+        // DÍA OPERATIVO (INICIA 06:00 AM)
+        // ====================================
+
+        const ahora = new Date();
+
+        const inicioDiaOperativo =
+            new Date();
+
+        const ahora = new Date();
+
+const inicioDiaOperativo = new Date();
+
+// PRUEBA TEMPORAL
+inicioDiaOperativo.setMinutes(
+    inicioDiaOperativo.getMinutes() - 1
+);
+
+console.log("================================");
+console.log("INICIO DÍA OPERATIVO:");
+console.log(inicioDiaOperativo);
+console.log("================================");
+
+        // ====================================
+        // BUSCAR ACCESO DEL DÍA OPERATIVO
         // ====================================
 
         const accesoHoy = await pool.query(
@@ -101,11 +131,14 @@ export const verificarQR = async (req, res) => {
             SELECT *
             FROM registroacceso
             WHERE id_credencial = $1
-            AND DATE(fecha) = CURRENT_DATE
+            AND fecha >= $2
             ORDER BY id DESC
             LIMIT 1
             `,
-            [idCredencial]
+            [
+                idCredencial,
+                inicioDiaOperativo
+            ]
 
         );
 
@@ -117,7 +150,7 @@ export const verificarQR = async (req, res) => {
         let movimiento = "";
 
         // ====================================
-        // NO HAY REGISTRO HOY = ENTRADA
+        // NO EXISTE REGISTRO EN EL DÍA
         // ====================================
 
         if (accesoHoy.rows.length === 0) {
@@ -148,11 +181,13 @@ export const verificarQR = async (req, res) => {
 
             );
 
-            console.log("ENTRADA REGISTRADA");
+            console.log(
+                "ENTRADA REGISTRADA"
+            );
         }
 
         // ====================================
-        // YA HAY REGISTRO HOY
+        // YA EXISTE REGISTRO
         // ====================================
 
         else {
@@ -163,7 +198,10 @@ export const verificarQR = async (req, res) => {
             console.log("REGISTRO HOY:");
             console.log(registro);
 
-            // SI NO TIENE SALIDA
+            // ============================
+            // REGISTRAR SALIDA
+            // ============================
+
             if (
 
                 registro.horasalida === null ||
@@ -189,10 +227,15 @@ export const verificarQR = async (req, res) => {
 
                 );
 
-                console.log("SALIDA REGISTRADA");
+                console.log(
+                    "SALIDA REGISTRADA"
+                );
             }
 
+            // ============================
             // YA TIENE ENTRADA Y SALIDA
+            // ============================
+
             else {
 
                 console.log(
@@ -209,14 +252,30 @@ export const verificarQR = async (req, res) => {
                     nombreCompleto:
                         `${usuario.nombre} ${usuario.apellidop} ${usuario.apellidom}`,
 
+                    numeroControl:
+                        usuario.numeroidentificador,
+
+                    area:
+                        usuario.nombrearea,
+
+                    foto:
+                        usuario.fotourl,
+
                     activo:
-                        usuario.activo
+                        usuario.activo,
+
+                    fechaEmision:
+                        usuario.fechaemision,
+
+                    fechaVigencia:
+                        usuario.fechavigencia
+
                 });
             }
         }
 
         // ====================================
-        // RESPUESTA A FLUTTER
+        // RESPUESTA EXITOSA
         // ====================================
 
         res.json({
@@ -253,7 +312,6 @@ export const verificarQR = async (req, res) => {
     catch (error) {
 
         console.error("ERROR:");
-
         console.error(error);
 
         res.status(500).json({
