@@ -5,10 +5,11 @@ const EditarUsuario = ({ usuario, onBack }) => {
 const usuarioSesion = JSON.parse(
   localStorage.getItem("usuario")
 );
+console.log("USUARIO SESION:", usuarioSesion);
 
 const idrolUsuario = usuarioSesion?.id_rol;
+console.log("id rol", idrolUsuario);
 
-console.log("ROL:", idrolUsuario);
 
   const [nombre, setNombre] = useState(usuario.nombre);
   const [apellidop, setApellidop] = useState(usuario.apellidop);
@@ -40,6 +41,11 @@ console.log("ROL:", idrolUsuario);
       if (idrolUsuario === "1" 
         && nuevaPassword && nuevaPassword !== confirmarPassword) {
           alert("Las contraseñas no coinciden");
+
+          console.log(
+  "¿Es Superadmin?",
+  String(idrolUsuario) === "1"
+);
             return;
       }
       await axios.put(
@@ -244,7 +250,7 @@ console.log("ROL:", idrolUsuario);
 
       {/* SEGURIDAD */}
 
-      {idrolUsuario === "1" && (
+      {String(idrolUsuario) === "1" && (
 
         <>
           <div className="border-b pb-2 mt-10 mb-6">
