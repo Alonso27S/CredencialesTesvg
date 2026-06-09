@@ -15,9 +15,13 @@ const [correo, setCorreo] = useState(usuario?.correo || "");
 const [numeroidentificador, setNumeroidentificador] = useState(
   usuario?.numeroidentificador || ""
 );
+
+const [numerosegurosocial, setNumeroSeguroSocial] = useState(
+  usuario?.numerosegurosocial || ""
+);
 const [curp, setCurp] = useState(usuario?.curp || "");
 const [rfc, setRfc] = useState(usuario?.rfc || "");
-const [tipopersona, setTipoPersona] = useState(
+const [tipopersona, setTipopersona] = useState(
   usuario?.tipopersona || ""
 );
 const [nombrearea, setNombreArea] = useState(
@@ -171,8 +175,8 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           <label className="font-semibold">Tipo de Usuario (ALUMNO,DOCENTE,ADMINISTRATIVO)</label>
           <input
             type="text"
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
+            value={tipopersona}
+            onChange={(e) => setTipopersona(e.target.value)}
             className="w-full border rounded-lg p-3 mt-1"
           />
         </div>
@@ -181,8 +185,8 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           <label className="font-semibold">Área / Departamento</label>
           <input
             type="text"
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
+            value={nombrearea}
+            onChange={(e) => setNombreArea(e.target.value)}
             className="w-full border rounded-lg p-3 mt-1"
           />
         </div>
