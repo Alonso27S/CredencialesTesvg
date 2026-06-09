@@ -5,29 +5,30 @@ const EditarUsuario = ({ usuario, onBack }) => {
 const usuarioSesion = JSON.parse(
   localStorage.getItem("usuario")
 );
-console.log("USUARIO SESION:", usuarioSesion);
 
 const idrolUsuario = usuarioSesion?.id_rol;
-console.log("id rol", idrolUsuario);
 
-
-  const [nombre, setNombre] = useState(usuario.nombre);
-  const [apellidop, setApellidop] = useState(usuario.apellidop);
-  const [apellidom, setApellidom] = useState(usuario.apellidom);
-  const [correo, setCorreo] = useState(usuario.correo);
-  const [numeroidentificador, setNumeroidentificador] = useState(
-    usuario?.numeroidentificador || ""
-  );
-  const [curp, setCurp] = useState(usuario.curp || "");
-  const [rfc, setRfc] = useState(usuario.rfc || "");
-  const [tipo, setTipo] = useState(usuario.tipo || "");
-  const [area, setArea] = useState(usuario.area || "");
-  const [puesto, setPuesto] = useState(usuario.puesto || "");
-    const [tipoidentificador] = useState(
-    usuario.tipoidentificador || ""
-  );
-   const [nuevaPassword, setNuevaPassword] = useState("");
-  const [confirmarPassword, setConfirmarPassword] = useState(""); 
+const [nombre, setNombre] = useState(usuario?.nombre || "");
+const [apellidop, setApellidop] = useState(usuario?.apellidop || "");
+const [apellidom, setApellidom] = useState(usuario?.apellidom || "");
+const [correo, setCorreo] = useState(usuario?.correo || "");
+const [numeroidentificador, setNumeroidentificador] = useState(
+  usuario?.numeroidentificador || ""
+);
+const [curp, setCurp] = useState(usuario?.curp || "");
+const [rfc, setRfc] = useState(usuario?.rfc || "");
+const [tipopersona, setTipoPersona] = useState(
+  usuario?.tipopersona || ""
+);
+const [nombrearea, setNombreArea] = useState(
+  usuario?.nombrearea || ""
+);
+const [puesto, setPuesto] = useState(usuario?.puesto || "");
+const [tipoidentificador] = useState(
+  usuario?.tipoidentificador || ""
+);
+const [nuevaPassword, setNuevaPassword] = useState("");
+const [confirmarPassword, setConfirmarPassword] = useState(""); 
 
   if (!usuario) {
     return  <div>No hay usuario seleccionado</div>;
@@ -57,9 +58,11 @@ console.log("id rol", idrolUsuario);
           apellidom,
           correo,
           numeroidentificador,
+          numerosegurosocial,
           curp,
           rfc,
-          area,
+          tipopersona,
+          nombrearea,
           puesto,
           tipoidentificador,
           nuevaPassword
@@ -165,7 +168,7 @@ console.log("id rol", idrolUsuario);
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         <div>
-          <label className="font-semibold">Tipo</label>
+          <label className="font-semibold">Tipo de Usuario (ALUMNO,DOCENTE,ADMINISTRATIVO)</label>
           <input
             type="text"
             value={tipo}
@@ -228,25 +231,58 @@ console.log("id rol", idrolUsuario);
             className="w-full border rounded-lg p-3 mt-1 bg-gray-100"
           />
         </div>
+        {tipopersona === "Alumno" ? (
+    <>
+      <div>
+        <label className="font-semibold">
+          Número de Control
+        </label>
 
-        <div>
-          <label className="font-semibold">
-            {tipo === "Alumno"
-              ? "Número de Control"
-              : "Clave ISSEMYM"}
-          </label>
-
-          <input
-            type="text"
-            value={numeroidentificador}
-            onChange={(e) =>
-              setNumeroidentificador(e.target.value)
-            }
-            className="w-full border rounded-lg p-3 mt-1"
-          />
-        </div>
-
+        <input
+          type="text"
+          value={numeroidentificador}
+          onChange={(e) =>
+            setNumeroidentificador(e.target.value)
+          }
+          className="w-full border rounded-lg p-3 mt-1"
+        />
       </div>
+
+      <div>
+        <label className="font-semibold">
+          Número de Seguro Social
+        </label>
+
+        <input
+          type="text"
+          value={numerosegurosocial}
+          onChange={(e) =>
+            setNumeroSeguroSocial(e.target.value)
+          }
+          className="w-full border rounded-lg p-3 mt-1"
+        />
+      </div>
+    </>
+  ) : (
+    <div>
+      <label className="font-semibold">
+        Clave ISSEMYM
+      </label>
+
+      <input
+        type="text"
+        value={numeroidentificador}
+        onChange={(e) =>
+          setNumeroidentificador(e.target.value)
+        }
+        className="w-full border rounded-lg p-3 mt-1"
+      />
+    </div>
+  )}
+
+</div>
+
+        
 
       {/* SEGURIDAD */}
 
