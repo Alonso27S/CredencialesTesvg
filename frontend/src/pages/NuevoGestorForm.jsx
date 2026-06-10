@@ -132,7 +132,7 @@ const NuevoGestorForm = ({ onBack }) => {
     if (!validarFormulario()) return;
 
     try {
-      const res = await fetch("https://credencialestesvg.com.mx/api/gestores", {
+      const res = await fetch("https://meztlitech.site/api/gestores", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

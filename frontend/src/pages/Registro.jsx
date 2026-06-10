@@ -123,7 +123,7 @@ const Registro = ({ importado, onBack }) => {
   ================================ */
   useEffect(() => {
     if (importado) {
-      console.log("📥 Datos importados en Registro:", importado);
+      console.log(" Datos importados en Registro:", importado);
 
       setForm((prev) => ({
         ...prev,
@@ -562,7 +562,7 @@ const Registro = ({ importado, onBack }) => {
       }
 
       // Envío al endpoint de registro (backend corriendo en localhost:5000)
-      const res = await fetch("https://credencialestesvg.com.mx/api/registro", {
+      const res = await fetch("https://meztlitech.site/api/registro", {
         method: "POST",
         body: formData, // Enviar FormData para incluir archivos
       });

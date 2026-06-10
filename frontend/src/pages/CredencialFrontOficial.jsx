@@ -11,7 +11,7 @@ const CredencialFront = ({ datos }) => {
   const fotoReal = datos?.fotourl
     ? datos.fotourl.startsWith("http")
       ? datos.fotourl
-      : `https://credencialestesvg.com.mx${datos.fotourl}`
+      : `https://meztlitech.site${datos.fotourl}`
     : "/assets/default_user.png";
 
   const nombreCompleto = `${datos?.nombre || ""} ${datos?.apellidop || ""} ${datos?.apellidom || ""}`.trim();

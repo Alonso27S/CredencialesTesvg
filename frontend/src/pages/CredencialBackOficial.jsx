@@ -1,7 +1,7 @@
 import React from "react";
 
 // URL base del backend para cargar recursos (ej. firma)
-const BASE_URL = "https://credencialestesvg.com.mx";
+const BASE_URL = "https://meztlitech.site";
 
 const CredencialBack = ({ datos }) => {
   /**

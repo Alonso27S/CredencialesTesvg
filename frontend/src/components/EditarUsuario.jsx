@@ -54,7 +54,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
             return;
       }
       await axios.put(
-        `https://credencialestesvg.com.mx/api/edusuarios/${usuario.id}`,
+        `https://meztlitech.site/api/edusuarios/${usuario.id}`,
 
         {
           nombre,

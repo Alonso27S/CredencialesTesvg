@@ -29,7 +29,7 @@ const Buscar = ({ onBack, onEditar }) => {
 
       // Petición GET al endpoint de búsqueda
       const response = await axios.get(
-        "https://credencialestesvg.com.mx/api/buscar",
+        "https://meztlitech.site/api/buscar",
         { params }
       );
 
@@ -45,12 +45,12 @@ const Buscar = ({ onBack, onEditar }) => {
 //Renovar credencial
      const renovar = async (id) => {
 
-    await axios.put(`https://credencialestesvg.com.mx/api/credencial/renovar/${id}`);
+    await axios.put(`https://meztlitech.site/api/credencial/renovar/${id}`);
     buscar();
   };
 
    const cambiarEstado = async (id) => {
-    await axios.put(`https://credencialestesvg.com.mx/api/credencial/estado/${id}`);
+    await axios.put(`https://meztlitech.site/api/credencial/estado/${id}`);
     buscar();
   };
 

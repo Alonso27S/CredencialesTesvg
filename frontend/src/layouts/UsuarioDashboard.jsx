@@ -6,7 +6,7 @@ import CredencialFront from "../pages/CredencialFrontOficial";
 import CredencialBack from "../pages/CredencialBackOficial";
 import html2canvas from "html2canvas/dist/html2canvas.min.js";
 
-const BASE_URL = "https://credencialestesvg.com.mx";
+const BASE_URL = "https://meztlitech.site";
 
 const UsuarioDashboard = ({ userData }) => {
   const usuario = userData;
