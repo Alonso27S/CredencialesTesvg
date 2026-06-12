@@ -3,7 +3,7 @@ import QRCode from "qrcode";
 
 const CredencialFront = ({ datos }) => {
   const CARD_WIDTH = 300;
-  const CARD_HEIGHT = 450;
+  const CARD_HEIGHT = 420;
   const BAR_HEIGHT = 44;
 
   const [qrImage, setQrImage] = useState(null);
@@ -72,22 +72,22 @@ const CredencialFront = ({ datos }) => {
 
         {/* Área */}
         <p
-              className="text-gray-800 leading-tight mt-1"
-              style={{
-                wordBreak: "break-word",
-                overflowWrap: "break-word",
-                fontSize:
-                  datos?.nombrearea?.length > 60
-                    ? "10px"
-                    : datos?.nombrearea?.length > 40
-                    ? "11px"
-                    : "13px",
-              }}
-            >
-              {datos?.nombrearea}
+            className="text-gray-800 leading-tight mt-1 mb-2 px-2 break-words"
+            style={{
+              fontSize:
+                datos?.nombrearea?.length > 70
+                  ? "9px"
+                  : datos?.nombrearea?.length > 50
+                  ? "10px"
+                  : datos?.nombrearea?.length > 30
+                  ? "11px"
+                  : "13px",
+            }}
+          >
+            {datos?.nombrearea}
         </p>
         {/* Identificador */}
-        <p className="text-gray-800 mt-2 text-[13px] font-medium">
+        <p className="text-gray-800 mt-2 text-[13px] font-medium break-words">
           {datos?.numeroidentificador}
         </p>
       </div>

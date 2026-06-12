@@ -57,7 +57,17 @@ const CredencialBack = ({ datos }) => {
         {/* CURP */}
         <div className="flex flex-col items-center flex-1">
           <p className="font-bold text-[10px] sm:text-xs">CURP</p>
-          <p className="text-center break-words leading-tight">
+           <p
+            className="text-center leading-tight px-1"
+            style={{
+              fontSize:
+                (datos?.curp || "").length > 18
+                  ? "10px"
+                  : "12px",
+              wordBreak: "break-all",
+              overflowWrap: "break-word",
+            }}
+          >
             {datos?.curp || "--------"}
           </p>
         </div>
