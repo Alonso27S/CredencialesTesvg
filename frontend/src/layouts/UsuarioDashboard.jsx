@@ -86,6 +86,11 @@ const UsuarioDashboard = ({ userData }) => {
     document.body.appendChild(container);
 
     const cloneFront = refFront.current.cloneNode(true);
+
+    console.log(
+  cloneFront.querySelector("p")?.innerText
+);
+
     const cloneBack = refBack.current.cloneNode(true);
 
     cloneFront.style.position = "static";
