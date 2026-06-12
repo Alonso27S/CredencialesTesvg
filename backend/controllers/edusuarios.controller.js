@@ -23,6 +23,47 @@ export const edusuarios = async (req, res) => {
 
     } = req.body;
 
+    // Validar correo
+  const correoRegex =
+    /^[a-zA-Z0-9._%+-]+@villaguerrero\.tecnm\.mx$/;
+    
+  const nombreRegex = 
+    /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]{2,50}$/;
+ 
+ const contieneHTML = /<[^>]*>/;
+
+    if (!nombreRegex.test(nombre)) {
+        return res.status(400).json({
+          success: false,
+          message: "Nombre inválido"
+        });
+    }
+
+    if (nombre-length  > 60 ) {
+      return res.status(400).json (
+        {
+          sucess: false,
+          message: "El nombre es demasiado largo"
+        });
+      
+    }
+
+    if (contieneHTML.test(nombre)) {
+  return res.status(400).json({
+    success: false,
+    message: "Caracteres no permitidos"
+  });
+}
+
+    if (!correoRegex.test(correo)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Solo se permite correo institucional @villaguerrero.tecnm.mx"
+    });
+  }
+
+
     if (!nuevaPassword) {
 
     await pool.query(
@@ -58,13 +99,29 @@ export const edusuarios = async (req, res) => {
         ]
       );
     } else {
-      // Encriptar nueva contraseña
-      const contraseña = await bcrypt.hash(
-        nuevaPassword,
-        10
-      );
 
-      await pool.query(
+
+    // Validar complejidad de contraseña
+       
+    const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-])[A-Za-z\d@$!%*?&.#_-]{8,20}$/;
+      
+
+    if (!passwordRegex.test(nuevaPassword)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número."
+    });
+  }
+
+  // Encriptar nueva contraseña
+  const contraseña = await bcrypt.hash(
+    nuevaPassword,
+    10
+  );
+
+  await pool.query(
         `
         UPDATE usuarios
         SET

@@ -43,16 +43,32 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
 
     try {
 
-      if (idrolUsuario === "1" 
-        && nuevaPassword && nuevaPassword !== confirmarPassword) {
-          alert("Las contraseñas no coinciden");
+      // Validaciones para Superadministrador
+if (String(idrolUsuario) === "1" && nuevaPassword) {
 
-          console.log(
-  "¿Es Superadmin?",
-  String(idrolUsuario) === "1"
-);
+  // Verificar confirmación
+  if (nuevaPassword !== confirmarPassword) {
+    alert("Las contraseñas no coinciden");
+    return;
+  }
+
+  // Validar seguridad de contraseña
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/;
+
+  if (!passwordRegex.test(nuevaPassword)) {
+    alert(
+      "La contraseña debe cumplir con los siguientes requisitos:\n\n" +
+      "• Mínimo 8 caracteres\n" +
+      "• Máximo 20 caracteres\n" +
+      "• Al menos una letra mayúscula\n" +
+      "• Al menos una letra minúscula\n" +
+      "• Al menos un número"
+    );
+  
             return;
-      }
+  }
+} 
       await axios.put(
         `https://meztlitech.site/api/edusuarios/${usuario.id}`,
 
@@ -114,7 +130,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           <input
             type="text"
             value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            onChange={(e) => setNombre(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ""))}
             className="w-full border rounded-lg p-3 mt-1"
           />
         </div>
@@ -124,7 +140,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           <input
             type="text"
             value={apellidop}
-            onChange={(e) => setApellidop(e.target.value)}
+            onChange={(e) => setApellidop(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ""))}
             className="w-full border rounded-lg p-3 mt-1"
           />
         </div>
@@ -134,7 +150,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           <input
             type="text"
             value={apellidom}
-            onChange={(e) => setApellidom(e.target.value)}
+            onChange={(e) => setApellidom(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ""))}
             className="w-full border rounded-lg p-3 mt-1"
           />
         </div>
@@ -144,7 +160,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           <input
             type="text"
             value={curp}
-            onChange={(e) => setCurp(e.target.value)}
+            onChange={(e) => setCurp(e.target.value.replace(/[A-Z0-9]/g,"").slice(0,18))}
             className="w-full border rounded-lg p-3 mt-1"
           />
         </div>
@@ -154,7 +170,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           <input
             type="text"
             value={rfc}
-            onChange={(e) => setRfc(e.target.value)}
+            onChange={(e) => setRfc(e.target.value.replace(/[^A-Z0-9]/g,"").slice(0,13))}
             className="w-full border rounded-lg p-3 mt-1"
           />
         </div>
@@ -207,6 +223,9 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
             type="email"
             value={correo}
             onChange={(e) => setCorreo(e.target.value)}
+            placeholder="usuario@villaguerrero.tecnm.mx"
+            pattern="^[a-zA-Z0-9._%+-]+@villaguerrero\.tecnm\.mx$"
+            title="Debe ser un correo institucional @villaguerrero.tecnm.mx"
             className="w-full border rounded-lg p-3 mt-1"
           />
         </div>
@@ -246,7 +265,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           type="text"
           value={numeroidentificador}
           onChange={(e) =>
-            setNumeroidentificador(e.target.value)
+            setNumeroidentificador(e.target.value.replace(/\D/g,""))
           }
           className="w-full border rounded-lg p-3 mt-1"
         />
@@ -261,7 +280,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
           type="text"
           value={numerosegurosocial}
           onChange={(e) =>
-            setNumeroSeguroSocial(e.target.value)
+            setNumeroSeguroSocial(e.target.value.replace(/\D/g,"").slice(0,11))
           }
           className="w-full border rounded-lg p-3 mt-1"
         />
@@ -277,7 +296,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
         type="text"
         value={numeroidentificador}
         onChange={(e) =>
-          setNumeroidentificador(e.target.value)
+          setNumeroidentificador(e.target.value.replace(/\D/g,"").slice(0,10))
         }
         className="w-full border rounded-lg p-3 mt-1"
       />
@@ -313,7 +332,12 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
                   setNuevaPassword(e.target.value)
                 }
                 className="w-full border rounded-lg p-3 mt-1"
+                placeholder="Ingrese nueva contraseña"
               />
+
+              <p className="text-xs text-gray-500 mt-1">
+                Minimo 8 caracteres, una mayúscula, una minuscula y un número.
+              </p>
             </div>
 
             <div>
@@ -328,6 +352,7 @@ const [confirmarPassword, setConfirmarPassword] = useState("");
                   setConfirmarPassword(e.target.value)
                 }
                 className="w-full border rounded-lg p-3 mt-1"
+                placeholder="Repita la contraseña"
               />
             </div>
 
