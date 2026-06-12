@@ -39,7 +39,7 @@ export const edusuarios = async (req, res) => {
         });
     }
 
-    if (nombre-length  > 60 ) {
+    if (nombre  > 60 ) {
       return res.status(400).json (
         {
           sucess: false,
