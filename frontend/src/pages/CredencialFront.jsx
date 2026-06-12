@@ -3,14 +3,17 @@ import React from "react";
 
 const CredencialFront = ({ datos }) => {
 
-  const CARD_WIDTH = 300;
+  const CARD_WIDTH = 350;
+  const CARD_HEIGHT = 500;
 
   return (
     <div
-      className="relative h-[420px] bg-[#d6b99c] rounded-xl shadow-xl overflow-hidden 
-      border border-gray-300 flex flex-col"
-      style={{ width: `${CARD_WIDTH}px` }}
-    >
+      className="relative bg-[#d6b99c] rounded-xl shadow-xl overflow-hidden border border-gray-300 flex flex-col"
+        style={{
+          width: `${CARD_WIDTH}px`,
+          height: `${CARD_HEIGHT}px`,
+        }}
+      >
 
       {/* Logos */}
       <div className="flex justify-between items-center px-3 pt-3 relative z-10">
@@ -31,14 +34,37 @@ const CredencialFront = ({ datos }) => {
       </div>
 
       {/* Nombre */}
-      <div className="text-center mt-3 relative z-10">
-        <p className="font-bold text-lg">
-          {datos?.nombre} {datos?.apPaterno} {datos?.apMaterno}
-        </p>
-        <p className="text-gray-800 text-sm">
-          {datos?.area || "Área / Departamento"}
-        </p>
-      </div>
+<div className="text-center mt-3 relative z-10 px-3">
+  <p
+    className={`font-bold leading-tight break-words ${
+      `${datos?.nombre || ""} ${datos?.apPaterno || ""} ${datos?.apMaterno || ""}`.length > 40
+        ? "text-xs"
+        : `${datos?.nombre || ""} ${datos?.apPaterno || ""} ${datos?.apMaterno || ""}`.length > 30
+        ? "text-sm"
+        : "text-lg"
+    }`}
+  >
+    {datos?.nombre} {datos?.apPaterno} {datos?.apMaterno}
+  </p>
+
+  <p
+    className="text-gray-800 leading-tight mt-1 px-2"
+    style={{
+      display: "-webkit-box",
+      WebkitLineClamp: 2,
+      WebkitBoxOrient: "vertical",
+      overflow: "hidden",
+      fontSize:
+        (datos?.area || "").length > 40
+          ? "11px"
+          : (datos?.area || "").length > 25
+          ? "12px"
+          : "14px",
+    }}
+  >
+    {datos?.area || "Área / Departamento"}
+  </p>
+</div>
 
       {/* Identificador */}
       <p className="text-center text-gray-800 mt-4 relative z-10">
