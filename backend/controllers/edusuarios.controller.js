@@ -38,16 +38,7 @@ export const edusuarios = async (req, res) => {
           message: "Nombre inválido"
         });
     }
-
-    if (nombre  > 60 ) {
-      return res.status(400).json (
-        {
-          sucess: false,
-          message: "El nombre es demasiado largo"
-        });
-      
-    }
-
+    
     if (contieneHTML.test(nombre)) {
   return res.status(400).json({
     success: false,
