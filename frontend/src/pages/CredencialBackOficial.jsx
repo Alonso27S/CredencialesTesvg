@@ -24,7 +24,7 @@ const CredencialBack = ({ datos }) => {
   return (
     <div
       className="
-        w-full max-w-[300px] h-[420px]
+        w-full max-w-[300px] min-h-[420px]
         bg-[#7c1d2d] text-white
         rounded-xl shadow-xl
         p-4 sm:p-5

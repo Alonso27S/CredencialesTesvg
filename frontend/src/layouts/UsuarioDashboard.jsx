@@ -93,6 +93,8 @@ const UsuarioDashboard = ({ userData }) => {
 
     container.appendChild(cloneFront);
     container.appendChild(cloneBack);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
 
     const canvas = await html2canvas(container, options);
     const img = canvas.toDataURL("image/png");

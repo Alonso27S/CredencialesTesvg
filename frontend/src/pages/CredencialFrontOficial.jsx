@@ -75,14 +75,14 @@ const CredencialFront = ({ datos }) => {
           className="text-gray-800 leading-tight mt-1"
           style={{
             display: "-webkit-box",
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
             fontSize:
-              datos?.nombrearea?.length > 45
+              datos?.nombrearea?.length > 60
+                ? "10px"
+                : datos?.nombrearea?.length > 40
                 ? "11px"
-                : datos?.nombrearea?.length > 30
-                ? "12px"
                 : "13px",
           }}
         >
