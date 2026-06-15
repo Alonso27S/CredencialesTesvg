@@ -21,7 +21,7 @@ const CredencialFront = ({ datos }) => {
   useEffect(() => {
     if (!datos?.qr) return;
 
-    QRCode.toDataURL(datos.qr, { width: 150, margin: 1 })
+    QRCode.toDataURL(datos.qr, { width: 155, margin: 1 })
       .then(setQrImage)
       .catch((err) => console.error("Error generando QR:", err));
   }, [datos]);
@@ -164,7 +164,7 @@ const CredencialFront = ({ datos }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                marginTop: "0px",
+                marginTop: "2px",
                 
               }}
          >
@@ -174,8 +174,8 @@ const CredencialFront = ({ datos }) => {
               alt="QR"
               className="bg-white p-1 rounded shadow"
               style={{ 
-                width: "75px", 
-                height: "75px",
+                width: "80px", 
+                height: "80px",
                }}
             />
           ) : (
