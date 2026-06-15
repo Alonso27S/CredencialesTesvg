@@ -65,65 +65,34 @@ const UsuarioDashboard = ({ userData }) => {
   /* 
       DESCARGA UNA SOLA IMAGEN (FRONT + BACK)
   */
-  const handleDownload = async () => {
-    const options = {
-      scale: 4,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: "#FFFFFF",
-    };
-
-    const container = document.createElement("div");
-    container.style.position = "fixed";
-    container.style.left = "-9999px";
-    container.style.top = "0px";
-    container.style.display = "flex";
-    container.style.gap = "40px";
-    container.style.alignItems = "center";
-    container.style.background = "#FFFFFF";
-    container.style.padding = "20px";
-
-    document.body.appendChild(container);
-
-    const cloneFront = refFront.current.cloneNode(true);
-
-    console.log(
-  cloneFront.querySelector("p")?.innerText
-);
-
-    const cloneBack = refBack.current.cloneNode(true);
-
-    cloneFront.style.position = "static";
-    cloneBack.style.position = "static";
-
-    container.appendChild(cloneFront);
-    container.appendChild(cloneBack);
-   // await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const images = container.querySelectorAll("img");
-    await Promise.all(
-    [...images].map((img)=> {
-      if (img.complete) return Promise.resolve();
-
-      return new Promise((resolve) => {
-        img.onload = resolve;
-        img.onerror = resolve;
-      });
-     })
-    );
-
-    const canvas = await html2canvas(container, options);
-    
-
-    const img = canvas.toDataURL("image/png");
-
-    const link = document.createElement("a");
-    link.href = img;
-    link.download = "credencial_frente_reverso.png";
-    link.click();
-
-    document.body.removeChild(container);
-  };
+      const handleDownload = async () => {
+       const options = { scale: 3, useCORS: true, backgroundColor: "#FFFFFF" };
+        
+        setVista("front");
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const frontCanvas = await html2canvas(refFront.current, options);
+        
+        setVista("back");
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const backCanvas = await html2canvas(refBack.current, options);
+        
+        setVista("front");
+        
+        const finalCanvas = document.createElement('canvas');
+        finalCanvas.width = frontCanvas.width + backCanvas.width + 40;
+        finalCanvas.height = Math.max(frontCanvas.height, backCanvas.height);
+        
+        const ctx = finalCanvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+        ctx.drawImage(frontCanvas, 0, 0);
+        ctx.drawImage(backCanvas, frontCanvas.width + 40, 0);
+        
+        const link = document.createElement('a');
+        link.download = `credencial_${usuario.numeroidentificador || 'usuario'}.png`;
+        link.href = finalCanvas.toDataURL('image/png');
+        link.click();
+      };
 
   const handleSubmitPassword = async () => {
     setErrorPass("");
