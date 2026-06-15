@@ -51,29 +51,33 @@ const CredencialFront = ({ datos }) => {
       </div>
 
       {/* ================= BLOQUE TEXTO (CRECE NATURAL) ================= */}
-      <div className="text-center mt-3 px-3"
+      <div className="text-center  px-3 flex flex-col items-center"
       style={{
-        height: "80px"
+        height: "105px"
       }}
       >
 
         {/* Nombre */}
          <div
             style={{
-              minHeight: "30px",
-              maxHeight: "30px",
+              height: "42px",
+              width: "100%",
               overflow: "hidden",
             }}
           >
 
         <p
-          className={`font-bold leading-tight break-words ${
-            nombreCompleto.length > 40
-              ? "text-[12px]"
-              : nombreCompleto.length > 30
-              ? "text-[13px]"
-              : "text-[15px]"
-          }`}
+          className="font-bold leading-tight"
+      style={{
+        fontSize:
+          nombreCompleto.length > 55
+            ? "10px"
+            : nombreCompleto.length > 40
+            ? "11px"
+            : nombreCompleto.length > 30
+            ? "12px"
+            : "14px",
+      }}
         >
           {nombreCompleto}
         </p>
@@ -83,25 +87,22 @@ const CredencialFront = ({ datos }) => {
 
         <div
             style={{
-              minHeight: "30px",
-              maxHeight: "30px",
+              height: "32px",
+              width: "100%",
               overflow: "hidden",
             }}
         >
         <p
-            className="text-gray-800 leading-tight mt-1 px-2 break-words"
+            className="text-gray-800 leading-tight "
             style={{
-              minHeight: "30px",
-              maxHeight: "30px",
-              overflow: "hidden",
-              fontSize:
-                datos?.nombrearea?.length > 70
-                  ? "9px"
-                  : datos?.nombrearea?.length > 40
-                  ? "10px"
-                  : datos?.nombrearea?.length > 30
-                  ? "11px"
-                  : "13px",
+               fontSize:
+              (datos?.nombrearea || "").length > 80
+                ? "8px"
+                : (datos?.nombrearea || "").length > 60
+                ? "9px"
+                : (datos?.nombrearea || "").length > 40
+                ? "10px"
+                : "12px",
             }}
           >
             {datos?.nombrearea}
@@ -110,18 +111,18 @@ const CredencialFront = ({ datos }) => {
 
         {/* Identificador */}
 
-         <div
-            style={{
-              minHeight: "18px",
-            }}
-          >
-
-        <p className="text-gray-800 mt-2 font-medium"
-        style={{
-          fontSize:"12px",
-          minHeight:"13px",
-        }}
-        >
+                  <div
+              style={{
+                height: "18px",
+                marginTop: "4px",
+              }}
+            >
+              <p
+                className="text-gray-800 font-medium"
+                style={{
+                  fontSize: "12px",
+                }}
+              >
           {datos?.numeroidentificador}
         </p>
       </div>
@@ -129,30 +130,55 @@ const CredencialFront = ({ datos }) => {
 
       {/* ================= BLOQUE INFERIOR ================= */}
       <div
-        className="flex flex-col items-center px-3 mt-2"
-        style={{ marginTop: "auto", paddingBottom: BAR_HEIGHT + 6 }}
+        className="flex flex-col items-center px-3"
+        style={{
+          height: "150px",
+          marginTop: "auto",
+          paddingBottom: BAR_HEIGHT + 5,
+               
+        }}
       >
         <p className="font-extrabold text-[18px] leading-none">
           EDUCACIÓN
         </p>
-
-        <p className="text-[10px] text-center leading-tight">
-          SECRETARÍA DE EDUCACIÓN, CIENCIA, TECNOLOGÍA E INNOVACIÓN
+        <p
+           className="text-center leading-tight"
+              style={{
+                fontSize: "10px",
+                height: "24px",
+              }}
+            >
+              SECRETARÍA DE EDUCACIÓN, CIENCIA, TECNOLOGÍA E INNOVACIÓN
         </p>
 
-        <div className="mt-1">
+        <div
+              style={{
+                height: "90px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+         >
           {qrImage ? (
             <img
               src={qrImage}
               alt="QR"
               className="bg-white p-1 rounded shadow"
-              style={{ width: qrSize, height: qrSize }}
+              style={{ 
+                width: "80px", 
+                height: "80px",
+               }}
             />
           ) : (
-            <p className="text-xs">Generando QR...</p>
-          )}
-        </div>
-      </div>
+            <div
+              style={{
+                width: "80px",
+                height: "80px",
+               }}
+                />
+              )}
+            </div>
+          </div>
 
       {/* ================= DECORACIÓN ================= */}
       <img
