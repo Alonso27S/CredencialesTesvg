@@ -16,11 +16,7 @@ const CredencialFront = ({ datos }) => {
 
   const nombreCompleto = `${datos?.nombre || ""} ${datos?.apellidop || ""} ${datos?.apellidom || ""}`.trim();
 
-  const qrSize = useMemo(() => {
-    if (nombreCompleto.length > 40) return 80;
-    if (nombreCompleto.length > 30) return 90;
-    return 96;
-  }, [nombreCompleto]);
+  const qrSize = 90;
 
   useEffect(() => {
     if (!datos?.qr) return;
@@ -55,29 +51,53 @@ const CredencialFront = ({ datos }) => {
       </div>
 
       {/* ================= BLOQUE TEXTO (CRECE NATURAL) ================= */}
-      <div className="text-center mt-3 px-3">
+      <div className="text-center mt-3 px-3"
+      style={{
+        height: "95px"
+      }}
+      >
 
         {/* Nombre */}
+         <div
+            style={{
+              minHeight: "36px",
+              maxHeight: "36px",
+              overflow: "hidden",
+            }}
+          >
+
         <p
           className={`font-bold leading-tight break-words ${
             nombreCompleto.length > 40
-              ? "text-[13px]"
+              ? "text-[12px]"
               : nombreCompleto.length > 30
-              ? "text-[14px]"
+              ? "text-[13px]"
               : "text-[15px]"
           }`}
         >
           {nombreCompleto}
         </p>
+        </div>
 
         {/* Área */}
-        <p
-            className="text-gray-800 leading-tight mt-1 mb-2 px-2 break-words"
+
+        <div
             style={{
+              minHeight: "32px",
+              maxHeight: "32px",
+              overflow: "hidden",
+            }}
+        >
+        <p
+            className="text-gray-800 leading-tight mt-1 px-2 break-words"
+            style={{
+              minHeight: "32px",
+              maxHeight: "32px",
+              overflow: "hidden",
               fontSize:
                 datos?.nombrearea?.length > 70
                   ? "9px"
-                  : datos?.nombrearea?.length > 50
+                  : datos?.nombrearea?.length > 40
                   ? "10px"
                   : datos?.nombrearea?.length > 30
                   ? "11px"
@@ -86,10 +106,25 @@ const CredencialFront = ({ datos }) => {
           >
             {datos?.nombrearea}
         </p>
+        </div>
+
         {/* Identificador */}
-        <p className="text-gray-800 mt-2 text-[13px] font-medium break-words">
+
+         <div
+            style={{
+              minHeight: "18px",
+            }}
+          >
+
+        <p className="text-gray-800 mt-2 font-medium"
+        style={{
+          fontSize:"12px",
+          minHeight:"18px",
+        }}
+        >
           {datos?.numeroidentificador}
         </p>
+      </div>
       </div>
 
       {/* ================= BLOQUE INFERIOR ================= */}

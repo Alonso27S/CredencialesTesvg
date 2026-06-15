@@ -50,24 +50,22 @@ const CredencialBack = ({ datos }) => {
             {datos?.rfc || "--------"}
           </p>
         </div>
-
+ 
         {/* Separador */}
         <span className="font-bold opacity-80">|</span>
 
         {/* CURP */}
-        <div className="flex flex-col items-center flex-1">
+        <div className="flex flex-col items-center flex-1 min-w-0">
           <p className="font-bold text-[10px] sm:text-xs">CURP</p>
+           
            <p
-            className="text-center leading-tight px-1"
+            className="text-center leading-tight witespace-nowrap"
             style={{
-              fontSize:
-                (datos?.curp || "").length > 18
-                  ? "10px"
-                  : "12px",
-              wordBreak: "break-all",
-              overflowWrap: "break-word",
+              fontSize: "10px",
+              whiteSpace: "nowrap",
             }}
           >
+
             {datos?.curp || "--------"}
           </p>
         </div>
@@ -87,11 +85,11 @@ const CredencialBack = ({ datos }) => {
           <p className="font-bold text-[10px] sm:text-xs" translate="no">NSS</p>
 
           <p
-            className="
-              text-xs sm:text-sm
-              break-words
-              leading-tight
-            "
+            className="text-center leading-tight"
+            style={{
+              fontSize: "11px",
+              whiteSpace: "nowrap",
+            }}
           >
             {datos?.nss || "--------"}
           </p>

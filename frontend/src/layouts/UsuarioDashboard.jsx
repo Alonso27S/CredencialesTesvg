@@ -98,10 +98,23 @@ const UsuarioDashboard = ({ userData }) => {
 
     container.appendChild(cloneFront);
     container.appendChild(cloneBack);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+   // await new Promise(resolve => setTimeout(resolve, 1000));
 
+    const images = container.querySelectorAll("img");
+    await Promise.all(
+    [...images].map((img)=> {
+      if (img.complete) return Promise.resolve();
+
+      return new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+     })
+    );
 
     const canvas = await html2canvas(container, options);
+    
+
     const img = canvas.toDataURL("image/png");
 
     const link = document.createElement("a");
