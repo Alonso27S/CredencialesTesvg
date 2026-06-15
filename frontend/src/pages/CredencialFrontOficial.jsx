@@ -16,7 +16,7 @@ const CredencialFront = ({ datos }) => {
 
   const nombreCompleto = `${datos?.nombre || ""} ${datos?.apellidop || ""} ${datos?.apellidom || ""}`.trim();
 
-  const qrSize = 90;
+  const qrSize = 80;
 
   useEffect(() => {
     if (!datos?.qr) return;
@@ -53,15 +53,15 @@ const CredencialFront = ({ datos }) => {
       {/* ================= BLOQUE TEXTO (CRECE NATURAL) ================= */}
       <div className="text-center mt-3 px-3"
       style={{
-        height: "95px"
+        height: "80px"
       }}
       >
 
         {/* Nombre */}
          <div
             style={{
-              minHeight: "36px",
-              maxHeight: "36px",
+              minHeight: "30px",
+              maxHeight: "30px",
               overflow: "hidden",
             }}
           >
@@ -83,16 +83,16 @@ const CredencialFront = ({ datos }) => {
 
         <div
             style={{
-              minHeight: "32px",
-              maxHeight: "32px",
+              minHeight: "30px",
+              maxHeight: "30px",
               overflow: "hidden",
             }}
         >
         <p
             className="text-gray-800 leading-tight mt-1 px-2 break-words"
             style={{
-              minHeight: "32px",
-              maxHeight: "32px",
+              minHeight: "30px",
+              maxHeight: "30px",
               overflow: "hidden",
               fontSize:
                 datos?.nombrearea?.length > 70
@@ -119,7 +119,7 @@ const CredencialFront = ({ datos }) => {
         <p className="text-gray-800 mt-2 font-medium"
         style={{
           fontSize:"12px",
-          minHeight:"18px",
+          minHeight:"13px",
         }}
         >
           {datos?.numeroidentificador}
@@ -132,7 +132,7 @@ const CredencialFront = ({ datos }) => {
         className="flex flex-col items-center px-3 mt-2"
         style={{ marginTop: "auto", paddingBottom: BAR_HEIGHT + 6 }}
       >
-        <p className="font-extrabold text-xl">
+        <p className="font-extrabold text-[18px] leading-none">
           EDUCACIÓN
         </p>
 
@@ -140,7 +140,7 @@ const CredencialFront = ({ datos }) => {
           SECRETARÍA DE EDUCACIÓN, CIENCIA, TECNOLOGÍA E INNOVACIÓN
         </p>
 
-        <div className="mt-2">
+        <div className="mt-1">
           {qrImage ? (
             <img
               src={qrImage}
