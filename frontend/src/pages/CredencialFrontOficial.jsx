@@ -67,19 +67,19 @@ const CredencialFront = ({ datos }) => {
           >
 
         <p
-          className="font-bold leading-tight"
-      style={{
-        fontSize:
-          nombreCompleto.length > 55
-            ? "10px"
-            : nombreCompleto.length > 40
-            ? "11px"
-            : nombreCompleto.length > 30
-            ? "12px"
-            : "14px",
-      }}
-        >
-          {nombreCompleto}
+          className={`font-bold leading-tight ${
+                nombreCompleto.length > 40
+                  ? "text-[12px]"
+                  : nombreCompleto.length > 30
+                  ? "text-[13px]"
+                  : "text-[15px]"
+              }`}
+              style={{
+                whiteSpace: "normal",
+                wordBreak: "break-word",
+              }}
+            >
+              {nombreCompleto}
         </p>
         </div>
 
@@ -132,13 +132,17 @@ const CredencialFront = ({ datos }) => {
       <div
         className="flex flex-col items-center px-3"
         style={{
-          height: "150px",
-          marginTop: "auto",
-          paddingBottom: BAR_HEIGHT + 5,
+          height: "120px",
+          paddingBottom: BAR_HEIGHT ,
                
         }}
       >
-        <p className="font-extrabold text-[18px] leading-none">
+        <p className="font-extrabold text-[18px] leading-none"
+        style={{
+          marginTop:"0px",
+          marginBottom: "2px",
+        }}
+        >
           EDUCACIÓN
         </p>
         <p
@@ -146,6 +150,8 @@ const CredencialFront = ({ datos }) => {
               style={{
                 fontSize: "10px",
                 height: "24px",
+                marginBottom: "4px",
+
               }}
             >
               SECRETARÍA DE EDUCACIÓN, CIENCIA, TECNOLOGÍA E INNOVACIÓN
@@ -153,10 +159,12 @@ const CredencialFront = ({ datos }) => {
 
         <div
               style={{
-                height: "90px",
+                height: "82px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                marginTop: "0px",
+                
               }}
          >
           {qrImage ? (
