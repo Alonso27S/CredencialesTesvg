@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const generarHash = async () => {
   try {
-    const password = "Lun4D3lg4d0"  //  Contraseña nueva
+    const password = "Alonso1*"  //  Contraseña nueva
 
     console.log(" Generando hash para:", password);
 
