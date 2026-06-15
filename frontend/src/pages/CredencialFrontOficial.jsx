@@ -151,7 +151,7 @@ const CredencialFront = ({ datos }) => {
 
                 fontSize: "11px",
                 height: "22px",
-                marginBottom: "4px",
+                marginBottom: "7px",
 
               }}
             >
@@ -160,11 +160,11 @@ const CredencialFront = ({ datos }) => {
 
         <div
               style={{
-                height: "82px",
+                height: "80px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                marginTop: "2px",
+                marginTop: "10px",
                 
               }}
          >
