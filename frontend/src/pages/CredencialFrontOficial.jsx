@@ -21,7 +21,7 @@ const CredencialFront = ({ datos }) => {
   useEffect(() => {
     if (!datos?.qr) return;
 
-    QRCode.toDataURL(datos.qr, { width: 160, margin: 1 })
+    QRCode.toDataURL(datos.qr, { width: 150, margin: 1 })
       .then(setQrImage)
       .catch((err) => console.error("Error generando QR:", err));
   }, [datos]);
@@ -53,7 +53,7 @@ const CredencialFront = ({ datos }) => {
       {/* ================= BLOQUE TEXTO (CRECE NATURAL) ================= */}
       <div className="text-center  px-3 flex flex-col items-center"
       style={{
-        height: "105px"
+        height: "100px"
       }}
       >
 
@@ -113,14 +113,14 @@ const CredencialFront = ({ datos }) => {
 
                   <div
               style={{
-                height: "18px",
-                marginTop: "4px",
+                height: "15px",
+                marginTop: "3px",
               }}
             >
               <p
                 className="text-gray-800 font-medium"
                 style={{
-                  fontSize: "12px",
+                  fontSize: "10px",
                 }}
               >
           {datos?.numeroidentificador}
@@ -139,7 +139,7 @@ const CredencialFront = ({ datos }) => {
       >
         <p className="font-extrabold text-[18px] leading-none"
         style={{
-          marginTop:"0px",
+          marginTop:"1px",
           marginBottom: "2px",
         }}
         >
@@ -148,8 +148,9 @@ const CredencialFront = ({ datos }) => {
         <p
            className="text-center leading-tight"
               style={{
-                fontSize: "10px",
-                height: "24px",
+
+                fontSize: "11px",
+                height: "22px",
                 marginBottom: "4px",
 
               }}
@@ -173,15 +174,15 @@ const CredencialFront = ({ datos }) => {
               alt="QR"
               className="bg-white p-1 rounded shadow"
               style={{ 
-                width: "80px", 
-                height: "80px",
+                width: "75px", 
+                height: "75px",
                }}
             />
           ) : (
             <div
               style={{
-                width: "80px",
-                height: "80px",
+                width: "75px",
+                height: "75px",
                }}
                 />
               )}

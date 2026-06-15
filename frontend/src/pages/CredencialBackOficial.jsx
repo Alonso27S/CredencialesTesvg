@@ -46,7 +46,13 @@ const CredencialBack = ({ datos }) => {
         {/* RFC */}
         <div className="flex flex-col items-center flex-1">
           <p className="font-bold text-[10px] sm:text-xs" translate="no">RFC</p>
-          <p className="text-center break-words leading-tight" translate="no">
+
+          <p className="text-center break-words leading-tight" translate="no"
+          style={{
+            fontSize: "12px",
+            whiteSpace: "nowrap"
+          }}
+          >
             {datos?.rfc || "--------"}
           </p>
         </div>
@@ -61,7 +67,7 @@ const CredencialBack = ({ datos }) => {
            <p
             className="text-center leading-tight witespace-nowrap"
             style={{
-              fontSize: "10px",
+              fontSize: "12px",
               whiteSpace: "nowrap",
             }}
           >
