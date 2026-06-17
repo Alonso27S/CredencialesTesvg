@@ -53,7 +53,7 @@ const CredencialFront = ({ datos }) => {
       {/* ================= BLOQUE TEXTO (CRECE NATURAL) ================= */}
       <div className="text-center  px-3 flex flex-col items-center"
       style={{
-        height: "100px"
+        height: "90px"
       }}
       >
 
@@ -61,7 +61,7 @@ const CredencialFront = ({ datos }) => {
          <div
             style={{
               height: "42px",
-              width: "100%",
+              width: "90%",
               overflow: "hidden",
             }}
           >
@@ -88,7 +88,7 @@ const CredencialFront = ({ datos }) => {
         <div
             style={{
               height: "32px",
-              width: "100%",
+              width: "90%",
               overflow: "hidden",
             }}
         >
@@ -132,7 +132,7 @@ const CredencialFront = ({ datos }) => {
       <div
         className="flex flex-col items-center px-3"
         style={{
-          height: "120px",
+          height: "100px",
           paddingBottom: BAR_HEIGHT ,
                
         }}
