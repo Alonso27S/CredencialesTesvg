@@ -23,8 +23,8 @@ const CredencialBack = ({ datos }) => {
 
   return (
     <div
-      className="relative bg-[#d6b99c] rounded-xl shadow-xl 
-      border border-gray-300 overflow-hidden flex flex-col"
+      className="relative bg-[#7c1d2d] rounded-xl shadow-xl border
+       border-gray-300 overflow-hidden flex flex-col text-white"
        style={{
         width: 300,
         height: 420,
@@ -45,9 +45,9 @@ const CredencialBack = ({ datos }) => {
       >
         {/* RFC */}
         <div className="flex flex-col items-center flex-1">
-          <p className="font-bold text-[10px] sm:text-xs" translate="no">RFC</p>
+          <p className="font-bold text-[10px] text-white sm:text-xs" translate="no">RFC</p>
 
-          <p className="text-center break-words leading-tight" translate="no"
+          <p className="text-center break-words leading-tight text white" translate="no"
           style={{
             fontSize: "11px",
             whiteSpace: "nowrap"
