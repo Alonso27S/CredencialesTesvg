@@ -18,6 +18,8 @@ const UsuarioDashboard = ({ userData }) => {
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
+  const [opcionDescarga, setOpcionDescarga] = useState ("ambas"); 
+  const [mostrarOpciones, setMostrarOpciones] = useState(false);
 
   const [modalPassOpen, setModalPassOpen] = useState(false);
   const [passwordActual, setPasswordActual] = useState("");
@@ -74,7 +76,88 @@ const UsuarioDashboard = ({ userData }) => {
         const MARGEN = 80;
         const ESPACIO_ENTRE = 50;
 
-        setVista("front");
+        try {
+          //captura la opcion que el usuario selecciona
+          if (opcionDescarga === "frontal" || opcionDescarga === "ambas"){
+            setVista("front");
+            await new Promise(resolve => setTimeout(resolve,100));
+            await html2canvas(refFront.current, options);
+         
+          }
+
+          if (opcionDescarga== "trasera" || opcionDescarga === "ambas"){
+            setVista("back");
+            await new Promise(resolve => setTimeout(resolve,100));
+            await html2canvas(refBack.current, options);
+          }
+
+          setVista("front");
+
+          //se crea el canvas según la opción
+          let finalCanvas;
+          let ctx;
+
+          if (opcionDescarga === "frontal") {
+            // solo vista frontal
+
+            const frontCanvas = await html2canvas(refFront.current, options);
+            finalCanvas = document.createElement('canvas');
+            finalCanvas.width = frontCanvas.width + (MARGEN * 2);
+            finalCanvas.height = frontCanvas.height + (MARGEN * 2);
+            
+            ctx = finalCanvas.getContext('2d');
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+            ctx.drawImage(frontCanvas, MARGEN, MARGEN);
+
+          } else if (opcionDescarga === "trasera") {
+
+            // SOLO TRASERA
+            const backCanvas = await html2canvas(refBack.current, options);
+            finalCanvas = document.createElement('canvas');
+            finalCanvas.width = backCanvas.width + (MARGEN * 2);
+            finalCanvas.height = backCanvas.height + (MARGEN * 2);
+            
+            ctx = finalCanvas.getContext('2d');
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+            ctx.drawImage(backCanvas, MARGEN, MARGEN);
+             } else {
+
+          // AMBAS (comportamiento original)
+            const frontCanvas = await html2canvas(refFront.current, options);
+            const backCanvas = await html2canvas(refBack.current, options);
+            
+            finalCanvas = document.createElement('canvas');
+            finalCanvas.width = frontCanvas.width + backCanvas.width + ESPACIO_ENTRE + (MARGEN * 2);
+            finalCanvas.height = Math.max(frontCanvas.height, backCanvas.height) + (MARGEN * 2);
+            
+            ctx = finalCanvas.getContext('2d');
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+            ctx.drawImage(frontCanvas, MARGEN, MARGEN);
+            ctx.drawImage(backCanvas, frontCanvas.width + MARGEN + ESPACIO_ENTRE, MARGEN);
+          }
+
+          // Descargar
+           const link = document.createElement('a');
+              const nombreArchivo = opcionDescarga === "frontal" 
+                ? `credencial_frontal_${usuario.numeroidentificador || 'usuario'}`
+                : opcionDescarga === "trasera"
+                ? `credencial_trasera_${usuario.numeroidentificador || 'usuario'}`
+                : `credencial_completa_${usuario.numeroidentificador || 'usuario'}`;
+              
+              link.download = `${nombreArchivo}.png`;
+              link.href = finalCanvas.toDataURL('image/png');
+              link.click();
+
+            } catch (error) {
+              console.error("Error al descargar:", error);
+              alert("Error al descargar la credencial. Intenta de nuevo.");
+            }
+          };
+
+       /* setVista("front");
         await new Promise(resolve => setTimeout(resolve, 100));
         const frontCanvas = await html2canvas(refFront.current, options);
         
@@ -102,7 +185,7 @@ const UsuarioDashboard = ({ userData }) => {
         link.download = `credencial_${usuario.numeroidentificador || 'usuario'}.png`;
         link.href = finalCanvas.toDataURL('image/png');
         link.click();
-      };
+      };*/
 
   const handleSubmitPassword = async () => {
     setErrorPass("");
@@ -255,8 +338,67 @@ const UsuarioDashboard = ({ userData }) => {
               <CredencialBack datos={datosCredencial} />
             </div>
           </div>
+          <div className="mt-6">
+            <button
+              onClick={() => setMostrarOpciones(!mostrarOpciones)}
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors"
+            >
+              Opciones de descarga {mostrarOpciones ? "▲" : "▼"}
+            </button>
 
+            {mostrarOpciones && (
+              <div className="mt-3 flex flex-wrap justify-center gap-2">
+                <button
+                  onClick={() => setOpcionDescarga("frontal")}
+                  className={`px-4 py-2 rounded transition-colors ${
+                    opcionDescarga === "frontal" 
+                      ? "bg-[#8A2136] text-white" 
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  Solo Frontal
+                  </button>
+
+                  <button
+                  onClick={() => setOpcionDescarga("trasera")}
+                  className={`px-4 py-2 rounded transition-colors ${
+                    opcionDescarga === "trasera" 
+                      ? "bg-[#8A2136] text-white" 
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  Solo Trasera
+                </button>
+                <button
+                  onClick={() => setOpcionDescarga("ambas")}
+                  className={`px-4 py-2 rounded transition-colors ${
+                    opcionDescarga === "ambas" 
+                      ? "bg-[#8A2136] text-white" 
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  Ambas
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/*  BOTÓN DE DESCARGA CON INDICADOR */}
           <button
+            onClick={handleDownload}
+            className="mt-4 bg-[#8A2136] text-white px-6 py-2 rounded hover:bg-[#6a1a2b] transition-colors"
+          >
+            <Download className="inline mr-2" />
+            Descargar {opcionDescarga === "frontal" 
+              ? "Frontal" 
+              : opcionDescarga === "trasera" 
+              ? "Trasera" 
+              : "Ambas"}
+          </button>
+        </div>
+      </main>
+
+         {/* <button
             onClick={handleDownload}
             className="mt-6 bg-[#8A2136] text-white px-6 py-2 rounded"
           >
@@ -264,7 +406,7 @@ const UsuarioDashboard = ({ userData }) => {
             Descargar Credencial
           </button>
         </div>
-      </main>
+      </main>*/}
 
       {/* MODAL */}
       {modalPassOpen && (
