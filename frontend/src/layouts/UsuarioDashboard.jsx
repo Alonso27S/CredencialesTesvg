@@ -66,8 +66,14 @@ const UsuarioDashboard = ({ userData }) => {
       DESCARGA UNA SOLA IMAGEN (FRONT + BACK)
   */
       const handleDownload = async () => {
-       const options = { scale: 3, useCORS: true, backgroundColor: "#FFFFFF" };
-        
+       const options = { 
+        scale: 3,
+         useCORS: true,
+         backgroundColor: "#FFFFFF"
+         };
+        const MARGEN = 80;
+        const ESPACIO_ENTRE = 60;
+
         setVista("front");
         await new Promise(resolve => setTimeout(resolve, 100));
         const frontCanvas = await html2canvas(refFront.current, options);
@@ -79,14 +85,17 @@ const UsuarioDashboard = ({ userData }) => {
         setVista("front");
         
         const finalCanvas = document.createElement('canvas');
-        finalCanvas.width = frontCanvas.width + backCanvas.width + 40;
-        finalCanvas.height = Math.max(frontCanvas.height, backCanvas.height);
+        finalCanvas.width = frontCanvas.width + backCanvas.width + ESPACIO_ENTRE + (MARGEN * 2);
+        finalCanvas.height = Math.max(frontCanvas.height, backCanvas.height) + (MARGEN * 2);
         
         const ctx = finalCanvas.getContext('2d');
+        
+        //FONDO BLANCO
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-        ctx.drawImage(frontCanvas, 0, 0);
-        ctx.drawImage(backCanvas, frontCanvas.width + 40, 0);
+
+        ctx.drawImage(frontCanvas, MARGEN, MARGEN);
+        ctx.drawImage(backCanvas, frontCanvas.width + MARGEN + ESPACIO_ENTRE, MARGEN);
         
         const link = document.createElement('a');
         link.download = `credencial_${usuario.numeroidentificador || 'usuario'}.png`;
