@@ -158,7 +158,7 @@ const UsuarioDashboard = ({ userData }) => {
             const altoFinal = ALTO_BASE - (MARGEN * 2);
 
 
-            finalCanvas = documeANCHO_BASE;nt.createElement('canvas');
+            finalCanvas = document.createElement('canvas');
             finalCanvas.width = ANCHO_BASE;
             finalCanvas.height =ALTO_BASE;
             
