@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 const CredencialFront = ({ datos }) => {
   const CARD_WIDTH = 300;
   const CARD_HEIGHT = 420;
-  const BAR_HEIGHT = 44;
+  const BAR_HEIGHT = 40;
 
   const [qrImage, setQrImage] = useState(null);
 
