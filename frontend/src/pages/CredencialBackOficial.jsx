@@ -28,7 +28,10 @@ const CredencialBack = ({ datos }) => {
        style={{
         width: 300,
         height: 420,
-        minHeight:420
+        minHeight:420,
+        paddingTop:25,
+        paddingBottom: 20,
+        
        }}
     >
       {/* =====================================================
