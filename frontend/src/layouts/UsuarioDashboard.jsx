@@ -18,8 +18,6 @@ const UsuarioDashboard = ({ userData }) => {
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
-  const [opcionDescarga, setOpcionDescarga] = useState ("ambas"); 
-  const [mostrarOpciones, setMostrarOpciones] = useState(false);
 
   const [modalPassOpen, setModalPassOpen] = useState(false);
   const [passwordActual, setPasswordActual] = useState("");
@@ -27,6 +25,11 @@ const UsuarioDashboard = ({ userData }) => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errorPass, setErrorPass] = useState("");
   const [loadingPass, setLoadingPass] = useState(false);
+
+
+  const [opcionDescarga, setOpcionDescarga] = useState ("ambas"); 
+  const [mostrarOpciones, setMostrarOpciones] = useState(false);
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -73,8 +76,22 @@ const UsuarioDashboard = ({ userData }) => {
          useCORS: true,
          backgroundColor: "#FFFFFF"
          };
-        const MARGEN = 80;
-        const ESPACIO_ENTRE = 50;
+       /* const MARGEN = 80;
+        const ESPACIO_ENTRE = 50;*/
+
+        const MARGEN = 60;
+        const ESPACIO_ENTRE = 40;
+
+        //proporcion de tamaño a la pantalla de celular
+
+        const PROPORCION_ANCHO = 9;
+        const PROPORCION_ALTO = 16;
+
+        // Tamaño base para la imagen (ajusta estos valores según necesites)
+        const ANCHO_BASE = 1080; // Píxeles para pantalla Full HD
+        const ALTO_BASE = (ANCHO_BASE * PROPORCION_ALTO) / PROPORCION_ANCHO; // 1920px
+
+
 
         try {
           //captura la opcion que el usuario selecciona
@@ -101,44 +118,124 @@ const UsuarioDashboard = ({ userData }) => {
             // solo vista frontal
 
             const frontCanvas = await html2canvas(refFront.current, options);
+           // Calcular dimensiones manteniendo proporción
+            const anchoFinal = ANCHO_BASE - (MARGEN * 2);
+            const altoFinal = ALTO_BASE - (MARGEN * 2);
+        
+           
             finalCanvas = document.createElement('canvas');
-            finalCanvas.width = frontCanvas.width + (MARGEN * 2);
-            finalCanvas.height = frontCanvas.height + (MARGEN * 2);
+            finalCanvas.width = ANCHO_BASE;
+            finalCanvas.height = ALTO_BASE;
             
             ctx = finalCanvas.getContext('2d');
             ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-            ctx.drawImage(frontCanvas, MARGEN, MARGEN);
+            ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
+            
+             // Dibujar la credencial centrada y escalada
+            const proporcionOriginal = frontCanvas.width / frontCanvas.height;
+            let drawWidth, drawHeight;
+            
+            if (proporcionOriginal > (anchoFinal / altoFinal)) {
+              // La imagen es más ancha que el espacio disponible
+              drawWidth = anchoFinal;
+              drawHeight = anchoFinal / proporcionOriginal;
+            } else {
+              // La imagen es más alta que el espacio disponible
+              drawHeight = altoFinal;
+              drawWidth = altoFinal * proporcionOriginal;
+            }
+            
+            const xOffset = (ANCHO_BASE - drawWidth) / 2;
+            const yOffset = (ALTO_BASE - drawHeight) / 2;
+            
+            ctx.drawImage(frontCanvas, xOffset, yOffset, drawWidth, drawHeight);
 
           } else if (opcionDescarga === "trasera") {
 
             // SOLO TRASERA
             const backCanvas = await html2canvas(refBack.current, options);
-            finalCanvas = document.createElement('canvas');
-            finalCanvas.width = backCanvas.width + (MARGEN * 2);
-            finalCanvas.height = backCanvas.height + (MARGEN * 2);
+            const anchoFinal = ANCHO_BASE - - (MARGEN * 2);
+            const altoFinal = ALTO_BASE - (MARGEN * 2);
+
+
+            finalCanvas = documeANCHO_BASE;nt.createElement('canvas');
+            finalCanvas.width = ANCHO_BASE;
+            finalCanvas.height =ALTO_BASE;
             
             ctx = finalCanvas.getContext('2d');
             ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-            ctx.drawImage(backCanvas, MARGEN, MARGEN);
+            ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
+
+            const proporcionOriginal = backCanvas.width / backCanvas.height;
+            let drawWidth, drawHeight;
+            
+            if (proporcionOriginal > (anchoFinal / altoFinal)) {
+              drawWidth = anchoFinal;
+              drawHeight = anchoFinal / proporcionOriginal;
+            } else {
+              drawHeight = altoFinal;
+              drawWidth = altoFinal * proporcionOriginal;
+            }
+            
+            const xOffset = (ANCHO_BASE - drawWidth) / 2;
+            const yOffset = (ALTO_BASE - drawHeight) / 2;
+            
+            ctx.drawImage(backCanvas, xOffset, yOffset, drawWidth, drawHeight);
+          
              } else {
 
-          // AMBAS (comportamiento original)
+          // AMBAS 
             const frontCanvas = await html2canvas(refFront.current, options);
             const backCanvas = await html2canvas(refBack.current, options);
             
             finalCanvas = document.createElement('canvas');
-            finalCanvas.width = frontCanvas.width + backCanvas.width + ESPACIO_ENTRE + (MARGEN * 2);
-            finalCanvas.height = Math.max(frontCanvas.height, backCanvas.height) + (MARGEN * 2);
+            finalCanvas.width = ANCHO_BASE;
+            finalCanvas.height = ALTO_BASE;
             
             ctx = finalCanvas.getContext('2d');
             ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-            ctx.drawImage(frontCanvas, MARGEN, MARGEN);
-            ctx.drawImage(backCanvas, frontCanvas.width + MARGEN + ESPACIO_ENTRE, MARGEN);
-          }
+            ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
 
+            // Calcular espacio disponible para ambas tarjetas
+                const espacioDisponible = ALTO_BASE - (MARGEN * 2);
+                const espacioParaCada = (espacioDisponible - ESPACIO_ENTRE) / 2;
+                
+                // Calcular proporciones
+                const propFront = frontCanvas.width / frontCanvas.height;
+                const propBack = backCanvas.width / backCanvas.height;
+                
+                // Ancho máximo para cada tarjeta (con margen lateral)
+                const anchoMaximo = ANCHO_BASE - (MARGEN * 2);
+                
+                // Calcular dimensiones para cada tarjeta
+                let frontWidth = Math.min(anchoMaximo, espacioParaCada * propFront);
+                let frontHeight = frontWidth / propFront;
+                
+                let backWidth = Math.min(anchoMaximo, espacioParaCada * propBack);
+                let backHeight = backWidth / propBack;
+                
+                // Ajustar si alguna se pasa del espacio
+                if (frontHeight > espacioParaCada) {
+                  frontHeight = espacioParaCada;
+                  frontWidth = frontHeight * propFront;
+                }
+                
+                if (backHeight > espacioParaCada) {
+                  backHeight = espacioParaCada;
+                  backWidth = backHeight * propBack;
+                }
+                
+                // Centrar horizontalmente
+                const frontX = (ANCHO_BASE - frontWidth) / 2;
+                const backX = (ANCHO_BASE - backWidth) / 2;
+                
+                // Posiciones verticales
+                const frontY = MARGEN + (espacioParaCada - frontHeight) / 2;
+                const backY = MARGEN + espacioParaCada + ESPACIO_ENTRE + (espacioParaCada - backHeight) / 2;
+                
+                ctx.drawImage(frontCanvas, frontX, frontY, frontWidth, frontHeight);
+                ctx.drawImage(backCanvas, backX, backY, backWidth, backHeight);
+              }
           // Descargar
            const link = document.createElement('a');
               const nombreArchivo = opcionDescarga === "frontal" 
