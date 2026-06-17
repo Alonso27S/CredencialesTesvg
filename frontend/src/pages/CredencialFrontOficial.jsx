@@ -149,9 +149,9 @@ const CredencialFront = ({ datos }) => {
            className="text-center leading-tight"
               style={{
 
-                fontSize: "11px",
-                height: "22px",
-                marginBottom: "7px",
+                fontSize: "10px",
+                height: "20px",
+                marginBottom: "5px",
 
               }}
             >
