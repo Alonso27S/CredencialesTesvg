@@ -27,9 +27,11 @@ const UsuarioDashboard = ({ userData }) => {
   const [loadingPass, setLoadingPass] = useState(false);
 
 
-  const [opcionDescarga, setOpcionDescarga] = useState ("ambas"); 
-  const [mostrarOpciones, setMostrarOpciones] = useState(false);
+  const [modalPassOpen, setModalPassOpen] = useState(false);
 
+  
+ const [modalDescargaOpen, setModalDescargaOpen] = useState(false);
+const [descargando, setDescargando] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -70,7 +72,9 @@ const UsuarioDashboard = ({ userData }) => {
   /* 
       DESCARGA UNA SOLA IMAGEN (FRONT + BACK)
   */
-      const handleDownload = async () => {
+      const handleDownload = async (tipo) => {
+        setDescargando(true);
+
        const options = { 
         scale: 3,
          useCORS: true,
@@ -79,164 +83,156 @@ const UsuarioDashboard = ({ userData }) => {
        /* const MARGEN = 80;
         const ESPACIO_ENTRE = 50;*/
 
-        const MARGEN = 60;
-        const ESPACIO_ENTRE = 40;
-
         //proporcion de tamaño a la pantalla de celular
 
         const PROPORCION_ANCHO = 9;
         const PROPORCION_ALTO = 16;
+        const ANCHO_BASE = 1080;
+        const ALTO_BASE = (ANCHO_BASE * PROPORCION_ALTO) / PROPORCION_ANCHO; // 1920px
+        const MARGEN = 40; // Margen mínimo
 
         // Tamaño base para la imagen (ajusta estos valores según necesites)
-        const ANCHO_BASE = 1080; // Píxeles para pantalla Full HD
-        const ALTO_BASE = (ANCHO_BASE * PROPORCION_ALTO) / PROPORCION_ANCHO; // 1920px
+       // const ANCHO_BASE = 1080; // Píxeles para pantalla Full HD
+       // const ALTO_BASE = (ANCHO_BASE * PROPORCION_ALTO) / PROPORCION_ANCHO; // 1920px
 
-
-
-        try {
-          //captura la opcion que el usuario selecciona
-          if (opcionDescarga === "frontal" || opcionDescarga === "ambas"){
-            setVista("front");
-            await new Promise(resolve => setTimeout(resolve,100));
-            await html2canvas(refFront.current, options);
-         
-          }
-
-          if (opcionDescarga== "trasera" || opcionDescarga === "ambas"){
-            setVista("back");
-            await new Promise(resolve => setTimeout(resolve,100));
-            await html2canvas(refBack.current, options);
-          }
-
-          setVista("front");
-
-          //se crea el canvas según la opción
-          let finalCanvas;
-          let ctx;
-
-          if (opcionDescarga === "frontal") {
-            // solo vista frontal
-
-            const frontCanvas = await html2canvas(refFront.current, options);
-           // Calcular dimensiones manteniendo proporción
-            const anchoFinal = ANCHO_BASE - (MARGEN * 2);
-            const altoFinal = ALTO_BASE - (MARGEN * 2);
-        
-           
-            finalCanvas = document.createElement('canvas');
-            finalCanvas.width = ANCHO_BASE;
-            finalCanvas.height = ALTO_BASE;
-            
-            ctx = finalCanvas.getContext('2d');
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
-            
-             // Dibujar la credencial centrada y escalada
-            const proporcionOriginal = frontCanvas.width / frontCanvas.height;
-            let drawWidth, drawHeight;
-            
-            if (proporcionOriginal > (anchoFinal / altoFinal)) {
-              // La imagen es más ancha que el espacio disponible
-              drawWidth = anchoFinal;
-              drawHeight = anchoFinal / proporcionOriginal;
-            } else {
-              // La imagen es más alta que el espacio disponible
-              drawHeight = altoFinal;
-              drawWidth = altoFinal * proporcionOriginal;
-            }
-            
-            const xOffset = (ANCHO_BASE - drawWidth) / 2;
-            const yOffset = (ALTO_BASE - drawHeight) / 2;
-            
-            ctx.drawImage(frontCanvas, xOffset, yOffset, drawWidth, drawHeight);
-
-          } else if (opcionDescarga === "trasera") {
-
-            // SOLO TRASERA
-            const backCanvas = await html2canvas(refBack.current, options);
-            const anchoFinal = ANCHO_BASE - - (MARGEN * 2);
-            const altoFinal = ALTO_BASE - (MARGEN * 2);
-
-
-            finalCanvas = document.createElement('canvas');
-            finalCanvas.width = ANCHO_BASE;
-            finalCanvas.height =ALTO_BASE;
-            
-            ctx = finalCanvas.getContext('2d');
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
-
-            const proporcionOriginal = backCanvas.width / backCanvas.height;
-            let drawWidth, drawHeight;
-            
-            if (proporcionOriginal > (anchoFinal / altoFinal)) {
-              drawWidth = anchoFinal;
-              drawHeight = anchoFinal / proporcionOriginal;
-            } else {
-              drawHeight = altoFinal;
-              drawWidth = altoFinal * proporcionOriginal;
-            }
-            
-            const xOffset = (ANCHO_BASE - drawWidth) / 2;
-            const yOffset = (ALTO_BASE - drawHeight) / 2;
-            
-            ctx.drawImage(backCanvas, xOffset, yOffset, drawWidth, drawHeight);
-          
-             } else {
-
-          // AMBAS 
-            const frontCanvas = await html2canvas(refFront.current, options);
-            const backCanvas = await html2canvas(refBack.current, options);
-            
-            finalCanvas = document.createElement('canvas');
-            finalCanvas.width = ANCHO_BASE;
-            finalCanvas.height = ALTO_BASE;
-            
-            ctx = finalCanvas.getContext('2d');
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
-
-            // Calcular espacio disponible para ambas tarjetas
-                const espacioDisponible = ALTO_BASE - (MARGEN * 2);
-                const espacioParaCada = (espacioDisponible - ESPACIO_ENTRE) / 2;
-                
-                // Calcular proporciones
-                const propFront = frontCanvas.width / frontCanvas.height;
-                const propBack = backCanvas.width / backCanvas.height;
-                
-                // Ancho máximo para cada tarjeta (con margen lateral)
-                const anchoMaximo = ANCHO_BASE - (MARGEN * 2);
-                
-                // Calcular dimensiones para cada tarjeta
-                let frontWidth = Math.min(anchoMaximo, espacioParaCada * propFront);
-                let frontHeight = frontWidth / propFront;
-                
                 let backWidth = Math.min(anchoMaximo, espacioParaCada * propBack);
                 let backHeight = backWidth / propBack;
+
+                try {
+      let canvas;
+      let nombreArchivo;
+
+      if (tipo === "frontal") {
+        // Capturar frontal
+        setVista("front");
+        await new Promise(resolve => setTimeout(resolve, 150));
+        const frontCanvas = await html2canvas(refFront.current, options);
+        
+        // Crear canvas para celular
+        canvas = document.createElement('canvas');
+        canvas.width = ANCHO_BASE;
+        canvas.height = ALTO_BASE;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
+        
+        // Calcular dimensiones manteniendo proporción
+        const espacioAncho = ANCHO_BASE - (MARGEN * 2);
+        const espacioAlto = ALTO_BASE - (MARGEN * 2);
+        const proporcionOriginal = frontCanvas.width / frontCanvas.height;
+        
+        let drawWidth, drawHeight;
+        if (proporcionOriginal > (espacioAncho / espacioAlto)) {
+          drawWidth = espacioAncho;
+          drawHeight = espacioAncho / proporcionOriginal;
+        } else {
+          drawHeight = espacioAlto;
+          drawWidth = espacioAlto * proporcionOriginal;
+        }
+        
+        // Centrar en el canvas
+        const xOffset = (ANCHO_BASE - drawWidth) / 2;
+        const yOffset = (ALTO_BASE - drawHeight) / 2;
+        
+        ctx.drawImage(frontCanvas, xOffset, yOffset, drawWidth, drawHeight);
+        
+        nombreArchivo = `credencial_frontal_${usuario.numeroidentificador || 'usuario'}`;
+
+      } else if (tipo === "trasera") {
+        // Capturar trasera
+        setVista("back");
+        await new Promise(resolve => setTimeout(resolve, 150));
+        const backCanvas = await html2canvas(refBack.current, options);
+        
+        canvas = document.createElement('canvas');
+        canvas.width = ANCHO_BASE;
+        canvas.height = ALTO_BASE;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
+        
+        const espacioAncho = ANCHO_BASE - (MARGEN * 2);
+        const espacioAlto = ALTO_BASE - (MARGEN * 2);
+        const proporcionOriginal = backCanvas.width / backCanvas.height;
+        
+        let drawWidth, drawHeight;
+        if (proporcionOriginal > (espacioAncho / espacioAlto)) {
+          drawWidth = espacioAncho;
+          drawHeight = espacioAncho / proporcionOriginal;
+        } else {
+          drawHeight = espacioAlto;
+          drawWidth = espacioAlto * proporcionOriginal;
+        }
+        
+        const xOffset = (ANCHO_BASE - drawWidth) / 2;
+        const yOffset = (ALTO_BASE - drawHeight) / 2;
+        
+        ctx.drawImage(backCanvas, xOffset, yOffset, drawWidth, drawHeight);
+        
+        nombreArchivo = `credencial_trasera_${usuario.numeroidentificador || 'usuario'}`;
+
+      } else if (tipo === "ambas") {
+        // Capturar ambas
+        setVista("front");
+        await new Promise(resolve => setTimeout(resolve, 150));
+        const frontCanvas = await html2canvas(refFront.current, options);
+        
+        setVista("back");
+        await new Promise(resolve => setTimeout(resolve, 150));
+        const backCanvas = await html2canvas(refBack.current, options);
+        
+        canvas = document.createElement('canvas');
+        canvas.width = ANCHO_BASE;
+        canvas.height = ALTO_BASE;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
+        
+        // Espacio disponible para ambas tarjetas
+        const espacioTotal = ALTO_BASE - (MARGEN * 2);
+        const espacioEntre = 30;
+        const espacioParaCada = (espacioTotal - espacioEntre) / 2;
+        const anchoDisponible = ANCHO_BASE - (MARGEN * 2);
+        
+        // Calcular dimensiones para frontal
+        const propFront = frontCanvas.width / frontCanvas.height;
+        let frontWidth = Math.min(anchoDisponible, espacioParaCada * propFront);
+        let frontHeight = frontWidth / propFront;
+        if (frontHeight > espacioParaCada) {
+          frontHeight = espacioParaCada;
+          frontWidth = frontHeight * propFront;
+        }
+        
+        // Calcular dimensiones para trasera
+        const propBack = backCanvas.width / backCanvas.height;
+        let backWidth = Math.min(anchoDisponible, espacioParaCada * propBack);
+        let backHeight = backWidth / propBack;
+        if (backHeight > espacioParaCada) {
+          backHeight = espacioParaCada;
+          backWidth = backHeight * propBack;
+        }
+        
+        // Centrar horizontalmente
+        const frontX = (ANCHO_BASE - frontWidth) / 2;
+        const backX = (ANCHO_BASE - backWidth) / 2;
+        
+        // Posiciones verticales
+        const frontY = MARGEN + (espacioParaCada - frontHeight) / 2;
+        const backY = MARGEN + espacioParaCada + espacioEntre + (espacioParaCada - backHeight) / 2;
+        
+        ctx.drawImage(frontCanvas, frontX, frontY, frontWidth, frontHeight);
+        ctx.drawImage(backCanvas, backX, backY, backWidth, backHeight);
+        
+        nombreArchivo = `credencial_completa_${usuario.numeroidentificador || 'usuario'}`;
+      }
+
+      // Restaurar vista
+      setVista("front");
                 
-                // Ajustar si alguna se pasa del espacio
-                if (frontHeight > espacioParaCada) {
-                  frontHeight = espacioParaCada;
-                  frontWidth = frontHeight * propFront;
-                }
-                
-                if (backHeight > espacioParaCada) {
-                  backHeight = espacioParaCada;
-                  backWidth = backHeight * propBack;
-                }
-                
-                // Centrar horizontalmente
-                const frontX = (ANCHO_BASE - frontWidth) / 2;
-                const backX = (ANCHO_BASE - backWidth) / 2;
-                
-                // Posiciones verticales
-                const frontY = MARGEN + (espacioParaCada - frontHeight) / 2;
-                const backY = MARGEN + espacioParaCada + ESPACIO_ENTRE + (espacioParaCada - backHeight) / 2;
-                
-                ctx.drawImage(frontCanvas, frontX, frontY, frontWidth, frontHeight);
-                ctx.drawImage(backCanvas, backX, backY, backWidth, backHeight);
-              }
-          // Descargar
+         // Descargar
            const link = document.createElement('a');
               const nombreArchivo = opcionDescarga === "frontal" 
                 ? `credencial_frontal_${usuario.numeroidentificador || 'usuario'}`
