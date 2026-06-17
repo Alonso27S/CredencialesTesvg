@@ -69,10 +69,10 @@ const CredencialFront = ({ datos }) => {
         <p
           className={`font-bold leading-tight ${
                 nombreCompleto.length > 40
-                  ? "text-[12px]"
+                  ? "text-[11px]"
                   : nombreCompleto.length > 30
-                  ? "text-[13px]"
-                  : "text-[15px]"
+                  ? "text-[12px]"
+                  : "text-[13px]"
               }`}
               style={{
                 whiteSpace: "normal",
@@ -95,14 +95,14 @@ const CredencialFront = ({ datos }) => {
         <p
             className="text-gray-800 leading-tight "
             style={{
-               fontSize:
+               fontSize: 
               (datos?.nombrearea || "").length > 80
-                ? "8px"
+                ? "7px"
                 : (datos?.nombrearea || "").length > 60
-                ? "9px"
+                ? "8px"
                 : (datos?.nombrearea || "").length > 40
-                ? "10px"
-                : "12px",
+                ? "9px"
+                : "10px",
             }}
           >
             {datos?.nombrearea}
@@ -120,7 +120,7 @@ const CredencialFront = ({ datos }) => {
               <p
                 className="text-gray-800 font-medium"
                 style={{
-                  fontSize: "10px",
+                  fontSize: "11px",
                 }}
               >
           {datos?.numeroidentificador}
