@@ -12,7 +12,7 @@ const UsuarioDashboard = ({ userData }) => {
   const usuario = userData;
 
   const [vista, setVista] = useState("front");
-  const refCredencial = useRef(null);
+  //const refCredencial = useRef(null);
   const refFront = useRef(null);
   const refBack = useRef(null);
 
@@ -27,8 +27,12 @@ const UsuarioDashboard = ({ userData }) => {
   const [loadingPass, setLoadingPass] = useState(false);
 
   
- const [modalDescargaOpen, setModalDescargaOpen] = useState(false);
-const [descargando, setDescargando] = useState(false);
+  const [modalDescargaOpen, setModalDescargaOpen] = useState(false);
+  const [descargando, setDescargando] = useState(false);
+  const [opcionDescarga, setOpcionDescarga] = useState("ambas");
+  const [mostrarOpciones, setMostrarOpciones] = useState(false);
+
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -69,7 +73,7 @@ const [descargando, setDescargando] = useState(false);
   /* 
       DESCARGA UNA SOLA IMAGEN (FRONT + BACK)
   */
-      const handleDownload = async (tipo) => {
+      const handleDownload = async () => {
         setDescargando(true);
 
        const options = { 
@@ -92,14 +96,14 @@ const [descargando, setDescargando] = useState(false);
        // const ANCHO_BASE = 1080; // Píxeles para pantalla Full HD
        // const ALTO_BASE = (ANCHO_BASE * PROPORCION_ALTO) / PROPORCION_ANCHO; // 1920px
 
-                let backWidth = Math.min(anchoMaximo, espacioParaCada * propBack);
-                let backHeight = backWidth / propBack;
+               // let backWidth = Math.min(anchoMaximo, espacioParaCada * propBack);
+               // let backHeight = backWidth / propBack;
 
-                try {
+      try {
       let canvas;
       let nombreArchivo;
 
-      if (tipo === "frontal") {
+      if (opcionDescarga === "frontal") {
         // Capturar frontal
         setVista("front");
         await new Promise(resolve => setTimeout(resolve, 150));
@@ -136,7 +140,7 @@ const [descargando, setDescargando] = useState(false);
         
         nombreArchivo = `credencial_frontal_${usuario.numeroidentificador || 'usuario'}`;
 
-      } else if (tipo === "trasera") {
+      } else if (opcionDescarga === "trasera") {
         // Capturar trasera
         setVista("back");
         await new Promise(resolve => setTimeout(resolve, 150));
@@ -170,7 +174,7 @@ const [descargando, setDescargando] = useState(false);
         
         nombreArchivo = `credencial_trasera_${usuario.numeroidentificador || 'usuario'}`;
 
-      } else if (tipo === "ambas") {
+      } else {
         // Capturar ambas
         setVista("front");
         await new Promise(resolve => setTimeout(resolve, 150));
@@ -229,23 +233,22 @@ const [descargando, setDescargando] = useState(false);
       // Restaurar vista
       setVista("front");
                 
-         // Descargar
-           const link = document.createElement('a');
-              const nombreArchivo = opcionDescarga === "frontal" 
-                ? `credencial_frontal_${usuario.numeroidentificador || 'usuario'}`
-                : opcionDescarga === "trasera"
-                ? `credencial_trasera_${usuario.numeroidentificador || 'usuario'}`
-                : `credencial_completa_${usuario.numeroidentificador || 'usuario'}`;
-              
-              link.download = `${nombreArchivo}.png`;
-              link.href = finalCanvas.toDataURL('image/png');
-              link.click();
+    // Descargar
+      const link = document.createElement('a');
+      link.download = `${nombreArchivo}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
 
-            } catch (error) {
-              console.error("Error al descargar:", error);
-              alert("Error al descargar la credencial. Intenta de nuevo.");
-            }
-          };
+      // Cerrar modal si está abierto
+      setModalDescargaOpen(false);
+      setDescargando(false);
+
+    } catch (error) {
+      console.error("Error al descargar:", error);
+      alert("Error al descargar la credencial. Intenta de nuevo.");
+      setDescargando(false);
+    }
+  };
 
        /* setVista("front");
         await new Promise(resolve => setTimeout(resolve, 100));
