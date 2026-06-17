@@ -23,13 +23,13 @@ const CredencialBack = ({ datos }) => {
 
   return (
     <div
-      className="
-        w-full max-w-[300px] min-h-[420px]
-        bg-[#7c1d2d] text-white
-        rounded-xl shadow-xl
-        p-4 sm:p-5
-        flex flex-col justify-between items-center
-      "
+      className="relative bg-[#7c1d2d] rounded-xl shadow-xl 
+      border border-gray-300 overflow-hidden flex flex-col"
+       style={{
+        width: 300,
+        height: 420,
+        minHeight:420
+       }}
     >
       {/* =====================================================
             RFC / CURP (fila principal)

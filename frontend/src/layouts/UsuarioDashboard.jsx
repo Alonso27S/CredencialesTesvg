@@ -72,7 +72,7 @@ const UsuarioDashboard = ({ userData }) => {
          backgroundColor: "#FFFFFF"
          };
         const MARGEN = 80;
-        const ESPACIO_ENTRE = 60;
+        const ESPACIO_ENTRE = 50;
 
         setVista("front");
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -84,6 +84,7 @@ const UsuarioDashboard = ({ userData }) => {
         
         setVista("front");
         
+
         const finalCanvas = document.createElement('canvas');
         finalCanvas.width = frontCanvas.width + backCanvas.width + ESPACIO_ENTRE + (MARGEN * 2);
         finalCanvas.height = Math.max(frontCanvas.height, backCanvas.height) + (MARGEN * 2);
