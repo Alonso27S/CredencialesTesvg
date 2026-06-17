@@ -23,7 +23,7 @@ const CredencialBack = ({ datos }) => {
 
   return (
     <div
-      className="relative bg-[#7c1d2d] rounded-xl shadow-xl 
+      className="relative bg-[#d6b99c] rounded-xl shadow-xl 
       border border-gray-300 overflow-hidden flex flex-col"
        style={{
         width: 300,
