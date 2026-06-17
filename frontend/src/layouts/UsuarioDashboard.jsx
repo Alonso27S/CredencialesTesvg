@@ -26,9 +26,6 @@ const UsuarioDashboard = ({ userData }) => {
   const [errorPass, setErrorPass] = useState("");
   const [loadingPass, setLoadingPass] = useState(false);
 
-
-  const [modalPassOpen, setModalPassOpen] = useState(false);
-
   
  const [modalDescargaOpen, setModalDescargaOpen] = useState(false);
 const [descargando, setDescargando] = useState(false);
