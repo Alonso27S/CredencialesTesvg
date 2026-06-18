@@ -15,8 +15,6 @@ const UsuarioDashboard = ({ userData }) => {
 
   const [modalCredencialOpen, setModalCredencialOpen] = useState(false);
   
-  const [qrImage, setQrImage] = useState(null);
-  const [qrModalOpen, setQrModalOpen] = useState(false);
   //const refCredencial = useRef(null);
   const refFront = useRef(null);
   const refBack = useRef(null);

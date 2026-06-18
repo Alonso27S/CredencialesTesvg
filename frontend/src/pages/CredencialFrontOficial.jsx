@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
 import QRCode from "qrcode";
 
+
 const CredencialFront = ({ datos }) => {
+  
+  const [qrImage, setQrImage] = useState(null);
+  const [qrModalOpen, setQrModalOpen] = useState(false);
+  
   const CARD_WIDTH = 300;
   const CARD_HEIGHT = 420;
   const BAR_HEIGHT = 30;
