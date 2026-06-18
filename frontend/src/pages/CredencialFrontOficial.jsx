@@ -11,7 +11,6 @@ const CredencialFront = ({ datos }) => {
   const CARD_HEIGHT = 420;
   const BAR_HEIGHT = 30;
 
-  const [qrImage, setQrImage] = useState(null);
 
   const fotoReal = datos?.fotourl
     ? datos.fotourl.startsWith("http")
