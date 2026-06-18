@@ -13,7 +13,10 @@ const UsuarioDashboard = ({ userData }) => {
 
   const [vista, setVista] = useState("front");
 
-  const [modalCredenciaOpen, setModalCredencialOpen] = useState(false);
+  const [modalCredencialOpen, setModalCredencialOpen] = useState(false);
+  
+  const [qrImage, setQrImage] = useState(null);
+  const [qrModalOpen, setQrModalOpen] = useState(false);
   //const refCredencial = useRef(null);
   const refFront = useRef(null);
   const refBack = useRef(null);
