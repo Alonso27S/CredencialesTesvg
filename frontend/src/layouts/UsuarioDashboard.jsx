@@ -12,6 +12,8 @@ const UsuarioDashboard = ({ userData }) => {
   const usuario = userData;
 
   const [vista, setVista] = useState("front");
+
+  const [modalCredenciaOpen, setModalCredencialOpen] = useState(false);
   //const refCredencial = useRef(null);
   const refFront = useRef(null);
   const refBack = useRef(null);
@@ -32,7 +34,7 @@ const UsuarioDashboard = ({ userData }) => {
   const [opcionDescarga, setOpcionDescarga] = useState("ambas");
   const [mostrarOpciones, setMostrarOpciones] = useState(false);
 
-
+  
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -416,7 +418,12 @@ const UsuarioDashboard = ({ userData }) => {
             <button onClick={() => setVista("back")}>Trasera</button>
           </div>
 
-          <div className="flex justify-center mt-6 sm:mt-8 overflow-x-auto">
+
+          <div className="flex justify-center mt-6 sm:mt-8 
+          overflow-x-auto curssor-pointer"
+          onClick={() => setModalCredencialOpen (true)}
+          
+          >
             <div
               ref={refFront}
               className={`${vista === "front" ? "block" : "absolute -left-[9999px]"}`}
@@ -501,9 +508,51 @@ const UsuarioDashboard = ({ userData }) => {
         </div>
       </main>*/}
 
-      {/* MODAL */}
+
+    {/* ==========================================
+          MODAL CREDENCIAL PANTALLA COMPLETA
+      ========================================== */}
+      {modalCredencialOpen && (
+        <div
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          onClick={() => setModalCredencialOpen(false)}
+        >
+          {/* Botón cerrar */}
+          <button
+            onClick={() => setModalCredencialOpen(false)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 z-50"
+          >
+            <X size={36} />
+          </button>
+
+          {/* Evita que al hacer click en la credencial se cierre */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-[90vh] max-w-[90vw] flex items-center justify-center"
+          >
+            <div
+              style={{
+                transform: "scale(1.6)",
+                transformOrigin: "center center",
+              }}
+            >
+              {vista === "front" ? (
+                <CredencialFront datos={datosCredencial} />
+              ) : (
+                <CredencialBack datos={datosCredencial} />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==========================================
+          MODAL CAMBIO DE CONTRASEÑA
+      ========================================== */}
       {modalPassOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+        >
           <div className="bg-white rounded-xl w-full max-w-md p-6 relative">
             <button
               onClick={() => setModalPassOpen(false)}

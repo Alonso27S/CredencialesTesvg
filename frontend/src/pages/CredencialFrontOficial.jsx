@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 const CredencialFront = ({ datos }) => {
   const CARD_WIDTH = 300;
   const CARD_HEIGHT = 420;
-  const BAR_HEIGHT = 40;
+  const BAR_HEIGHT = 30;
 
   const [qrImage, setQrImage] = useState(null);
 
@@ -21,11 +21,14 @@ const CredencialFront = ({ datos }) => {
   useEffect(() => {
     if (!datos?.qr) return;
 
-    QRCode.toDataURL(datos.qr, { width: 155, margin: 1 })
+    QRCode.toDataURL(datos.qr, { 
+      width: 300,
+       margin: 2 })
       .then(setQrImage)
       .catch((err) => console.error("Error generando QR:", err));
   }, [datos]);
 
+  {/*SECCION 1 */}
   return (
     <div
       className="relative bg-[#d6b99c] rounded-xl shadow-xl border border-gray-300 overflow-hidden flex flex-col"
@@ -37,9 +40,11 @@ const CredencialFront = ({ datos }) => {
         <img src="/assets/logo_tesvg2.png" className="h-8 object-contain" />
       </div>
 
+{/*SECCION 2 */}
       {/* ================= FOTO ================= */}
       <div className="flex justify-center mt-3">
-        <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
+        <div className="w-20 h-20 rounded-full overflow-hidden
+         border-4 border-white shadow-md">
           <img
             src={fotoReal}
             className="w-full h-full object-cover"
@@ -50,6 +55,7 @@ const CredencialFront = ({ datos }) => {
         </div>
       </div>
 
+{/*SECCION 3 */}
       {/* ================= BLOQUE TEXTO (CRECE NATURAL) ================= */}
       <div className="text-center  px-3 flex flex-col items-center"
       style={{
@@ -60,9 +66,9 @@ const CredencialFront = ({ datos }) => {
         {/* Nombre */}
          <div
             style={{
-              height: "42px",
+              height: "52px",
               width: "90%",
-              overflow: "hidden",
+              //overflow: "hidden",
             }}
           >
 
@@ -83,13 +89,15 @@ const CredencialFront = ({ datos }) => {
         </p>
         </div>
 
-        {/* Área */}
+  {/*SECCION 4 */}
+
+  {/* Área */}
 
         <div
             style={{
-              height: "32px",
+              height: "40px",
               width: "90%",
-              overflow: "hidden",
+             // overflow: "hidden",
             }}
         >
         <p
@@ -109,12 +117,14 @@ const CredencialFront = ({ datos }) => {
         </p>
         </div>
 
-        {/* Identificador */}
+  {/*SECCION  5*/}
+
+  {/* Identificador */}
 
                   <div
               style={{
                 height: "15px",
-                marginTop: "3px",
+                marginTop: "0px",
               }}
             >
               <p
@@ -128,6 +138,8 @@ const CredencialFront = ({ datos }) => {
       </div>
       </div>
 
+      {/*SECCION 6 */}
+
       {/* ================= BLOQUE INFERIOR ================= */}
       <div
         className="flex flex-col items-center px-3"
@@ -139,12 +151,13 @@ const CredencialFront = ({ datos }) => {
       >
         <p className="font-extrabold text-[18px] leading-none"
         style={{
-          marginTop:"1px",
+          marginTop:"2px",
           marginBottom: "2px",
         }}
         >
           EDUCACIÓN
         </p>
+        {/*SECCION 7 */}
         <p
            className="text-center leading-tight"
               style={{
@@ -158,6 +171,8 @@ const CredencialFront = ({ datos }) => {
               SECRETARÍA DE EDUCACIÓN, CIENCIA, TECNOLOGÍA E INNOVACIÓN
         </p>
 
+
+{/*SECCION 8 */}
         <div
               style={{
                 height: "80px",
@@ -171,12 +186,10 @@ const CredencialFront = ({ datos }) => {
           {qrImage ? (
             <img
               src={qrImage}
-              alt="QR"
-              className="bg-white p-1 rounded shadow"
-              style={{ 
-                width: "80px", 
-                height: "80px",
-               }}
+              style={{
+                width: "100px",
+                height: "100px"
+              }}
             />
           ) : (
             <div
@@ -189,7 +202,7 @@ const CredencialFront = ({ datos }) => {
             </div>
           </div>
 
-      {/* ================= DECORACIÓN ================= */}
+   {/* ================= DECORACIÓN ================= */}
       <img
         src="/assets/logo_colibri.png"
         className="absolute left-0 bottom-[44px] h-[260px] opacity-20 pointer-events-none"
@@ -205,6 +218,23 @@ const CredencialFront = ({ datos }) => {
           className="w-full h-8 object-contain"
         />
       </div>
+      {qrModalOpen && (
+  <div
+    className="fixed inset-0 bg-black/80 z-[999] flex items-center justify-center"
+    onClick={() => setQrModalOpen(false)}
+  >
+    <div className="bg-white p-6 rounded-xl">
+      <img
+        src={qrImage}
+        alt="QR Grande"
+        style={{
+          width: "320px",
+          height: "320px",
+        }}
+      />
+    </div>
+  </div>
+)}
     </div>
   );
 };
