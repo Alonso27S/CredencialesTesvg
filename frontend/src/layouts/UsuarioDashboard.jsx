@@ -93,32 +93,18 @@ const UsuarioDashboard = ({ userData }) => {
         const frontCanvas = await html2canvas(refFront.current, options);
         
         canvas = document.createElement('canvas');
-        canvas.width = ANCHO_BASE;
-        canvas.height = ALTO_BASE;
+        canvas.width = frontCanvas.width + (MARGEN * 2);
+        canvas.height = frontCanvas.height + (MARGEN * 2);
         
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
-        
-        const espacioAncho = ANCHO_BASE - (MARGEN * 2);
-        const espacioAlto = ALTO_BASE - (MARGEN * 2);
-        const proporcionOriginal = frontCanvas.width / frontCanvas.height;
-        
-        let drawWidth, drawHeight;
-        if (proporcionOriginal > (espacioAncho / espacioAlto)) {
-          drawWidth = espacioAncho;
-          drawHeight = espacioAncho / proporcionOriginal;
-        } else {
-          drawHeight = espacioAlto;
-          drawWidth = espacioAlto * proporcionOriginal;
-        }
-        
-        const xOffset = (ANCHO_BASE - drawWidth) / 2;
-        const yOffset = (ALTO_BASE - drawHeight) / 2;
-        
-        ctx.drawImage(frontCanvas, xOffset, yOffset, drawWidth, drawHeight);
-        
-        nombreArchivo = `credencial_frontal_${usuario.numeroidentificador || 'usuario'}`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        //centrar imagen 
+
+         ctx.drawImage(frontCanvas, MARGEN, MARGEN);
+
+         nombreArchivo = `credencial_frontal_${usuario.numeroidentificador || 'usuario'}`;
 
       } else if (opcion === "trasera") {
         // Capturar trasera
@@ -127,33 +113,20 @@ const UsuarioDashboard = ({ userData }) => {
         const backCanvas = await html2canvas(refBack.current, options);
         
         canvas = document.createElement('canvas');
-        canvas.width = ANCHO_BASE;
-        canvas.height = ALTO_BASE;
+        canvas.width = backCanvas.width + (MARGEN * 2);
+        canvas.height = backCanvas.height + (MARGEN * 2);
+
+        
         
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
-        
-        const espacioAncho = ANCHO_BASE - (MARGEN * 2);
-        const espacioAlto = ALTO_BASE - (MARGEN * 2);
-        const proporcionOriginal = backCanvas.width / backCanvas.height;
-        
-        let drawWidth, drawHeight;
-        if (proporcionOriginal > (espacioAncho / espacioAlto)) {
-          drawWidth = espacioAncho;
-          drawHeight = espacioAncho / proporcionOriginal;
-        } else {
-          drawHeight = espacioAlto;
-          drawWidth = espacioAlto * proporcionOriginal;
-        }
-        
-        const xOffset = (ANCHO_BASE - drawWidth) / 2;
-        const yOffset = (ALTO_BASE - drawHeight) / 2;
-        
-        ctx.drawImage(backCanvas, xOffset, yOffset, drawWidth, drawHeight);
-        
-        nombreArchivo = `credencial_trasera_${usuario.numeroidentificador || 'usuario'}`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        ctx.drawImage(backCanvas, MARGEN, MARGEN);
+
+        nombreArchivo = `credencial_trasera_${usuario.numeroidentificador || 'usuario'}`;
+        
+   
       } else {
         // Capturar ambas
         setVista("front");
@@ -163,6 +136,8 @@ const UsuarioDashboard = ({ userData }) => {
         setVista("back");
         await new Promise(resolve => setTimeout(resolve, 150));
         const backCanvas = await html2canvas(refBack.current, options);
+        
+        setVista("front");
         
         // crea iamgen horizontal 
         
