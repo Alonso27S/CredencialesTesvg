@@ -168,7 +168,7 @@ const CredencialFront = ({ datos }) => {
 
                 fontSize: "10px",
                 height: "20px",
-                marginBottom: "20px",
+                marginBottom: "15px",
 
               }}
             >
@@ -183,7 +183,7 @@ const CredencialFront = ({ datos }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                marginTop: "15px",
+                marginTop: "10px",
                 
               }}
          >
