@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";  
+
 
 const EditarUsuario = ({ usuario, onBack }) => {
 const usuarioSesion = JSON.parse(
@@ -33,6 +35,10 @@ const [tipoidentificador] = useState(
 );
 const [nuevaPassword, setNuevaPassword] = useState("");
 const [confirmarPassword, setConfirmarPassword] = useState(""); 
+
+
+const [MostrarNuevaPassword, setMostrarNuevaPassword] = useState(false);
+const [MostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
 
   if (!usuario) {
     return  <div>No hay usuario seleccionado</div>;
@@ -325,15 +331,30 @@ if (String(idrolUsuario) === "1" && nuevaPassword) {
                 Nueva Contraseña
               </label>
 
+              <div className = "relative">
+
               <input
-                type="password"
+                type= {MostrarNuevaPassword ? "text" : "password"}
                 value={nuevaPassword}
                 onChange={(e) =>
                   setNuevaPassword(e.target.value)
                 }
-                className="w-full border rounded-lg p-3 mt-1"
+                className="w-full border rounded-lg p-3 mt-1 pr-12"
                 placeholder="Ingrese nueva contraseña"
               />
+
+              <button
+                  type="button"
+                  onClick={() => setMostrarNuevaPassword(!mostrarNuevaPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {mostrarNuevaPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
+                </button>
+              </div>
 
               <p className="text-xs text-gray-500 mt-1">
                 Minimo 8 caracteres, una mayúscula, una minuscula y un número.
@@ -345,21 +366,36 @@ if (String(idrolUsuario) === "1" && nuevaPassword) {
                 Confirmar Contraseña
               </label>
 
+              <div className="relative">
+
               <input
-                type="password"
+                type={MostrarConfirmarPassword ? "text" : "password"} 
                 value={confirmarPassword}
                 onChange={(e) =>
                   setConfirmarPassword(e.target.value)
                 }
-                className="w-full border rounded-lg p-3 mt-1"
+                className="w-full border rounded-lg p-3 mt-1 pr-12"
                 placeholder="Repita la contraseña"
               />
-            </div>
 
+              {/* BOTÓN PARA MOSTRAR/OCULTAR CONTRASEÑA */}
+                <button
+                  type="button"
+                  onClick={() => setMostrarConfirmarPassword(!mostrarConfirmarPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {mostrarConfirmarPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         </>
       )}
-
+      
       <div className="flex justify-end gap-4 mt-10">
 
         <button
