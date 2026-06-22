@@ -125,7 +125,7 @@ const CredencialFront = ({ datos }) => {
 
   {/* Identificador */}
 
-                  <div
+            <div
               style={{
                 height: "15px",
                 marginTop: "0px",
@@ -190,9 +190,15 @@ const CredencialFront = ({ datos }) => {
           {qrImage ? (
             <img
               src={qrImage}
+              alt= "QR"
+              onClick={(e) => {
+              e.stopPropagation();
+              setQrModalOpen(true);
+            }}
               style={{
                 width: "100px",
-                height: "100px"
+                height: "100px",
+                cursor: "pointer"
               }}
             />
           ) : (
@@ -224,16 +230,21 @@ const CredencialFront = ({ datos }) => {
       </div>
       {qrModalOpen && (
   <div
-    className="fixed inset-0 bg-black/80 z-[999] flex items-center justify-center"
+    className="fixed inset-0 bg-black/80 z-[999] flex items-center justify-center p-4"
     onClick={() => setQrModalOpen(false)}
   >
-    <div className="bg-white p-6 rounded-xl">
+     <div
+      className="bg-white p-4 rounded-xl"
+      onClick={(e) => e.stopPropagation()}
+    >
       <img
         src={qrImage}
         alt="QR Grande"
         style={{
-          width: "320px",
-          height: "320px",
+          width: "80vw",
+          maxWidth: "400px",
+          height: "auto",
+
         }}
       />
     </div>

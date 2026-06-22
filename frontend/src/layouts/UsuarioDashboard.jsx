@@ -531,18 +531,18 @@ const UsuarioDashboard = ({ userData }) => {
             onClick={(e) => e.stopPropagation()}
             className="max-h-[90vh] max-w-[90vw] flex items-center justify-center"
           >
-            <div
-              style={{
-                transform: "scale(1.6)",
-                transformOrigin: "center center",
-              }}
-            >
-              {vista === "front" ? (
-                <CredencialFront datos={datosCredencial} />
-              ) : (
-                <CredencialBack datos={datosCredencial} />
-              )}
-            </div>
+              <div
+                  style={{
+                    transform: window.innerWidth < 640 ? "scale(1.1)" : "scale(1.6)",
+                    transformOrigin: "center center",
+                  }}
+                >
+                  {vista === "front" ? (
+                    <CredencialFront datos={datosCredencial} />
+                  ) : (
+                    <CredencialBack datos={datosCredencial} />
+                  )}
+              </div>
           </div>
         </div>
       )}
