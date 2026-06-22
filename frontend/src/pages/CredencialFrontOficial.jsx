@@ -9,7 +9,7 @@ const CredencialFront = ({ datos }) => {
   
   const CARD_WIDTH = 300;
   const CARD_HEIGHT = 420;
-  const BAR_HEIGHT = 30;
+  const BAR_HEIGHT = 20;
 
 
   const fotoReal = datos?.fotourl
@@ -183,7 +183,7 @@ const CredencialFront = ({ datos }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                marginTop: "10px",
+                marginTop: "15px",
                 
               }}
          >
