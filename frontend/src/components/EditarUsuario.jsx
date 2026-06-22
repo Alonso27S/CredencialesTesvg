@@ -345,10 +345,10 @@ if (String(idrolUsuario) === "1" && nuevaPassword) {
 
               <button
                   type="button"
-                  onClick={() => setMostrarNuevaPassword(!mostrarNuevaPassword)}
+                  onClick={() => setMostrarNuevaPassword(!MostrarNuevaPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
-                  {mostrarNuevaPassword ? (
+                  {MostrarNuevaPassword ? (
                     <EyeOff size={20} />
                   ) : (
                     <Eye size={20} />
@@ -381,10 +381,10 @@ if (String(idrolUsuario) === "1" && nuevaPassword) {
               {/* BOTÓN PARA MOSTRAR/OCULTAR CONTRASEÑA */}
                 <button
                   type="button"
-                  onClick={() => setMostrarConfirmarPassword(!mostrarConfirmarPassword)}
+                  onClick={() => setMostrarConfirmarPassword(!MostrarConfirmarPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
-                  {mostrarConfirmarPassword ? (
+                  {MostrarConfirmarPassword ? (
                     <EyeOff size={20} />
                   ) : (
                     <Eye size={20} />
@@ -395,7 +395,7 @@ if (String(idrolUsuario) === "1" && nuevaPassword) {
           </div>
         </>
       )}
-      
+
       <div className="flex justify-end gap-4 mt-10">
 
         <button
