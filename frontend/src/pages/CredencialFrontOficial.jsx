@@ -20,7 +20,7 @@ const CredencialFront = ({ datos }) => {
 
   const nombreCompleto = `${datos?.nombre || ""} ${datos?.apellidop || ""} ${datos?.apellidom || ""}`.trim();
 
-  const qrSize = 100;
+  const qrSize = 80;
 
   useEffect(() => {
     if (!datos?.qr) return;

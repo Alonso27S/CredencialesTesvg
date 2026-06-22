@@ -78,11 +78,9 @@ const UsuarioDashboard = ({ userData }) => {
       backgroundColor: "#FFFFFF"
     };
 
-    const PROPORCION_ANCHO = 9;
-    const PROPORCION_ALTO = 16;
-    const ANCHO_BASE = 1080;
-    const ALTO_BASE = (ANCHO_BASE * PROPORCION_ALTO) / PROPORCION_ANCHO;
-    const MARGEN = 40;
+    // CONFIGURACIÓN DE MARGEN Y ESPACIOS
+    const MARGEN = 40; // Margen blanco alrededor
+    const ESPACIO_ENTRE = 30; // Espacio entre frontal y trasera
 
     try {
       let canvas;
@@ -166,57 +164,30 @@ const UsuarioDashboard = ({ userData }) => {
         await new Promise(resolve => setTimeout(resolve, 150));
         const backCanvas = await html2canvas(refBack.current, options);
         
+        // crea iamgen horizontal 
+        
         canvas = document.createElement('canvas');
-        canvas.width = ANCHO_BASE;
-        canvas.height = ALTO_BASE;
+        canvas.width = frontCanvas.width + backCanvas.width + ESPACIO_ENTRE + (MARGEN * 2);
+        canvas.height = Math.max(frontCanvas.height, backCanvas.height) + (MARGEN * 2);
         
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, ANCHO_BASE, ALTO_BASE);
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        //dibuja frontal a la izquierda
         
-        const espacioTotal = ALTO_BASE - (MARGEN * 2);
-        const espacioEntre = 30;
-        const espacioParaCada = (espacioTotal - espacioEntre) / 2;
-        const anchoDisponible = ANCHO_BASE - (MARGEN * 2);
-        
-        const propFront = frontCanvas.width / frontCanvas.height;
-        let frontWidth = Math.min(anchoDisponible, espacioParaCada * propFront);
-        let frontHeight = frontWidth / propFront;
-        if (frontHeight > espacioParaCada) {
-          frontHeight = espacioParaCada;
-          frontWidth = frontHeight * propFront;
-        }
-        
-        const propBack = backCanvas.width / backCanvas.height;
-        let backWidth = Math.min(anchoDisponible, espacioParaCada * propBack);
-        let backHeight = backWidth / propBack;
-        if (backHeight > espacioParaCada) {
-          backHeight = espacioParaCada;
-          backWidth = backHeight * propBack;
-        }
-        
-        const frontX = (ANCHO_BASE - frontWidth) / 2;
-        const backX = (ANCHO_BASE - backWidth) / 2;
-        
-        const frontY = MARGEN + (espacioParaCada - frontHeight) / 2;
-        const backY = MARGEN + espacioParaCada + espacioEntre + (espacioParaCada - backHeight) / 2;
-        
-        ctx.drawImage(frontCanvas, frontX, frontY, frontWidth, frontHeight);
-        ctx.drawImage(backCanvas, backX, backY, backWidth, backHeight);
-        
-        nombreArchivo = `credencial_completa_${usuario.numeroidentificador || 'usuario'}`;
+        ctx.drawImage(frontCanvas, MARGEN, MARGEN);
+
+         // Dibujar trasera a la derecha (con espacio entre)
+        ctx.drawImage(backCanvas, frontCanvas.width + MARGEN + ESPACIO_ENTRE, MARGEN);nombreArchivo = `credencial_completa_${usuario.numeroidentificador || 'usuario'}`;
       }
 
-      // Restaurar vista
-      setVista("front");
-      
       // Descargar
       const link = document.createElement('a');
       link.download = `${nombreArchivo}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
 
-      // Cerrar modal
       setModalDescargaOpen(false);
       setDescargando(false);
 
@@ -225,7 +196,7 @@ const UsuarioDashboard = ({ userData }) => {
       alert("Error al descargar la credencial. Intenta de nuevo.");
       setDescargando(false);
     }
-  };
+  };   
 
   const handleSubmitPassword = async () => {
     setErrorPass("");
