@@ -20,7 +20,7 @@ const CredencialFront = ({ datos }) => {
 
   const nombreCompleto = `${datos?.nombre || ""} ${datos?.apellidop || ""} ${datos?.apellidom || ""}`.trim();
 
-  const qrSize = 80;
+  const qrSize = 70;
 
   useEffect(() => {
     if (!datos?.qr) return;
@@ -168,7 +168,7 @@ const CredencialFront = ({ datos }) => {
 
                 fontSize: "10px",
                 height: "20px",
-                marginBottom: "5px",
+                marginBottom: "6px",
 
               }}
             >
@@ -183,7 +183,7 @@ const CredencialFront = ({ datos }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                marginTop: "10px",
+                marginTop: "5px",
                 
               }}
          >
