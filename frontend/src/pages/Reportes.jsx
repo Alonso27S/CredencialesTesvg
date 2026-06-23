@@ -78,7 +78,7 @@ const Reportes = ({ onBack }) => {
   const fetchReportes = async () => {
     try {
       const res = await axios.get(
-        "https://meztlitech.site/api/reportes",
+        "https://credencialestesvg.com.mx/api/reportes",
         {
           params: filters,
         }

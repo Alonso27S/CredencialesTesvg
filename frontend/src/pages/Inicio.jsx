@@ -33,7 +33,7 @@ const Inicio = () => {
     const fetchCounts = async () => {
       try {
         // Petición al endpoint que devuelve los totales por tipo
-        const res = await axios.get("https://meztlitech.site/api/dashboard/counts");
+        const res = await axios.get("https://credencialestesvg.com.mx/api/dashboard/counts");
 
         // Se actualiza el estado asegurando valores por defecto
         setCounts({
@@ -60,9 +60,9 @@ const Inicio = () => {
       let url = "";
 
       // Se asigna la URL correspondiente
-      if (tipo === "Alumno") url = "https://meztlitech.site/api/dashboard/Alumnos";
-      if (tipo === "Docente") url = "https://meztlitech.site/api/dashboard/Docentes";
-      if (tipo === "Administrativo") url = "https://meztlitech.site/api/dashboard/Administrativos";
+      if (tipo === "Alumno") url = "https://credencialestesvg.com.mx/api/dashboard/Alumnos";
+      if (tipo === "Docente") url = "https://credencialestesvg.com.mx/api/dashboard/Docentes";
+      if (tipo === "Administrativo") url = "https://credencialestesvg.com.mx/api/dashboard/Administrativos";
 
       // Petición al backend para obtener los usuarios
       const res = await axios.get(url);

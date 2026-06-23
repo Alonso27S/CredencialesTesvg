@@ -26,7 +26,7 @@ const VerificarToken = ({ correo, onVerificado }) => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://meztlitech.site/api/verificartoken", {
+      const response = await fetch("https://credencialestesvg.com.mx/api/verificartoken", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

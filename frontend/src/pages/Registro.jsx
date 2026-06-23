@@ -562,7 +562,7 @@ const Registro = ({ importado, onBack }) => {
       }
 
       // Envío al endpoint de registro (backend corriendo en localhost:5000)
-      const res = await fetch("https://meztlitech.site/api/registro", {
+      const res = await fetch("https://credencialestesvg.com.mx/api/registro", {
         method: "POST",
         body: formData, // Enviar FormData para incluir archivos
       });

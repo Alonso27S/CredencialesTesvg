@@ -15,7 +15,7 @@ const AdminGestores = ({ onBack }) => {
   const [busqueda, setBusqueda] = useState("");
 
   // 🔹 Endpoint del backend
-  const BASE_URL = "https://meztlitech.site/api/gestores";
+  const BASE_URL = "https://credencialestesvg.com.mx/api/gestores";
 
   // Token de autenticación (JWT)
   const token = localStorage.getItem("token");

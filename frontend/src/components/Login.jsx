@@ -51,7 +51,7 @@ const Login = ({ onLoginSuccess, onRequireToken }) => {
     try {
       /* ---- Petición al backend ---- */
       const response = await fetch(
-        "https://meztlitech.site/api/login",
+        "https://credencialestesvg.com.mx/api/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
