@@ -94,6 +94,48 @@ export const verificarQR = async (req, res) => {
 
             });
         }
+// ====================================
+// VALIDAR VIGENCIA DE LA CREDENCIAL
+// ====================================
+
+const fechaActual = new Date();
+
+const fechaVigencia = new Date(
+    usuario.fechavigencia
+);
+
+// Opcional: ignorar la hora y comparar sólo la fecha
+fechaActual.setHours(0, 0, 0, 0);
+fechaVigencia.setHours(0, 0, 0, 0);
+
+if (fechaVigencia < fechaActual) {
+
+    return res.status(403).json({
+
+        success: false,
+
+        message: "Credencial vencida",
+
+        nombreCompleto:
+            `${usuario.nombre} ${usuario.apellidop} ${usuario.apellidom}`,
+
+        numeroControl:
+            usuario.numeroidentificador,
+
+        area:
+            usuario.nombrearea,
+
+        foto:
+            usuario.fotourl,
+
+        fechaEmision:
+            usuario.fechaemision,
+
+        fechaVigencia:
+            usuario.fechavigencia
+
+    });
+}
 
         const idCredencial =
             usuario.id_credencial;
