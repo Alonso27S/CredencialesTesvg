@@ -76,7 +76,7 @@ if (String(idrolUsuario) === "1" && nuevaPassword) {
   }
 } 
       await axios.put(
-        `https://meztlitech.site/api/edusuarios/${usuario.id}`,
+        `https://credencialestesvg.com.mx/api/edusuarios/${usuario.id}`,
 
         {
           nombre,
