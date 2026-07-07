@@ -3,7 +3,7 @@ import React from "react";
 
 const CredencialFront = ({ datos }) => {
 
-  const CARD_WIDTH = 350;
+  const CARD_WIDTH = 300;
   const CARD_HEIGHT = 500;
 
   return (
