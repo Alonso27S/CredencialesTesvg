@@ -4,7 +4,7 @@ import React from "react";
 const CredencialFront = ({ datos }) => {
 
   const CARD_WIDTH = 300;
-  const CARD_HEIGHT = 500;
+  const CARD_HEIGHT = 320;
 
   return (
     <div
